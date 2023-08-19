@@ -1,0 +1,158 @@
+
+html.semi-dark .topbar {
+	background-color: #212529;
+	border-bottom: 1px solid rgb(237 237 237 / 12%);
+}
+html.semi-dark .user-box {
+	border-left: 1px solid rgb(255 255 255 / 0.15);
+	border-right: 1px solid rgb(255 255 255 / 0.15);
+}
+html.semi-dark .user-info .user-name {
+	color: #e4e5e6;
+}
+html.semi-dark .user-info .designattion {
+	color: #b3b3b3
+}
+html.semi-dark .mobile-toggle-menu {
+	color: #fff;
+}
+html.semi-dark .logo-text {
+    color: #fff;
+}
+html.semi-dark .topbar .navbar-nav .nav-link {
+	border-left: 0px solid rgb(255 255 255 / 12%);
+	color: #e4e5e6;
+}
+
+html.semi-dark .nav-container.primary-menu .navbar-nav a.nav-link {
+	color: #bdbdbd;
+}
+
+html.semi-dark .topbar .navbar .navbar-nav .nav-link:hover,
+html.semi-dark .topbar .navbar .navbar-nav .nav-link:focus {
+	background-color: rgb(255 255 255 / 12%);
+    color: #ffffff;
+}
+
+
+html.semi-dark .primary-menu .navbar {
+	background: #212529;
+	border-bottom: 1px solid rgb(255 255 255 / 12%);
+	box-shadow: none !important;
+
+}
+
+
+html.semi-dark .primary-menu .navbar-nav a.nav-link {
+	color: #bdbdbd;
+}
+
+
+html.semi-darke .primary-menu .navbar-nav a.nav-link:hover,
+html.semi-dark .primary-menu .navbar-nav a.nav-link:focus,
+html.semi-dark .primary-menu .nav-link.active,
+html.semi-dark .primary-menu .show>.nav-link {
+	color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+html.semi-dark .dropdown-item.active, html.semi-dark .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #008cff;
+}
+
+html.semi-dark .topbar-logo-header{
+	border-right: 1px solid rgb(255 255 255 / 14%);
+}
+
+html.semi-dark .search-bar input {
+	color: #e4e5e6;
+	background-color: #212529;
+	border: 1px solid rgb(241 241 241 / 15%);
+	box-shadow: inset 0 1px 2px rgb(0 0 0 / 0%);
+}
+html.semi-dark .search-bar input::placeholder {
+	color: #e4e5e6 !important;
+	opacity: .5 !important;
+	/* Firefox */
+}
+html.semi-dark::placeholder {
+	color: #e4e5e6 !important;
+	opacity: .5 !important;
+	/* Firefox */
+}
+html.semi-dark .search-bar .btn-search {
+	background: #212529;
+	border: 1px solid rgb(217 211 211 / 30%);
+}
+
+html.semi-dark .search-show {
+    color: #ffffff;
+}
+
+html.semi-dark .nav-container {
+    background: #212529;
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+}
+
+html.semi-dark .wrapper.toggled .mobile-topbar-header {
+    background: #212529;
+    border-bottom: 1px solid rgb(241 241 241 / 12%);
+}
+html.semi-dark .toggle-icon {
+    color: #ffffff;
+}
+
+html.semi-dark .simplebar-scrollbar:before {
+	background: rgba(255, 255, 255, 0.40);
+}
+html.semi-dark .logo-icon {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Minimal Theme */
+
+html.minimal-theme .topbar {
+	background: #f4f4f4;
+	border-bottom: 1px solid #dee2e6;
+	box-shadow: none !important
+}
+html.minimal-theme .topbar .search-control {
+	background-color: #f4f4f4;
+	border: 1px solid #dee2e6;
+}
+html.color-header .user-box {
+	border-left: 1px solid rgb(255 255 255 / .25);
+    border-right: 1px solid rgb(255 255 255 / .25);
+}
+html.minimal-theme .primary-menu .navbar {
+	background-color: #f4f4f4;
+	border-bottom: 1px solid #dee2e6;
+	box-shadow: none !important
+}
+html.minimal-theme .topbar-logo-header {
+	border-right: 1px solid #dee2e6;
+}
+
+
+
+html.minimal-theme .page-footer{
+	background: #f4f4f4;
+}
+
+@media screen and (max-width: 1280px){
+
+	html.minimal-theme .wrapper.toggled .mobile-topbar-header {
+		background: #f4f4f4;
+		border-bottom: 1px solid #dee2e6;
+	}
+	
+}
+
+
+@media screen and (min-width: 1025px) {
+	html.minimal-theme .wrapper.toggled.sidebar-hovered .sidebar-wrapper {
+		box-shadow: 0 .3rem .8rem rgba(0, 0, 0, .12)!important;
+	}
+}
