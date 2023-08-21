@@ -78,7 +78,7 @@ public static class Sqlite
 
         SQLiteCommand cmd;
 
-        var query = @"INSERT IGNORE INTO Sets (id, name, series, printedTotal, Total, releaseDate, imgSymbol, imgLogo) 
+        var query = @"INSERT OR IGNORE INTO Sets (id, name, series, printedTotal, Total, releaseDate, imgSymbol, imgLogo) 
                             VALUES (@id, @name, @series, @printedTotal, @Total, @releaseDate, @imgSymbol, @imgLogo);";
 
         foreach (var set in SetsData)
