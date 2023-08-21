@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Text;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
 
 namespace PokeCard;
 
@@ -26,13 +27,13 @@ public static class Sqlite
         con.Open();
 
         SQLiteTransaction transaction = con.BeginTransaction();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb              = new StringBuilder();
 
         SQLiteCommand cmd;
 
         if (startFresh)
         {
-            var Tables = GetColumn<string>("SELECT name FROM sqlite_master WHERE type='table';");
+            var Tables  = GetColumn<string>("SELECT name FROM sqlite_master WHERE type='table';");
             var Indexes = GetColumn<string>("SELECT name FROM sqlite_master WHERE type='index';");
 
             foreach (var tblName in Tables)
@@ -66,6 +67,180 @@ public static class Sqlite
     }
 
 
+    //  Function ImportSets
+    public static bool ImportSets(List<Set> SetsData)
+    {
+        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+
+        con.Open();
+
+        SQLiteTransaction transaction = con.BeginTransaction();
+
+        SQLiteCommand cmd;
+
+        var query = @"INSERT IGNORE INTO Sets (id, name, series, printedTotal, Total, releaseDate, imgSymbol, imgLogo) 
+                            VALUES (@id, @name, @series, @printedTotal, @Total, @releaseDate, @imgSymbol, @imgLogo);";
+
+        foreach (var set in SetsData)
+        {
+            cmd = new SQLiteCommand(query, con, transaction);
+
+            cmd.Parameters.Add(new SQLiteParameter("@id",           set.Id));
+            cmd.Parameters.Add(new SQLiteParameter("@name",         set.Name));
+            cmd.Parameters.Add(new SQLiteParameter("@series",       set.Series));
+            cmd.Parameters.Add(new SQLiteParameter("@printedTotal", set.PrintedTotal));
+            cmd.Parameters.Add(new SQLiteParameter("@Total",        set.Total));
+            cmd.Parameters.Add(new SQLiteParameter("@releaseDate",  set.ReleaseDate.Replace("/", "-")));
+            cmd.Parameters.Add(new SQLiteParameter("@imgSymbol",    set.Images.Symbol.ToString()));
+            cmd.Parameters.Add(new SQLiteParameter("@imgLogo",      set.Images.Logo.ToString()));
+
+            cmd.ExecuteNonQuery();
+        }
+
+        transaction.Commit();
+
+        con.Close();
+
+        return true;
+    }
+
+
+    //  Get Folders rows and return as a List<FolderData>
+    public static List<FolderData> GetFolders()
+    {
+        List<FolderData> folders = new();
+
+        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+
+        con.Open();
+
+        using var cmd = new SQLiteCommand("SELECT id, name, folderType, icon FROM Folders", con);
+
+        SQLiteDataReader r = cmd.ExecuteReader();
+
+        while (r.Read())
+        {
+            folders.Add(new FolderData()
+            {
+                id         = r.GetInt32(0),
+                name       = r.GetString(1),
+                folderType = r.GetString(2),
+                icon       = r.GetString(3)
+            });
+        }
+
+        foreach (var folder in folders)
+        {
+            folder.CardMaps = new();
+
+            using var cmd2 = new SQLiteCommand("SELECT cardId, cost, date, quantity, options FROM FolderMap WHERE folderId = {folder.id}", con);
+
+            SQLiteDataReader r2 = cmd2.ExecuteReader();
+
+            while (r2.Read())
+            {
+                folder.CardMaps.Add(new FolderCardMap()
+                {
+                    cardId   = r2.GetInt32(0),
+                    cost     = r2.GetDecimal(1),
+                    date     = r2.GetDateTime(2),
+                    quantity = r2.GetInt32(3),
+                    options  = r2.GetString(4)
+                });
+            }
+        }
+
+        return folders;
+    }
+
+
+    //  Get Cards rows and return as a List<CardData>
+    public static List<CardData> GetCards()
+    {
+        List<CardData> cards = new();
+
+        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+
+        con.Open();
+
+        using (var cmd = new SQLiteCommand("SELECT * FROM Cards", con))
+        {
+            SQLiteDataReader r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                cards.Add(new CardData()
+                {
+                    rowId      = r.GetInt32(0),
+                    id         = r.GetString(1),
+                    name       = r.GetString(2),
+                    supertype  = r.GetString(3),
+                    setId      = r.GetInt32(4),
+                    number     = r.GetInt32(5),
+                    rarity     = r.GetString(6),
+                    imgSmall   = r.GetString(7),
+                    imgLarge   = r.GetString(8),
+                    tcgUrl     = r.GetString(9),
+                    tcgUrlReal = r.GetString(10),
+                    cmUrl      = r.GetString(11),
+                    apiJson    = r.GetString(12),
+                });
+            }
+        }
+
+        foreach( var card in cards)
+        {
+            //  Get Subtypes
+            card.subTypes.AddRange( GetColumn<string>(@$"
+                SELECT subtype 
+                FROM Subtypes s, SubtypeMap sm 
+                WHERE s.id = sm.subtypeId 
+                    AND cardId = {card.rowId}"));
+        }
+
+        return cards;
+    }
+
+
+
+    //  Get Sets rows and return as a List<SetData>
+    public static List<SetData> GetSets()
+    {
+        List<SetData> sets = new();
+
+        using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
+        {
+            con.Open();
+
+            using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Sets", con))
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+
+                    sets.Add(new SetData()
+                    {
+                        rowId        = r.GetInt32(0),
+                        id           = r.GetString(1),
+                        name         = r.GetString(2),
+                        series       = r.GetString(3),
+                        printedTotal = r.GetInt32(4),
+                        Total        = r.GetInt32(5),
+                        releaseDate  = r.GetDateTime(6),
+                        imgSymbol    = r.GetString(7),
+                        imgLogo      = r.GetString(8),
+                    });
+                }
+            }
+
+            con.Close();
+        }
+
+        return sets;
+    }
+
+
     public static string GetString(string query)
     {
         using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
@@ -74,7 +249,9 @@ public static class Sqlite
             using (SQLiteCommand cmd = new SQLiteCommand(query, con))
             {
                 var result = cmd.ExecuteScalar();
-                
+
+                con.Close();
+
                 if (result == null) return string.Empty;
                 else return result.ToString();
             }
@@ -99,29 +276,53 @@ public static class Sqlite
                 }
             }
 
+            con.Close();
+
         }
 
         return column.ToArray();
     }
 
 
-    public static bool Query(string query)
+    public static bool Query(SQLiteCommand query)
     {
-        using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
-        {
-            con.Open();
+        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
 
-            SQLiteCommand cmd = new SQLiteCommand(con)
-            {
-                CommandText = query,
-            };
+        con.Open();
 
-            cmd.ExecuteNonQuery();
+        query.Connection = con;
 
-        }
+        query.ExecuteNonQuery();
+
+        con.Close();
 
         return true;
     }
+
+
+    public static bool Query(string query)
+    {
+        SQLiteCommand cmd = new SQLiteCommand()
+        {
+            CommandText = query,
+        };
+
+        return Query(cmd);
+    }
+
+
+    public static bool Query(string query, params SQLiteParameter[] parameters)
+    {
+        SQLiteCommand cmd = new SQLiteCommand()
+        {
+            CommandText = query,
+        };
+
+        foreach (SQLiteParameter parameter in parameters) cmd.Parameters.Add(parameter);
+
+        return Query(cmd);
+    }
+
 
     public static string GetQuery(SQLiteCommand cmd)
     {
@@ -129,14 +330,22 @@ public static class Sqlite
 
         foreach (SQLiteParameter parms in cmd.Parameters)
         {
-            var val = String.Empty;
+            var val = string.Empty;
+
             if (parms.DbType.Equals(DbType.String) || parms.DbType.Equals(DbType.DateTime))
                 val = "'" + Convert.ToString(parms.Value).Replace(@"\", @"\\").Replace("'", @"\'") + "'";
-            if (parms.DbType.Equals(DbType.Int16) || parms.DbType.Equals(DbType.Int32) || parms.DbType.Equals(DbType.Int64) || parms.DbType.Equals(DbType.Decimal) || parms.DbType.Equals(DbType.Double))
-                val = Convert.ToString(parms.Value);
+            
+            if (parms.DbType.Equals(DbType.Int16) 
+                || parms.DbType.Equals(DbType.Int32) 
+                || parms.DbType.Equals(DbType.Int64) 
+                || parms.DbType.Equals(DbType.Decimal) 
+                || parms.DbType.Equals(DbType.Double)) val = Convert.ToString(parms.Value);
+            
             var paramname = "@" + parms.ParameterName;
+            
             CommandTxt = CommandTxt.Replace(paramname, val);
         }
+
         return (CommandTxt);
     }
 

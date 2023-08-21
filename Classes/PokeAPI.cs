@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
-using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
-using PokemonTcgSdk.Standard.Features.FilterBuilder;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
-using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Base;
-using System.Diagnostics;
-using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards.Models;
-using CefSharp.DevTools.CSS;
-using System.Windows.Documents;
-using System.Reflection;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
+
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -35,9 +33,17 @@ public static class PokeAPI
 
     public static SubTypes SubTypes;
 
+    public static SuperTypes SuperTypes;
+
+    public static Rarities Rarities;
+    
+    public static ElementTypes ElementTypes;
+
     static Dictionary<string, string> Filter = new();
 
     public static List<CardX> CardResults = new();
+    public static List<Set> CardSets      = new();
+
 
     public static string[] PokemonSubTypes;
 
@@ -47,27 +53,7 @@ public static class PokeAPI
     {
         pokeClient = new PokemonApiClient(ApiKey);
         
-        var _card = new CardX()
-        {
-            Name                 = "Pikachu",
-            Id                   = "xy7-54",
-            Images               = new CardImage()
-            {
-                Small = new System.Uri("https://images.pokemontcg.io/xy7/54.png"),
-                Large = new System.Uri("https://images.pokemontcg.io/xy7/54_hires.png")
-            },
-            Types                = new List<string>() { "Lightning" },
-            Supertype            = "Pokémon",
-            Subtypes             = new List<string>() { "Basic" },
-            Hp                   = 70,
-            RetreatCost          = new List<string>() { "Colorless" },
-            ConvertedRetreatCost = 1,
-            Number               = "54",
-            Artist               = "Kouki Saitou",
-            Rarity               = "Uncommon",
-        };
-
-        CardResults.Add(_card);
+        
     }
 
     public static async Task<string[]> GetSubTypes()
@@ -79,6 +65,15 @@ public static class PokeAPI
         PokemonSubTypes = types.SubType.ToArray();
 
         return types.SubType.ToArray();
+    }
+
+    public static async Task<List<PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set.Set>> GetSetsFromAPI()
+    {
+        var cardSets = await pokeClient.GetApiResourceAsync<PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set.Set>();
+
+        CardSets = cardSets.Results;
+
+        return CardSets;
     }
 
 

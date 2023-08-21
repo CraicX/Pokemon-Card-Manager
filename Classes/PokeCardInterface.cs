@@ -15,9 +15,6 @@ public static class PokeCardInterface
 
         Browser.FireJS(@"jFetch('render-cards.app', '#pcc-search');");
 
-
-        //return PokeCardGui.RenderCards();
-
     }
 
 

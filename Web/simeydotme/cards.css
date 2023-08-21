@@ -1,0 +1,275 @@
+.pokecard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2vw;
+    transform-style: preserve-3d;
+    height: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px;
+    position: relative
+}
+
+.pokecard-grid.active {
+    z-index: 99
+}
+
+@media screen and (min-width: 600px) {
+    .pokecard-grid {
+        grid-template-columns: 1fr 1fr
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .pokecard-grid {
+        grid-template-columns: 1fr 1fr 1fr
+    }
+}
+
+.pokecard__glare {
+    transform: translateZ(1.4px);
+    background: radial-gradient(farthest-corner circle at var(--mx) var(--my),rgba(255,255,255,.8) 10%,rgba(255,255,255,.65) 20%,rgba(0,0,0,.5) 90%);
+    mix-blend-mode: overlay;
+    opacity: var(--o)
+}
+
+.pokecard__glare.holo:not(.v):not(.vmax):not(.vstar) {
+    opacity: calc(var(--o)*.8);
+    filter: brightness(.8) contrast(1.5)
+}
+
+.pokecard__glare.v, .pokecard__glare.vfull, .pokecard__glare.vmax, .pokecard__glare.vstar {
+    filter: brightness(.9) contrast(1.75);
+    background: radial-gradient(farthest-corner circle at var(--mx) var(--my),rgb(255,255,255) 0%,rgba(133,137,141,.33) 45%,rgba(100,100,100,.65) 120%);
+    opacity: calc(var(--o)*.66)
+}
+
+.pokecard__glare.vmax {
+    background: radial-gradient(farthest-corner circle at var(--mx) var(--my),rgba(255,255,255,.75) 0%,rgba(99,99,99,.35) 45%,rgba(0,0,0,1) 120%)
+}
+
+.pokecard[data-rarity="rare holo"][data-gallery=true] .pokecard__glare {
+    background: radial-gradient(farthest-corner circle at var(--mx) var(--my),rgba(255,255,255,.8) 10%,rgba(255,255,255,.6) 35%,rgba(0,0,0,1) 85%)
+}
+
+.pokecard[data-rarity="radiant rare"] .pokecard__glare {
+    background-image: radial-gradient(farthest-corner circle at var(--mx) var(--my),rgba(255,255,255,.9) 10%,rgba(255,255,255,.6) 30%,rgba(0,0,0,.8) 80%)
+}
+
+.pokecard__shine {
+    display: grid;
+    overflow: hidden;
+    z-index: 3;
+    transform: translateZ(1px);
+    background: transparent;
+    mix-blend-mode: color-dodge;
+    filter: brightness(.85) contrast(2.75) saturate(.65);
+    background-size: cover;
+    background-position: center;
+    opacity: var(--o)
+}
+
+.pokecard__shine:before {
+    grid-area: 1/1;
+    transform: translateZ(1px)
+}
+
+.pokecard__shine:after {
+    grid-area: 1/1;
+    transform: translateZ(1.2px);
+    border-radius: var(--radius)
+}
+
+:root {
+    --mx: 50%;
+    --my: 50%;
+    --s: 1;
+    --o: 0;
+    --tx: 0px;
+    --ty: 0px;
+    --rx: 0deg;
+    --ry: 0deg;
+    --pos: 50% 50%;
+    --posx: 50%;
+    --posy: 50%;
+    --hyp: 0
+}
+
+.pokecard {
+    --radius: 4.55% / 3.5%;
+    --back: #004177;
+    --glow: #69d1e9;
+    z-index: calc(var(--s) * 100);
+    transform: translateZ(.1px);
+    -webkit-transform: translate3d(0,0,.1px);
+    will-change: transform,visibility;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d
+}
+
+.pokecard.interacting {
+    z-index: calc(var(--s) * 120)
+}
+
+.pokecard.active .pokecard__translater, .pokecard.active .pokecard__rotator {
+    touch-action: none
+}
+
+.pokecard__translater, .pokecard__rotator {
+    display: grid;
+    perspective: 600px;
+    transform-origin: center;
+    -webkit-transform-origin: center;
+    will-change: transform
+}
+
+.pokecard__translater {
+    width: auto;
+    position: relative;
+    transform: translate3d(var(--tx),var(--ty),0) scale(var(--s));
+    -webkit-transform: translate3d(var(--tx),var(--ty),0) scale(var(--s))
+}
+
+.pokecard__rotator {
+    transform: rotateY(var(--rx)) rotateX(var(--ry));
+    transform-style: preserve-3d;
+    -webkit-transform: rotateY(var(--rx)) rotateX(var(--ry));
+    -webkit-transform-style: preserve-3d;
+    box-shadow: 0 10px 20px -5px #000;
+    border-radius: var(--radius);
+    outline: none;
+    transition: box-shadow .4s ease,outline .2s ease
+}
+
+button.pokecard__rotator {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: top;
+    padding: 0
+}
+
+.pokecard.active .pokecard__rotator {
+    box-shadow: 0 0 10px 0 var(--glow),0 0 10px 0 var(--glow),0 0 30px 0 var(--glow)
+}
+
+.pokecard__rotator:focus {
+    box-shadow: 0 0 10px 0 var(--glow),0 0 10px 0 var(--glow),0 0 30px 0 var(--glow)
+}
+
+.pokecard.active .pokecard__rotator:focus {
+    box-shadow: 0 10px 30px 3px #000
+}
+
+.pokecard__rotator * {
+    width: 100%;
+    display: grid;
+    grid-area: 1/1;
+    border-radius: var(--radius);
+    image-rendering: optimizeQuality;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d
+}
+
+.pokecard__rotator img {
+    outline: 1px solid transparent;
+    aspect-ratio: .716;
+    height: auto
+}
+
+.pokecard__back {
+    background-color: var(--back);
+    transform: rotateY(180deg) translateZ(1px);
+    -webkit-transform: rotateY(180deg) translateZ(1px);
+    backface-visibility: visible
+}
+
+.pokecard__front, .pokecard__front  {
+    backface-visibility: hidden
+}
+
+.pokecard__front {
+    opacity: 1;
+    transition: opacity .33s ease-out
+}
+
+.loading .pokecard__front {
+    opacity: 0
+}
+
+.loading .pokecard__back {
+    transform: rotateY(0);
+    -webkit-transform: rotateY(0deg)
+}
+
+.back-to-top a {
+    color: inherit;
+    text-decoration: none
+}
+.pokecard {
+
+  --grain: url("/simeydotme/img/grain.webp");
+  --glitter: url("/simeydotme/img/glitter.png");
+  --glittersize: 25%;
+
+  --space: 5%;
+  --angle: 133deg;
+  --imgsize: cover;
+
+  --red: #f80e35;
+  --yellow: #eedf10;
+  --green: #21e985;
+  --blue: #0dbde9;
+  --violet: #c929f1;
+
+  --clip: inset( 9.85% 8% 52.85% 8% );
+  --clip-invert: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0 47.15%, 91.5% 47.15%, 91.5% 9.85%, 8% 9.85%, 8% 47.15%, 0 50%);
+
+  --clip-stage: polygon(91.5% 9.85%, 57% 9.85%, 54% 12%, 17% 12%, 16% 14%, 12% 16%, 8% 16%, 8% 47.15%, 92% 47.15%);
+  --clip-stage-invert: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0 47.15%, 91.5% 47.15%, 91.5% 9.85%, 57% 9.85%, 54% 12%, 17% 12%, 16% 14%, 12% 16%, 8% 16%, 8% 47.15%, 0 50%);
+
+  --clip-trainer: inset(14.5% 8.5% 48.2% 8.5%);
+  --clip-borders: inset(2.8% 4% round 2.55% / 1.5%);
+
+}
+
+.pokecard__shine,
+.pokecard__glare {
+  
+  will-change: transform, opacity, background-image, background-size,
+    background-position, background-blend-mode, filter;
+ 
+}
+
+
+@media screen and (min-width: 600px) {
+  header {
+    grid-template-columns: 0% 1fr;
+  }
+  .showcase {
+    grid-column: 2;
+    grid-row: 2/5;
+  }
+  
+}
+
+@media screen and (min-width: 900px) {
+  header {
+    grid-template-columns: 0% 1fr;
+  }
+}
+
+.showcase {
+  z-index: 99;
+  max-width: min(330px, 80vw);
+  margin: auto;
+}
+
+.cardZoom {
+    width: 600px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -418px;
+    margin-left: -300px;
+}

@@ -36,7 +36,7 @@ public partial class MainWindow : Window
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        Browser.ShowInspector();
-        Debug.WriteLine("SIZE CHANGED");
+        //Browser.ShowInspector();
+        //Debug.WriteLine("SIZE CHANGED");
     }
 }

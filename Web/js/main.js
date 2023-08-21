@@ -45,7 +45,7 @@ $(function () {
 
     $("#cardSearch").on("keypress", async function (evt) {
         // check if enter was pressed
-        if (evt.keyCode == 13) {
+        if (evt.keyCode == 13 && $(this).val() != '') {
 
             projObj = {
                 "ObjName": "PokeCardInterface",

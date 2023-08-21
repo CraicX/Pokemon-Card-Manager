@@ -110,27 +110,28 @@ public static class Utils
     {
         // Determine path
         Assembly assembly = Assembly.GetExecutingAssembly();
-        var resourcePath = name;
-        resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
-        using var stream = assembly.GetManifestResourceStream(resourcePath);
+        var resourcePath  = name;
+        resourcePath      = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
+        using var stream  = assembly.GetManifestResourceStream(resourcePath);
+        
         if (stream != null)
         {
-
             var bytes = new byte[stream.Length];
             var numBytesToRead = (int)stream.Length;
             var numBytesRead = 0;
+            
             while (numBytesToRead > 0)
             {
                 // Read may return anything from 0 to numBytesToRead.
                 var n = stream.Read(bytes, numBytesRead, numBytesToRead);
 
                 // Break when the end of the file is reached.
-                if (n == 0)
-                    break;
+                if (n == 0) break;
 
-                numBytesRead += n;
+                numBytesRead   += n;
                 numBytesToRead -= n;
             }
+
             numBytesToRead = bytes.Length;
 
             return bytes;
@@ -140,16 +141,14 @@ public static class Utils
 
             return new byte[0];
         }
-
-        
-
     }
 
     public static Stream StreamResource(string name)
     {
         // Determine path
         Assembly assembly = Assembly.GetExecutingAssembly();
-        var resourcePath = name;
+        var resourcePath  = name;
+        
         // Format: "{Namespace}.{Folder}.{filename}.{Extension}"
 
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));

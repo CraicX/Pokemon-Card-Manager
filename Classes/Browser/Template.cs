@@ -14,10 +14,9 @@ public static class Template
         foreach (Match match in MM)
         {
             var swapText = "";
-            var path = "";
-
-            var command = match.Groups[1].Value;
-            var item = match.Groups[2].Value;
+            var path     = "";
+            var command  = match.Groups[1].Value;
+            var item     = match.Groups[2].Value;
 
             switch (command)
             {
@@ -40,8 +39,8 @@ public static class Template
                     break;
 
                 case "func":
-                    var parts = item.Split('.');
-                    Type t         =Type.GetType("PokeCard." + parts[0]);
+                    var parts      = item.Split('.');
+                    Type t         = Type.GetType("PokeCard." + parts[0]);
                     MethodInfo mi  = t.GetMethod(parts[1]);
                     swapText       = (string)mi.Invoke(null, null);
                     break;

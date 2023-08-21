@@ -17,12 +17,10 @@ a {
 	width: 100%;
 	position: relative;
 }
-.mobile-topbar-header {
-	display: none;
-}
+
 /* Sidebar */
 .topbar-logo-header{
-	width: auto;
+	width: 300px;
     align-items: center;
     padding: 0 30px 0 0;
     height: 60px;
@@ -36,14 +34,14 @@ a {
     margin-left: 10px;
 }
 .logo-text {
-	font-size: 26px;
+/*	font-size: 26px;*/
 	/*	font-weight: bold;*/
 	/*	margin-left: 10px;*/
 	margin-bottom: 0;
 	letter-spacing: 1px;
 	color: #FDF736;
 	-webkit-text-stroke: 2px #3622E1;
-	font: 700 4em/1 'Titan One', cursive;
+	font: 700 4em 'Titan One', cursive;
 	letter-spacing: 0;
 /*	padding: .25em 0 .325em;*/
 	display: block;

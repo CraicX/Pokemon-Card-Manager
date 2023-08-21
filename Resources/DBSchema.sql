@@ -47,6 +47,10 @@ CREATE TABLE IF NOT EXISTS [SubtypeMap] (
 CREATE INDEX IF NOT EXISTS MapTypeId ON SubtypeMap(subtypeId);
 CREATE INDEX IF NOT EXISTS MapCardId ON SubtypeMap(cardId);
 
+CREATE TABLE IF NOT EXISTS [Rarities] (
+	[id]           INTEGER      NOT NULL PRIMARY KEY,
+	[name]         VARCHAR(64)  NOT NULL DEFAULT ''
+);
 
 CREATE TABLE IF NOT EXISTS [Prices] (
 	[id]           INTEGER      NOT NULL PRIMARY KEY,
@@ -61,16 +65,10 @@ CREATE TABLE IF NOT EXISTS [Prices] (
 
 CREATE INDEX IF NOT EXISTS PriceCardId ON Prices(cardId);
 
-CREATE TABLE IF NOT EXISTS [Category] (
-	[id]		   INTEGER      NOT NULL PRIMARY KEY,
-	[name]		   VARCHAR(64)  NOT NULL DEFAULT '',
-	[icon]		   VARCHAR(128) NOT NULL DEFAULT ''
-);
-
 CREATE TABLE IF NOT EXISTS [Folders] (
 	[id]		   INTEGER      NOT NULL PRIMARY KEY,
-	[catId]  	   INTEGER      NOT NULL DEFAULT 0,
 	[name]	       VARCHAR(64)  NOT NULL DEFAULT '',
+	[folderType]   VARCHAR(64)  NOT NULL DEFAULT '',
 	[icon]	       VARCHAR(128) NOT NULL DEFAULT ''
 );
 
@@ -78,7 +76,10 @@ CREATE TABLE IF NOT EXISTS [FolderMap] (
 	[cardId]	   INTEGER       NOT NULL DEFAULT 0,
 	[folderId]     INTEGER       NOT NULL DEFAULT 0,
 	[cost]         DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-	[date] 	       DATE          NOT NULL DEFAULT '0000-00-00'
+	[date] 	       DATE          NOT NULL DEFAULT '0000-00-00',
+    [quantity]     INTEGER       NOT NULL DEFAULT 0,
+    [options]      JSON          NOT NULL DEFAULT ''
 );
 
 CREATE INDEX IF NOT EXISTS MapFolderId ON FolderMap(folderId);
+CREATE INDEX IF NOT EXISTS MapCardId ON FolderMap(cardId);
