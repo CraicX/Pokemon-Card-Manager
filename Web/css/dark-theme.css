@@ -1,11 +1,9 @@
-/*Dark Theme*/
-
 html.dark-theme .switcher-wrapper {
-	background: #212529;
+	 background: #12181a;
 }
 html.dark-theme body {
 	color: #e4e5e6;
-	background-color: #212529;
+	background-color: #070d0e
 }
 html.dark-theme .h1,
 html.dark-theme .h2,
@@ -22,7 +20,7 @@ html.dark-theme h6 {
 	color: #e4e5e6;
 }
 html.dark-theme .card {
-	background-color: #2b3035;
+	background-color: #12181a;
 	    box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%);
 }
 html.dark-theme .card-header {
@@ -40,8 +38,9 @@ html.dark-theme .text-option {
 }
 
 html.dark-theme .topbar {
-	background-color: #212529;
+	background-color: #12181a;
 	border-bottom: 1px solid rgb(237 237 237 / 12%);
+	box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%)
 }
 html.dark-theme .user-box {
 	border-left: 1px solid rgb(255 255 255 / 0.15);
@@ -323,6 +322,41 @@ html.dark-theme .highcharts-grid-line {
 	fill: none;
 	stroke: rgb(255 255 255 / 12%);
 }
+html.dark-theme .sidebar-wrapper {
+	background: #12181a;
+	border-right: 1px solid rgb(255 255 255 / 12%);
+	box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%) !important;
+}
+html.dark-theme .sidebar-wrapper .sidebar-header {
+	background: #12181a;
+	border-right: 1px solid rgb(255 255 255 / 12%);
+	border-bottom: 1px solid rgb(255 255 255 / 12%)
+}
+html.dark-theme .sidebar-wrapper .sidebar-header .logo-text {
+	color: #e7e9ec
+}
+html.dark-theme .sidebar-wrapper .sidebar-header .toggle-btn {
+	color: #e7e9ec
+}
+html.dark-theme .sidebar-wrapper .sidebar-header .toggle-btn:hover {
+	color: #fff
+}
+html.dark-theme .sidebar-wrapper .sidebar-header .toggle-btn:active {
+	color: #fff;
+	background: rgb(255 255 255 / 25%)
+}
+html.dark-theme .sidebar-wrapper .metismenu a {
+	color: #9ea4aa
+}
+html.dark-theme .sidebar-wrapper .metismenu .mm-active>a, html.dark-theme .sidebar-wrapper .metismenu a:active, html.dark-theme .sidebar-wrapper .metismenu a:focus, html.dark-theme .sidebar-wrapper .metismenu a:hover {
+	color: #fff;
+	text-decoration: none;
+	background-color: rgb(255 255 255 / 12%);
+}
+html.dark-theme .sidebar-wrapper .metismenu ul {
+	border: 1px solid #ffffff00;
+	background: rgb(255 255 255 / 0%)
+}
 
 html.dark-theme .table-light {
     --bs-table-bg: rgb(255 255 255 / 12%);
@@ -333,10 +367,7 @@ html.dark-theme .topbar-logo-header {
 	border-right: 1px solid rgb(255 255 255 / 12%);
 }
 
-html.dark-theme .wrapper.toggled .mobile-topbar-header {
-	background: #212529;
-	border-bottom: 1px solid rgb(241 241 241 / 12%);
-}
+
 html.dark-theme .simplebar-scrollbar:before {
 	background: rgba(255, 255, 255, 0.40);
 }
@@ -819,7 +850,7 @@ html.dark-theme .apexcharts-datalabel-value {
 @media screen and (max-width: 1024px) {
 	html.dark-theme .wrapper.toggled .overlay {
 		background: #fff;
-		opacity: 0.4;
+		opacity: .4
 	}
 	html.dark-theme .chat-toggled .overlay {
 		background: #fff;

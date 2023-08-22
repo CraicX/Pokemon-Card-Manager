@@ -11,10 +11,6 @@ $(function () {
 	});
 
 
-	// $(".mobile-toggle-menu").on("click", function () {
-	// 	$(".wrapper").addClass("toggled");
-	// });
-
 
 	$(function() {
 		for (var e = window.location, o = $(".navbar-nav .dropdown-item").filter(function() {
@@ -67,17 +63,24 @@ $(function () {
 				scrollTop: 0
 			}, 600);
 			return false;
-		});
+        });
+
+        $(function () {
+            for (var e = window.location, o = $(".metismenu li a").filter(function () {
+                return this.href == e
+            }).addClass("").parent().addClass("mm-active"); o.is("li");) o = o.parent("").addClass("mm-show").parent("").addClass("mm-active")
+        });
+
+
+        $(function () {
+            $("#menu").metisMenu();
+        });
 	});
-	$(function () {
-		for (var i = window.location, o = $(".metismenu li a").filter(function () {
-			return this.href == i;
-		}).addClass("").parent().addClass("");;) {
-			if (!o.is("li")) break;
-			o = o.parent("").addClass("").parent("").addClass("");
-		}
-	}),
-	
+
+		
+		
+		
+		
 
 
 	$('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
