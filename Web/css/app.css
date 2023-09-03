@@ -13,9 +13,12 @@ body {
 a {
 	text-decoration: none;
 }
+#menu .form-check {
+    padding: 3px 0 3px 40px;
+}
 .wrapper {
-	width: 100%;
-	position: relative;
+    width: 100%;
+    position: relative;
 }
 /* Sidebar */
 .sidebar-wrapper {

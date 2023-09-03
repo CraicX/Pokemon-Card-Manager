@@ -31,7 +31,7 @@ public static class Template
                     break;
 
                 case "obj":
-                    swapText = obj.GetType().GetProperty(item).GetValue(obj, null).ToString();
+                    swapText = obj.GetType().GetProperty(item)?.GetValue(obj, null)?.ToString();
                     break;
 
                 case "var":

@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.Wpf;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PokeCard;
 
@@ -52,6 +53,8 @@ public static class Browser
             var script = ScriptQueue.Pop();
 
             CB.GetBrowser().MainFrame.ExecuteJavaScriptAsync(script);
+
+            Debug.WriteLine(script.ToString());
         }
     }
 

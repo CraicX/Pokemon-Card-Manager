@@ -23,16 +23,17 @@
     <Folder Include="Forms\" />
     <Folder Include="PokeAPI\" />
     <Folder Include="Web\img\" />
+    <Folder Include="Web\sections\sub\" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
-    <PackageReference Include="CefSharp.Common" Version="115.3.130" />
-    <PackageReference Include="CefSharp.Wpf.NETCore" Version="115.3.130" />
+    <PackageReference Include="CefSharp.Common" Version="116.0.150" />
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="116.0.150" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 
@@ -804,6 +805,9 @@
     <None Update="Web\sections\start-page.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Web\widgets\menu-checkbox.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Web\simeydotme\cards.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -966,6 +970,21 @@
     <None Update="Web\widgets\poke-card-block.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Web\widgets\poke-card-image.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-arm64" Version="116.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x64" Version="116.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="116.0.15" />
   </ItemGroup>
 
 </Project>

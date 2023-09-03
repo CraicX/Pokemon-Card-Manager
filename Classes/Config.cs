@@ -60,9 +60,8 @@ public static class Config
 
     }
 
-    private static async void AddRecords()
+    private static async void AddRecords(bool forceRefresh = false)
     {
-        var forceRefresh = false;
 
         //
         //  Check last time Subtypes was updated
@@ -122,13 +121,13 @@ public static class Config
         {
             Debug.WriteLine("Refreshing SuperTypes...");
 
-            var superTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SuperTypes>();
+            //var superTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SuperTypes>();
 
-            var SuperTypesConcat = string.Join(",", superTypes.SuperType);
+            //var SuperTypesConcat = string.Join(",", superTypes.SuperType);
 
-            Properties.Settings.Default.SuperTypes       = SuperTypesConcat;
-            Properties.Settings.Default.SuperTypesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.SuperTypes       = SuperTypesConcat;
+            //Properties.Settings.Default.SuperTypesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
+            //Properties.Settings.Default.Save();
         }
 
         //

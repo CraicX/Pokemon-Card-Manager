@@ -49,7 +49,7 @@ namespace PokeCard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Energy,Pokemon,Trainer")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Pokemon,Supporter,Item,Tool,Stadium,Energy")]
         public string SuperTypes {
             get {
                 return ((string)(this["SuperTypes"]));
@@ -73,7 +73,8 @@ namespace PokeCard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Colorless,Darkness,Dragon,Fairy,Fighting,Fire,Grass,Lightning,Metal,Psychic,Water" +
+            "")]
         public string ElementTypes {
             get {
                 return ((string)(this["ElementTypes"]));

@@ -212,7 +212,7 @@ public static class Sqlite
         {
             con.Open();
 
-            using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Sets", con))
+            using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Sets ORDER BY name", con))
             {
                 SQLiteDataReader r = cmd.ExecuteReader();
 

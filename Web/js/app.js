@@ -24,10 +24,10 @@ $(function () {
 
 		if($(".dark-mode-icon i").attr("class") == 'bx bx-sun') {
 			$(".dark-mode-icon i").attr("class", "bx bx-moon");
-			$("html").attr("class", "light-theme")
+			$("html").attr("class", "dark-theme")
 		} else {
 			$(".dark-mode-icon i").attr("class", "bx bx-sun");
-			$("html").attr("class", "dark-theme")
+			$("html").attr("class", "light-theme")
 		}
 
 	}), 

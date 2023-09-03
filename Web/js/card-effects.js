@@ -86,64 +86,65 @@ function initCard(acard)
  }
 
 
+function startCardEffects() {
+    $(function () {
+        // on hover
+        $('.cardeffect').on("mouseenter", function () {
 
-$(function () {
-    // on hover
-    $('.cardeffect').on("mouseenter", function () {
+            if (ZoomCard != null) return;
 
-        if (ZoomCard != null) return;
+            LastCard = $(this);
 
-        LastCard = $(this);
+            if (!$(this).hasClass("pokecard")) $(this).addClass("pokecard");
 
-        if (!$(this).hasClass("pokecard")) $(this).addClass("pokecard");
+            initCard($(this)[0]);
 
-        initCard($(this)[0]);
+            // on click
+            LastCard.on("click", function () {
+                if ($(this).hasClass("cardZoom")) {
 
-        // on click
-        LastCard.on("click", function () {
-            if ($(this).hasClass("cardZoom")) {
-
-                $(this).removeClass("cardZoom");
-                ZoomCard = null;
+                    $(this).removeClass("cardZoom");
+                    ZoomCard = null;
 
 
-            } else {
+                } else {
 
-                $(this).addClass("cardZoom");
+                    $(this).addClass("cardZoom");
 
-                ZoomCard = $(this);
+                    ZoomCard = $(this);
+
+                }
+            });
+            LastCard.on("mousemove", function (e) { ShineCard(e); });
+            //LastCard.on("mousemove", function (e) {
+
+            //    const force = 10;
+            //    const offsetY = -((e.pageY - $(this).offset().top) - $(this).height() / 2) / force;
+            //    const offsetX = ((e.pageX - $(this).offset().left) - $(this).width() / 2) / force;
+
+            //    OrientCard(offsetX, offsetY);
+            //    OrientCard(offsetX, offsetY);
+            //});
+        });
+
+        $('.cardeffect').on("mouseleave", function () {
+
+            if (ZoomCard != null) return;
+
+            if (LastCard != null) {
+                // remove event listener
+                LastCard.off("mousemove");
+                LastCard.off("click");
+                if ($(this).hasClass("cardZoom")) $(this).removeClass("cardZoom");
+                initCard($(this)[0]);
+                if ($(this).hasClass("pokecard")) $(this).removeClass("pokecard");
 
             }
+
         });
-        LastCard.on("mousemove", function (e) { ShineCard(e); } );
-        //LastCard.on("mousemove", function (e) {
-
-        //    const force = 10;
-        //    const offsetY = -((e.pageY - $(this).offset().top) - $(this).height() / 2) / force;
-        //    const offsetX = ((e.pageX - $(this).offset().left) - $(this).width() / 2) / force;
-
-        //    OrientCard(offsetX, offsetY);
-        //    OrientCard(offsetX, offsetY);
-        //});
-    });
-
-    $('.cardeffect').on("mouseleave", function () {
-
-        if (ZoomCard != null) return;
-
-        if (LastCard != null) {
-            // remove event listener
-            LastCard.off("mousemove");
-            LastCard.off("click");
-            if ($(this).hasClass("cardZoom")) $(this).removeClass("cardZoom");
-            initCard($(this)[0]);
-            if ($(this).hasClass("pokecard")) $(this).removeClass("pokecard");
-
-        }
 
     });
-
-});
+}
 
 function swapCard(cardObj) {
     cardObj.addEventListener('mousemove', e => {

@@ -13,7 +13,9 @@ public static class PokeCardInterface
 
         var cardz = await PokeAPI.CardSearch(data["query"]);
 
-        Browser.FireJS(@"jFetch('render-cards.app', '#pcc-search');");
+        Browser.FireJS(@"jFetch('render-cards.app', '.page-content');");
+        
+        Browser.FireJS(@"startCardEffects();");
 
     }
 
