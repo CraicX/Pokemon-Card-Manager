@@ -2,66 +2,43 @@
 <html lang="en" class="dark-theme">
 
 <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--favicon-->
-	<link rel="icon" href="img/favicon-32x32.png" type="image/png" />
-	<!--plugins-->
-	<link href="plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-	<link href="plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-	<link href="plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-	<link href="plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
-	<link href="plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-	<!-- loader-->
-	<link href="css/pace.min.css" rel="stylesheet" />
-	<script src="js/pace.min.js"></script>
-	<!-- Bootstrap CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/dark-theme.css" />
-	<link href="css/bootstrap-extended.css" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Titan+One&family=Noto+Sans:wght@300&family=Roboto&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-	<link href="css/icons.css" rel="stylesheet">
-	<!-- Simeydotme Pokemon Card Effects CSS -->
-	<!--<link href="simeydotme/cards.css" rel="stylesheet" />
-	<link href="simeydotme/cards/amazing-rare.css" rel="stylesheet" />
-	<link href="simeydotme/cards/base.css" rel="stylesheet" />
-	<link href="simeydotme/cards/cosmos-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/radiant-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/rainbow-alt.css" rel="stylesheet" />
-	<link href="simeydotme/cards/rainbow-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/regular-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/reverse-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/secret-rare.css" rel="stylesheet" />
-	<link href="simeydotme/cards/shiny-rare.css" rel="stylesheet" />
-	<link href="simeydotme/cards/shiny-v.css" rel="stylesheet" />
-	<link href="simeydotme/cards/shiny-vmax.css" rel="stylesheet" />
-	<link href="simeydotme/cards/trainer-full-art.css" rel="stylesheet" />
-	<link href="simeydotme/cards/trainer-gallery-holo.css" rel="stylesheet" />
-	<link href="simeydotme/cards/trainer-gallery-secret-rare.css" rel="stylesheet" />
-	<link href="simeydotme/cards/trainer-gallery-v-max.css" rel="stylesheet" />
-	<link href="simeydotme/cards/trainer-gallery-v-regular.css" rel="stylesheet" />
-	<link href="simeydotme/cards/v-full-art.css" rel="stylesheet" />
-	<link href="simeydotme/cards/v-max.css" rel="stylesheet" />
-	<link href="simeydotme/cards/v-regular.css" rel="stylesheet" />
-	<link href="simeydotme/cards/v-star.css" rel="stylesheet" />-->
-	<link href="css/card-effects.css" rel="stylesheet" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" href="img/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link href="plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <link href="plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <!-- loader-->
+    <link href="css/pace.min.css" rel="stylesheet" />
+    <script src="js/pace.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/dark-theme.css" />
+    <link rel="stylesheet" href="css/bootstrap-extended.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Titan+One&family=Noto+Sans:wght@300&family=Roboto&family=Roboto:wght@400;500&display=swap">
+    <link rel="stylesheet" href="css/icons.css">
+    <!-- Simeydotme Pokemon Card Effects CSS -->
+    <link href="css/card-effects.css" rel="stylesheet" />
 
-	<!-- Theme Style CSS -->
-	<link rel="stylesheet" href="css/header-colors.css" />
-	<link href="css/app.css" rel="stylesheet">
-	<title>PokeCard Manager</title>
+    <!-- Theme Style CSS -->
+    <link rel="stylesheet" href="css/header-colors.css" />
+    <link rel="stylesheet" href="css/app.css">
+    <title>PokeCard Manager</title>
 </head>
 
 <body>
-    <!--wrapper-->
     <div class="wrapper">
 
         [[inc=left-search-nav.htm]]
 
-        <!--start header wrapper-->
         <div class="header-wrapper">
             <!--start header -->
             <header>
@@ -69,24 +46,26 @@
             </header>
             <!--end header -->
         </div>
-        <!--end header wrapper-->
+        
         <!--start page wrapper -->
         <div class="page-wrapper">
-            <div class="page-content">
+            <div class="page-content p-0 m-0">
 
                 [[inc=start-page.htm]]
 
             </div>
         </div>
         <!--end page wrapper -->
+        
         <!--Start Back To Top Button-->
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
+        
         <footer class="page-footer">
             <p class="mb-0">&nbsp;</p>
         </footer>
     </div>
-    <!--end wrapper-->
+    
     <!-- Bootstrap JS -->
     <script src="js/bootstrap.bundle.min.js"></script>
     <!--plugins-->

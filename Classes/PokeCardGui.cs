@@ -16,7 +16,7 @@ public static class PokeCardGui
         var template    = File.ReadAllText(Utils.Path(Config.WidgetPath, "poke-card-block.htm"));
         var templateImg = File.ReadAllText(Utils.Path(Config.WidgetPath, "poke-card-image.htm"));
 
-        html = "<div class=\"showcase\">";
+       // html = "<div class=\"showcase\">";
 
         if (PokeAPI.CardResults.Count > 0)
         {
@@ -27,10 +27,7 @@ public static class PokeCardGui
                 html += Template.GetHtml(template, pokeCard);
             }
         }
-        html += "</div>";
-
-        Browser.ScriptQueue.Add("startCardEffects();");
-
+        //html += "</div>";
 
         return html;
     }

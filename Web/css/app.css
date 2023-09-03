@@ -13,6 +13,33 @@ body {
 a {
 	text-decoration: none;
 }
+
+.pokecard-div {
+    position: relative;
+    /*    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);*/
+    border-radius: 8px;
+    height: 230px;
+    width: 425px;
+    float: left;
+    padding: 10px;
+    margin: 15px;
+    display: block;
+    background-color: #12181a;
+    box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%);
+}
+
+.pokecard-img {
+    display: block;
+    float: left;
+    width: 150px;
+}
+
+.pokecard-info {
+    display: block;
+    float: right;
+    width: 250px;
+}
+
 #menu .form-check {
     padding: 3px 0 3px 40px;
 }

@@ -19,6 +19,9 @@ html.dark-theme h5,
 html.dark-theme h6 {
 	color: #e4e5e6;
 }
+html.dark-theme .item-bg {
+    background-color: #12181a;
+}
 html.dark-theme .card {
 	background-color: #12181a;
 	    box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%);

@@ -10,56 +10,15 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
+using System.Globalization;
+using Newtonsoft.Json;
 
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace PokeCard;
 
-public class CardX : Card
-{
-    public string ImageSmall => Images.Small.ToString();
-    public string ImageLarge => Images.Large.ToString();
-    public string SetName => Set.Name;
-    public string Pricex => "$" + Tcgplayer.Prices.Normal.Market.ToString();
-    public string Price
-    {
-        get
-        {
-            var marketPrice = "";
 
-            if (Tcgplayer != null && Tcgplayer.Prices != null)
-            {
-                if (Tcgplayer.Prices.Holofoil != null)
-                {
-                    marketPrice = Tcgplayer.Prices.Holofoil.Market.ToString();
-                }
-                else if (Tcgplayer.Prices.ReverseHolofoil != null)
-                {
-                    marketPrice = Tcgplayer.Prices.ReverseHolofoil.Market.ToString();
-                }
-                else if (Tcgplayer.Prices.Normal != null)
-                {
-                    marketPrice = Tcgplayer.Prices.Normal.Market.ToString();
-                }
-            }
-            if (marketPrice == "" && Cardmarket?.Prices != null)
-            {
-                marketPrice = Cardmarket.Prices.TrendPrice.ToString();
-            }
-
-            return "$" + marketPrice;
-
-        }
-       
-    }
-
-    public string RarityEffect => Rarity?.ToLower();
-
-    public string ImageHtml {
-        get; set;
-    }
-}
 
 public static class PokeAPI
 {
@@ -76,7 +35,7 @@ public static class PokeAPI
     
     public static ElementTypes ElementTypes;
 
-    static Dictionary<string, string> Filter = new();
+    static Dictionary<string, List<string>> Filter = new();
 
     public static List<CardX> CardResults = new();
     public static List<Set> CardSets      = new();
@@ -133,18 +92,32 @@ public static class PokeAPI
         foreach (var word in words)
         {
             Debug.WriteLine("Search Word: " + word);
-            if (PokemonSubTypes.Contains(word))
+            
+            if (PokemonSubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
             {
-                Filter.Add("subtypes", word);
+                if (!Filter.ContainsKey("subtypes")) Filter.Add("subtypes", new List<string>());
+
+                Filter["subtypes"].Add(word);
             }
             else
             {
-                Filter.Add("name", word);
+                if (!Filter.ContainsKey("name") ) Filter.Add("name", new List<string>());
+                Filter["name"].Add(word);
             }
         }
-        
 
-        var cards = await pokeClient.GetApiResourceAsync<Card>(Filter);
+        //PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards.Card cards;
+        //PokemonTcgSdk.Standard.Infrastructure.HttpClients.Base.ApiResourceList<CardX> cards = new();
+
+        var searchFilter = BuildFilterDict();
+
+        JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+        };
+
+
+        var cards = await pokeClient.GetApiResourceAsync<Card>(searchFilter);
 
         if (cards.Results.Count > 0)
         {
@@ -158,17 +131,58 @@ public static class PokeAPI
                 xcard.Map(card);
 
                 CardResults.Add(xcard);
-                
+
             }
 
         }
+
+        //try
+        //{
+        //    cards = await pokeClient.GetApiResourceAsync<CardX>(BuildFilterDict());
+        //}
+        //catch (Newtonsoft.Json.JsonSerializationException ex)
+        //{
+        //    Debug.WriteLine("Error: " + ex.Message);
+        //}
+        //finally
+        //{
+        //    if (cards.Results.Count > 0)
+        //    {
+        //        Debug.WriteLine("Results found: " + cards.Results.Count);
+        //        CardResults.Clear();
+
+        //        foreach (var card in cards.Results)
+        //        {
+        //            // change to CardX
+        //            CardX xcard = new();
+        //            xcard.Map(card);
+
+        //            CardResults.Add(xcard);
+
+        //        }
+
+        //    }
+        //}
 
         return CardResults;
 
     }
 
 
+    public static Dictionary<string, string> BuildFilterDict() 
+    {
+        var dict = new Dictionary<string, string>();
 
+        foreach (var item in Filter)
+        {
+            if (item.Value.Count > 0)
+            {
+                dict.Add(item.Key, string.Join(",", item.Value));
+            }
+        }
+
+        return dict;
+    }
 
 
 }

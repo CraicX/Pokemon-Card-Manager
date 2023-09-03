@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <EmbeddedResource Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <None Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <Page Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\DBSchema.sql" />
   </ItemGroup>
 
@@ -21,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Forms\" />
-    <Folder Include="PokeAPI\" />
     <Folder Include="Web\img\" />
     <Folder Include="Web\sections\sub\" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

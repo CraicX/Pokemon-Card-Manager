@@ -34,6 +34,18 @@ function jFetch(myurl, selector, append = false) {
     });
 }
 
+function jFetchCards(myurl, selector, append = false) {
+    $.ajax({
+        url: myurl,
+        success: function (data) {
+            if (!append) $(selector).html(data);
+            else $(selector).append(data);
+
+            startCardEffects();
+        }
+    });
+}
+
 $(function () {
 
     $('.logo-text').on("click", async function () {
