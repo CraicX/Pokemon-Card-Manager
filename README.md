@@ -7,8 +7,10 @@
  - Quickly search for cards using a variety of filters or browse by categories or sets
 
 
- Built using C#, Cefsharp and the [Pokemon TCG API](https://pokemontcg.io/).
+ Built using **C#**, **.NET 7.0**, **Cefsharp**, **SQLite**, [Pokemon Cards V2 css](https://poke-holo.simey.me/)  and the [Pokemon TCG API](https://pokemontcg.io/).
+
+ ---
 
 ![Screen Shot 1](Resources/screen-shot-1.png)
 
-(Still an early work in progress)
+(*Still an early work in progress.*)
