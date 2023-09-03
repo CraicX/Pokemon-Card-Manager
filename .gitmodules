@@ -1,0 +1,3 @@
+[submodule "pokemon-tcg-sdk-csharp"]
+	path = pokemon-tcg-sdk-csharp
+	url = https://github.com/PokemonTCG/pokemon-tcg-sdk-csharp.git
