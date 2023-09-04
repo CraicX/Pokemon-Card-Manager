@@ -152,7 +152,7 @@ internal static class QueryHelpers
                 sb.Append(' ');
             }
 
-            if (filterItem.Value.Split(',').Length > 0)
+            if (filterItem.Value.Contains(','))
             {
                 var split = filterItem.Value.Split(',');
                 foreach (var item in split)
@@ -164,6 +164,21 @@ internal static class QueryHelpers
                     if (item != split.LastOrDefault())
                     {
                         sb.Append(UrlEncoder.Default.Encode(orVlaue));
+                    }
+                }
+
+            }
+            else if (filterItem.Value.Split(';').Length > 0)
+            {
+                var split = filterItem.Value.Split(';');
+                foreach (var item in split)
+                {
+                    sb.Append(UrlEncoder.Default.Encode(filterItem.Key));
+                    sb.Append(':');
+                    sb.Append(UrlEncoder.Default.Encode(item.HasSpaces()));
+                    if (item != split.LastOrDefault())
+                    {
+                        sb.Append(' ');
                     }
                 }
 

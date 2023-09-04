@@ -69,15 +69,15 @@ public static class PokeAPI
         //  split query into words
         var words = query.Split(' ');
 
-        if (PokemonSubTypes == null || PokemonSubTypes.Length == 0)
-        {
-            await GetSubTypes();
-        }
+        //if (PokemonSubTypes == null || PokemonSubTypes.Length == 0)
+        //{
+        //    await GetSubTypes();
+        //}
 
         //  loop through words
         foreach (var word in words)
         {
-            if (PokemonSubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
+            if (PC.SubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
             {
                 if (!Filter.ContainsKey("subtypes")) Filter.Add("subtypes", new List<string>());
 
@@ -128,7 +128,7 @@ public static class PokeAPI
         {
             if (item.Value.Count > 0)
             {
-                dict.Add(item.Key, string.Join(",", item.Value));
+                dict.Add(item.Key, string.Join(';', item.Value));
             }
         }
 

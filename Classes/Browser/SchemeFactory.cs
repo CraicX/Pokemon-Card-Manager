@@ -73,6 +73,11 @@ public class SchemeFactory : ISchemeHandlerFactory
             html = PCInterface.RenderCards();
         }
 
+        if (appName == "search-results")
+        {
+            html = Template.GetHtml(File.ReadAllText(Utils.Path(Config.WidgetPath, "search-results.htm")));
+        }
+
         return ResourceHandler.FromString(html, null, true, mimeType);
     }
 

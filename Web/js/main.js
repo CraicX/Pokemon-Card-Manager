@@ -71,7 +71,7 @@ $(function () {
             var jsonIn = await boundAsync.postPayload(JSON.stringify(projObj));
 
 
-            $('.page-content').html(jsonIn);
+            //$('.page-content').html(jsonIn);
 
             //var myPrj = await JSON.parse(jsonIn);
 

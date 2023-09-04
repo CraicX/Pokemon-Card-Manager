@@ -74,7 +74,7 @@ public static class EnergyFilter
     {
         if (dictionary.TryGetValue(key, out var oldValue))
         {
-            oldValue = $"{oldValue},{value}";
+            oldValue = $"{oldValue} AND {value}";
             dictionary[key] = oldValue;
             return dictionary;
         }

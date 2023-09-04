@@ -7,9 +7,14 @@ public static class PCInterface
 {
     public static async void ExecuteSearch(Dictionary<string, string> data)
     {
+        Browser.FireJS(@"jFetch('search-results.app', '.page-content');");
+
         _ = await PokeAPI.CardSearch(data["query"]);
 
-        Browser.FireJS(@"jFetchCards('render-cards.app', '.page-content');");
+        Browser.FireJS(@"jFetchCards('render-cards.app', '#pcc-search');");
+
+        Browser.FireJS(@"$('#searchSpinner').hide();");
+        Browser.FireJS(string.Format("$('#searchText').html('<b>{0:N0}</b> results for: <b>&quot;{1}&quot;</b>');", PokeAPI.CardResults.Count, data["query"]));
     }
 
     public static string RenderCards()
