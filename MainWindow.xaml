@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokeCard" xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
-        Title="PokeCard Manager" Height="650" Width="1500" SizeChanged="Window_SizeChanged">
+        Title="PokeCard Manager" Height="650" Width="1500" SizeChanged="Window_SizeChanged" Background="Black">
     <Grid x:Name="GridApp">
     </Grid>
 </Window>

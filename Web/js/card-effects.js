@@ -32,7 +32,10 @@ function OrientCard(Xdeg, Ydeg) {
 }
 
     function ShineCard(e) {
-        const force = 10;
+        let force = 10;
+
+        if (ZoomCard != null) force = 30;
+
         const offsetY = -((e.pageY - LastCard.offset().top) - LastCard.height() / 2) / force;
         const offsetX = ((e.pageX - LastCard.offset().left) - LastCard.width() / 2) / force;
 
@@ -129,7 +132,10 @@ function startCardEffects() {
 
         $('.cardeffect').on("mouseleave", function () {
 
-            if (ZoomCard != null) return;
+            if (ZoomCard != null) {
+                initCard($(this)[0]);
+                return;
+            }
 
             if (LastCard != null) {
                 // remove event listener

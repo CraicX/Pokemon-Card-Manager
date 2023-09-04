@@ -1,4 +1,5 @@
-﻿using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
+﻿using System.Linq;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
 
 namespace PokeCard;
@@ -44,6 +45,7 @@ public class CardX : Card
     }
 
     public string RarityEffect => Rarity?.ToLower();
+    public string SubtypeEffect => string.Join(' ', Subtypes).ToLower();
 
     public string ImageHtml
     {

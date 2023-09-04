@@ -12,9 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Forms\**" />
     <Compile Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <EmbeddedResource Remove="Forms\**" />
     <EmbeddedResource Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <None Remove="Forms\**" />
     <None Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
+    <Page Remove="Forms\**" />
     <Page Remove="pokemon-tcg-sdk-csharp\PokemonTcgSdk.Standard.Tests\**" />
   </ItemGroup>
 
@@ -27,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\" />
     <Folder Include="Web\img\" />
     <Folder Include="Web\sections\sub\" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -122,9 +125,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Web\fonts\LineIcons.woff2">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Web\img\favicon-32x32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Web\img\icons\backpack.png">
@@ -350,12 +350,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Web\img\icons\user.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Web\img\logo-icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Web\img\logo-img.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Web\index.htm">

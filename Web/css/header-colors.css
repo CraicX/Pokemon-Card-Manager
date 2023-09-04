@@ -1,4 +1,6 @@
 
+
+
 html.color-header .topbar .navbar-nav .nav-link {
 
 	color: #ffffff;
@@ -95,6 +97,11 @@ html.color-header .mobile-toggle-menu {
 
 	color: #ffffff;
 
+}
+
+.pokecard-div {
+    background-color: #FFFFFF;
+    box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 20%);
 }
 
 /* header colors */

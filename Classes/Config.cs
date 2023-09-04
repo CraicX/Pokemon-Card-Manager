@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using CefSharp.DevTools.Page;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
-using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
-using System.Data.SQLite;
-using System.Windows.Controls.Primitives;
 
 
 namespace PokeCard;
@@ -176,17 +168,13 @@ public static class Config
     private static void GetRecords()
     {
         PC.SubTypes.AddRange(Sqlite.GetColumn<string>("SELECT Name FROM Subtypes ORDER BY Name;"));
-
         PC.Rarities.AddRange(Sqlite.GetColumn<string>("SELECT Name FROM Rarities ORDER BY Name;"));
 
         PC.SuperTypes.AddRange(Properties.Settings.Default.SuperTypes.Split(','));
-
         PC.ElementTypes.AddRange(Properties.Settings.Default.ElementTypes.Split(','));
 
-        PC.Sets = Sqlite.GetSets();
-
-        PC.Cards = Sqlite.GetCards();
-        
+        PC.Sets    = Sqlite.GetSets();
+        PC.Cards   = Sqlite.GetCards();
         PC.Folders = Sqlite.GetFolders();
     }
 

@@ -12,7 +12,6 @@ public static class Browser
     public static JSHandler JS;
     public static List<string> ScriptQueue = new();
 
-
     public static ChromiumWebBrowser Initialize()
     {
         CefSettings BrowserSettings = new CefSettings()

@@ -1,9 +1,7 @@
-﻿using CefSharp;
-using CefSharp.DevTools.Network;
-using System;
+﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web;
+using CefSharp;
 
 namespace PokeCard;
 
@@ -12,11 +10,11 @@ public class SchemeFactory : ISchemeHandlerFactory
     public IResourceHandler Create(IBrowser browser, IFrame frame, string schemeName, IRequest request)
     {
 
-        var requrl        = request.Url.Replace("cefsharp", "cefsharp/Web");
-        Uri uri              = new Uri(requrl);
-        var fileName      = HttpUtility.UrlDecode(uri.AbsolutePath);
-        var fileExtension = Path.GetExtension(fileName);
-        var mimeType      = ResourceHandler.GetMimeType(fileExtension);
+        var requrl           = request.Url.Replace("cefsharp", "cefsharp/Web");
+        var uri                = new Uri(requrl);
+        var fileName         = HttpUtility.UrlDecode(uri.AbsolutePath);
+        var fileExtension    = Path.GetExtension(fileName);
+        var mimeType         = ResourceHandler.GetMimeType(fileExtension);
 
 
         switch (fileExtension)
@@ -51,12 +49,7 @@ public class SchemeFactory : ISchemeHandlerFactory
         var html     = File.ReadAllText(htmlPath);
 
         html = Template.GetHtml(html);
-
-
-        //var action = new Action(() => {
-        //    Browser.ShowInspector();
-        //});
-
+        
         //if (!Config.Main.Dispatcher.CheckAccess()) Config.Main.Dispatcher.Invoke(action);
         //else Task.Run(action);
 
@@ -77,7 +70,7 @@ public class SchemeFactory : ISchemeHandlerFactory
 
         if (appName == "render-cards")
         {
-            html = PokeCardGui.RenderCards();
+            html = PCInterface.RenderCards();
         }
 
         return ResourceHandler.FromString(html, null, true, mimeType);
@@ -89,13 +82,10 @@ public class SchemeFactory : ISchemeHandlerFactory
     //
     public static IResourceHandler HandlerDefault(string fileName, string fileExtension)
     {
-
         var filePath = Utils.Path(Config.AppPath, fileName);
-
 
         if (!File.Exists(filePath))
         {
-            //Log.Information(" 404 !!!!!!! {2} -> {0} . {1}", fileName, fileExtension, filePath);
             return ResourceHandler.FromString("404: " + filePath, null, true, Cef.GetMimeType(".htm"));
         }
 

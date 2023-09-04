@@ -55,6 +55,15 @@ public static class Template
 
         }
 
+        MM = Regex.Matches(html, @"\[\[script\]\](.*?)\[\[/script\]\]", RegexOptions.Singleline);
+
+        foreach (Match match in MM)
+        {
+            Browser.ScriptQueue.Add(match.Groups[1].Value);
+
+            html = html.Replace(match.Groups[0].Value, string.Empty);
+        }
+
         return html;
     }
 

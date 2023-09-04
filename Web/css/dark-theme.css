@@ -35,6 +35,10 @@ html.dark-theme .card-footer {
 html.dark-theme .text-secondary {
 	color: #a8adb0;
 }
+html.dark-theme .pokecard-div {
+    background-color: #212529;
+    box-shadow: 0 0.1rem 0.7rem rgb(0 0 0 / 10%);
+}
 
 html.dark-theme .text-option {
     color: #ffffff;

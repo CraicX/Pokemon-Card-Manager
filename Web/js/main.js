@@ -60,7 +60,7 @@ $(function () {
         if (evt.keyCode == 13 && $(this).val() != '') {
 
             projObj = {
-                "ObjName": "PokeCardInterface",
+                "ObjName": "PCInterface",
                 "FuncName": "ExecuteSearch",
                 "Data": { "query": $(this).val() }
             };

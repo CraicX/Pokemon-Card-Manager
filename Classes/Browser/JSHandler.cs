@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using CefSharp;
-using CefSharp.DevTools.Network;
 using CefSharp.JavascriptBinding;
-using System.Windows.Threading;
 
 namespace PokeCard;
 

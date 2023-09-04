@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CefSharp.DevTools.Network;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace PokeCard;
-public static class PokeCardGui
+
+public static class PCInterface
 {
+    public static async void ExecuteSearch(Dictionary<string, string> data)
+    {
+        _ = await PokeAPI.CardSearch(data["query"]);
+
+        Browser.FireJS(@"jFetchCards('render-cards.app', '.page-content');");
+    }
+
     public static string RenderCards()
     {
         var html        = "";
         var template    = File.ReadAllText(Utils.Path(Config.WidgetPath, "poke-card-block.htm"));
         var templateImg = File.ReadAllText(Utils.Path(Config.WidgetPath, "poke-card-image.htm"));
-
-       // html = "<div class=\"showcase\">";
 
         if (PokeAPI.CardResults.Count > 0)
         {
@@ -27,7 +27,6 @@ public static class PokeCardGui
                 html += Template.GetHtml(template, pokeCard);
             }
         }
-        //html += "</div>";
 
         return html;
     }
@@ -109,4 +108,3 @@ public static class PokeCardGui
     }
 
 }
-
