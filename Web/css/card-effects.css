@@ -1417,4 +1417,5 @@ button.pokecard__rotator {
     left: 50%;
     margin-top: -418px;
     margin-left: -300px;
+    z-index: calc(var(--s) * 100);
 }

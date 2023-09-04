@@ -94,7 +94,12 @@ function startCardEffects() {
         // on hover
         $('.cardeffect').on("mouseenter", function () {
 
-            if (ZoomCard != null) return;
+            if (ZoomCard != null) {
+
+                if (!$(this).hasClass("pokecard")) $(this).addClass("pokecard");
+                return;
+
+            }
 
             LastCard = $(this);
 
@@ -134,6 +139,7 @@ function startCardEffects() {
 
             if (ZoomCard != null) {
                 initCard($(this)[0]);
+                if ($(this).hasClass("pokecard")) $(this).removeClass("pokecard");
                 return;
             }
 
