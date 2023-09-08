@@ -19,7 +19,7 @@ public class Japi
 
     public Japi(string json)
     {
-        Debug.WriteLine("New js command: {0}", json);
+        Debug.WriteLine(string.Format("New js command: {0}", json));
 
         JsonCommand = JsonConvert.DeserializeObject<JsonCommandStruct>(json);
 

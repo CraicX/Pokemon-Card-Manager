@@ -36,6 +36,31 @@ public static class PCInterface
         return html;
     }
 
+    public static string ListFolders()
+    {
+        var html = "<li><div><a href=\"javascript:;\" data-bs-toggle=\"modal\" data-bs-target=\"#createFolderModal\" class=\"text-info\"><i class='bx bx-folder-plus text-info'></i>Create Folder</a></div></li>";
+        
+        var template = File.ReadAllText(Utils.Path(Config.WidgetPath, "menu-folder.htm"));
+
+        var folderType = "";
+
+
+        foreach (var et in PC.Folders)
+        {
+            if (folderType != et.folderType)
+            {
+                html += "<li class=\"dropdown-divider\"></li>";
+                html += "<li class=\"dropdown-header\">[ <span>" + et.folderType + "</span> ]</li>";
+                folderType = et.folderType;
+            }
+
+
+            html += Template.GetHtml(template, et);
+        }
+
+        return html;
+    }
+
     public static string ListCardTypes()
     {
         var html     = "";
@@ -111,5 +136,28 @@ public static class PCInterface
 
         return html;
     }
+
+    public static string CreateFolder(Dictionary<string, string> data)
+    {
+
+        var folder = new FolderData()
+        {
+            name       = data["folderName"],
+            folderType = data["folderType"],
+        };
+
+        var addSuccess = PC.AddFolder(folder);
+
+        if (addSuccess)
+        {
+            return "{\"status\":\"success\",\"msg\":\"Folder created successfully.\"}";
+        }
+        else
+        {
+            return "{\"status\":\"fail\",\"msg\":\"Folder already exists.\"}";
+        }
+
+    }
+
 
 }

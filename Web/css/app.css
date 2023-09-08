@@ -37,6 +37,24 @@ a {
     width: 250px;
 }
 
+
+.dropdown-divider {
+    padding: 1px 15px 1px 20px;
+}
+.dropdown-header {
+    padding: 10px 15px 1px 20px;
+    font-size: .875em;
+    color: #6C757D;
+}
+
+.dropdown-header span {
+    color: #f8f9fa;
+}
+
+.pokeFolder {
+    margin-left: 10px;
+}
+
 #menu .form-check {
     padding: 3px 0 3px 40px;
 }
@@ -142,7 +160,7 @@ a {
 	flex-direction: column
 }
 .sidebar-wrapper .metismenu li+li {
-	margin-top: 5px
+	margin-top: 1px
 }
 .sidebar-wrapper .metismenu li:first-child {
 	margin-top: 5px
@@ -165,7 +183,7 @@ a {
 	display: flex;
 	align-items: center;
 	justify-content: left;
-	padding: 6px 16px;
+	padding: 1px 16px;
 	font-size: 15px;
 	color: #5f5f5f;
 	outline-width: 0;
@@ -183,7 +201,7 @@ a {
 	margin-left: 10px
 }
 .sidebar-wrapper .metismenu ul a {
-	padding: 6px 15px 6px 20px;
+	padding: 1px 15px 1px 20px;
 	font-size: 15px;
 	border: 0
 }
@@ -859,11 +877,11 @@ ul.scroll-menu {
 .radius-15 {
 	border-radius: 15px;
 }
-.input-icon span {
+.input-icon span, .select-icon span {
     font-size: 16px;
     left: 15px;
 }
-.input-icon .form-control {
+.input-icon .form-control, .select-icon .form-control {
     padding-left: 2.5rem;
 }
 .error {

@@ -73,9 +73,14 @@ public class SchemeFactory : ISchemeHandlerFactory
             html = PCInterface.RenderCards();
         }
 
+        if (appName == "list-folders")
+        {
+            html = PCInterface.ListFolders();
+        }
+
         if (appName == "search-results")
         {
-            html = Template.GetHtml(File.ReadAllText(Utils.Path(Config.WidgetPath, "search-results.htm")));
+            html = Template.GetHtml(File.ReadAllText(Utils.Path(Config.WebPath, "sections", "search-results.htm")));
         }
 
         return ResourceHandler.FromString(html, null, true, mimeType);

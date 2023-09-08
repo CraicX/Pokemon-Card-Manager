@@ -765,7 +765,7 @@ fieldset[disabled] .lobibox .lobibox-btn.lobibox-btn-default.active {
   margin-right: 0px;
 }
 .lobibox-notify-wrapper.right {
-  right: 0px;
+  right: 10px;
   margin-left: 0px;
 }
 .lobibox-notify-wrapper.right .lobibox-notify {
@@ -793,7 +793,7 @@ fieldset[disabled] .lobibox .lobibox-btn.lobibox-btn-default.active {
   margin-right: 2px;
 }
 .lobibox-notify-wrapper-large.right {
-  right: 0px;
+  right: 10px;
 }
 .lobibox-notify-wrapper-large .lb-notify-tabs {
   list-style: none;

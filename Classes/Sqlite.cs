@@ -114,7 +114,7 @@ public static class Sqlite
 
         con.Open();
 
-        using var cmd = new SQLiteCommand("SELECT id, name, folderType, icon FROM Folders", con);
+        using var cmd = new SQLiteCommand("SELECT id, name, folderType, icon FROM Folders ORDER BY folderType, name", con);
 
         SQLiteDataReader r = cmd.ExecuteReader();
 
@@ -133,7 +133,7 @@ public static class Sqlite
         {
             folder.CardMaps = new();
 
-            using var cmd2 = new SQLiteCommand("SELECT cardId, cost, date, quantity, options FROM FolderMap WHERE folderId = {folder.id}", con);
+            using var cmd2 = new SQLiteCommand($"SELECT cardId, cost, date, quantity, options FROM FolderMap WHERE folderId = {folder.id}", con);
 
             SQLiteDataReader r2 = cmd2.ExecuteReader();
 
@@ -292,11 +292,11 @@ public static class Sqlite
 
         query.Connection = con;
 
-        query.ExecuteNonQuery();
+        var res = query.ExecuteNonQuery();
 
         con.Close();
 
-        return true;
+        return (res >= 1);
     }
 
 

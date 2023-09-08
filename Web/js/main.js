@@ -16,7 +16,18 @@ async function cPostPayload(payObj) {
         return;
     }
     await bindObj();
-    await boundAsync.postPayload(JSON.stringify(payObj));
+    cBoundAsync.postPayload(JSON.stringify(payObj));
+
+    return;
+}
+
+async function cPostBack(payObj) {
+    if (!payObj || !payObj.ObjName || !payObj.FuncName) {
+        alert('cPostBack called with wrong var');
+        return false;
+    }
+    await bindObj();
+    return await cBoundAsync.postBack(JSON.stringify(payObj));
 }
 
 async function runCBUI(funcName) {
@@ -46,13 +57,41 @@ function jFetchCards(myurl, selector, append = false) {
     });
 }
 
+function validateFolderName() {
+    if ($('#folderName').val() != '' && $('#folderType').find(":selected").val() != '') {
+        $('#folderAdd').removeClass('disabled');
+    } else {
+        $('#folderAdd').addClass('disabled');
+    }
+}
+
+function showAlert(msg, type = 'success') {
+    const IconMap = {
+        "success": "bx bx-check-circle",
+        "error": "bx bx-x-circle",
+        "warning": "bx bx-error",
+        "info": "bx bx-info-circle",
+        "primary": "bx bx-info-circle",
+        "secondary": "bx bx-info-circle",
+        "default": "bx bx-info-circle",
+    };
+
+    Lobibox.notify(type, {
+        rounded: true,
+        position: 'top right',
+        showClass: 'fadeInScale',
+        hideClass: 'zoomOut',
+        icon: IconMap[type],
+        delayIndicator: false,
+        msg: msg
+    });
+};
+
 $(function () {
 
     $('.logo-text').on("click", async function () {
-
         await bindObj();
         await cBoundAsync.openDebug();
-
     });
 
     $("#cardSearch").on("keypress", async function (evt) {
@@ -65,20 +104,40 @@ $(function () {
                 "Data": { "query": $(this).val() }
             };
 
-
             await CefSharp.BindObjectAsync("boundAsync");
 
             var jsonIn = await boundAsync.postPayload(JSON.stringify(projObj));
-
-
-            //$('.page-content').html(jsonIn);
-
-            //var myPrj = await JSON.parse(jsonIn);
-
         }
     });
 
-         
+    $('#folderName').on("change", async function (evt) { validateFolderName(); });
+    $('#folderType').on("change", async function (evt) { validateFolderName(); });
 
+    $('#folderAdd').on("click", async function (evt) {
+        projObj = {
+            "ObjName": "PCInterface",
+            "FuncName": "CreateFolder",
+            "Data": {
+                "folderName": $('#folderName').val(),
+                "folderType": $('#folderType').find(":selected").val()
+            }
+        };
+
+        let resp = await cPostBack(projObj);
+
+        if (resp) {
+            let respObj = await JSON.parse(resp);
+            if (respObj.status == 'success') {
+                await showAlert(respObj.msg, 'success');
+
+                await $('#createFolderModal').modal('hide');
+
+                await jFetch('list-folders.app', '#folderWrap');
+
+            } else {
+                await showAlert(respObj.msg, 'error');
+            }
+        }
+    });
 
 });
