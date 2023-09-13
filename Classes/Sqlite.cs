@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SQLite;
-using System.IO;
 using System.Text;
+using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
+using System.IO;
 
-namespace PokeCard;
 
+namespace PokeCardManager.Classes;
 public static class Sqlite
 {
     static string DatabasePath;
-    static readonly string DatabaseName = "PokeCard.db";
+    static readonly string DatabaseName = "PokeCardManager.db";
 
     public static void Init()
     {
@@ -27,7 +26,7 @@ public static class Sqlite
         con.Open();
 
         SQLiteTransaction transaction = con.BeginTransaction();
-        StringBuilder sb              = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         SQLiteCommand cmd;
 
@@ -188,10 +187,10 @@ public static class Sqlite
             }
         }
 
-        foreach( var card in cards)
+        foreach (var card in cards)
         {
             //  Get Subtypes
-            card.subTypes.AddRange( GetColumn<string>(@$"
+            card.subTypes.AddRange(GetColumn<string>(@$"
                 SELECT subtype 
                 FROM Subtypes s, SubtypeMap sm 
                 WHERE s.id = sm.subtypeId 
@@ -243,20 +242,20 @@ public static class Sqlite
 
     public static string GetString(string query)
     {
-        using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
-        {
-            con.Open();
-            using (SQLiteCommand cmd = new SQLiteCommand(query, con))
-            {
-                var result = cmd.ExecuteScalar();
+        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
 
-                con.Close();
+        con.Open();
 
-                if (result == null) return string.Empty;
-                else return result.ToString();
-            }
-        }
+        using SQLiteCommand cmd = new SQLiteCommand(query, con);
+
+        var result = (string)cmd.ExecuteScalar()?.ToString();
+
+        con.Close();
+
+        if (result == null) return string.Empty;
+        else return result.ToString();
     }
+
 
     public static T[] GetColumn<T>(string query)
     {
@@ -334,15 +333,15 @@ public static class Sqlite
 
             if (parms.DbType.Equals(DbType.String) || parms.DbType.Equals(DbType.DateTime))
                 val = "'" + Convert.ToString(parms.Value).Replace(@"\", @"\\").Replace("'", @"\'") + "'";
-            
-            if (parms.DbType.Equals(DbType.Int16) 
-                || parms.DbType.Equals(DbType.Int32) 
-                || parms.DbType.Equals(DbType.Int64) 
-                || parms.DbType.Equals(DbType.Decimal) 
+
+            if (parms.DbType.Equals(DbType.Int16)
+                || parms.DbType.Equals(DbType.Int32)
+                || parms.DbType.Equals(DbType.Int64)
+                || parms.DbType.Equals(DbType.Decimal)
                 || parms.DbType.Equals(DbType.Double)) val = Convert.ToString(parms.Value);
-            
+
             var paramname = "@" + parms.ParameterName;
-            
+
             CommandTxt = CommandTxt.Replace(paramname, val);
         }
 

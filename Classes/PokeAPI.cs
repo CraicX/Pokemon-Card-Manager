@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Newtonsoft.Json;
+using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
@@ -12,9 +9,7 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
 
-
-namespace PokeCard;
-
+namespace PokeCardManager.Classes;
 public static class PokeAPI
 {
     static readonly string ApiKey = "3e058698-4207-4151-a9ba-c1973a1514df";
@@ -25,10 +20,10 @@ public static class PokeAPI
     public static Rarities Rarities;
     public static ElementTypes ElementTypes;
 
-    static Dictionary<string, List<string>> Filter = new();
-    
-    public static List<CardX> CardResults          = new();
-    public static List<Set> CardSets               = new();
+    static readonly Dictionary<string, List<string>> Filter = new();
+
+    public static List<CardX> CardResults = new();
+    public static List<Set> CardSets = new();
 
 
     public static string[] PokemonSubTypes;
@@ -85,7 +80,7 @@ public static class PokeAPI
             }
             else
             {
-                if (!Filter.ContainsKey("name") ) Filter.Add("name", new List<string>());
+                if (!Filter.ContainsKey("name")) Filter.Add("name", new List<string>());
 
                 Filter["name"].Add(word);
             }
@@ -120,7 +115,7 @@ public static class PokeAPI
     }
 
 
-    public static Dictionary<string, string> BuildFilterDict() 
+    public static Dictionary<string, string> BuildFilterDict()
     {
         var dict = new Dictionary<string, string>();
 

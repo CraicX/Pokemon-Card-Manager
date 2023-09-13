@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
+using System.IO;
 
-namespace PokeCard;
-
+namespace PokeCardManager.Classes;
 public static class Utils
 {
 
@@ -47,18 +44,7 @@ public static class Utils
         return target;
     }
 
-    public static async void SavePage(string path = "")
-    {
-        if (path == "") path = "page-dump.htm";
-
-        var page = await Browser.CB.GetBrowser().MainFrame.GetSourceAsync();
-
-        File.WriteAllText(Path(Config.WebPath, path), page);
-
-        Debug.WriteLine("Wrote webpage to: {0}", Path(Config.WebPath, path));
-
-    }
-
+    
 
     public static void CopyFilesRecursively(string sourcePath, string targetPath)
     {
@@ -84,7 +70,7 @@ public static class Utils
         return result;
     }
 
-    
+
 
     public static string ReadResource(string name)
     {
@@ -96,7 +82,8 @@ public static class Utils
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
 
         using Stream stream = assembly.GetManifestResourceStream(resourcePath);
-        if (stream != null) { 
+        if (stream != null)
+        {
             using StreamReader reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
@@ -110,16 +97,16 @@ public static class Utils
     {
         // Determine path
         Assembly assembly = Assembly.GetExecutingAssembly();
-        var resourcePath  = name;
-        resourcePath      = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
-        using var stream  = assembly.GetManifestResourceStream(resourcePath);
-        
+        var resourcePath = name;
+        resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
+        using var stream = assembly.GetManifestResourceStream(resourcePath);
+
         if (stream != null)
         {
             var bytes = new byte[stream.Length];
             var numBytesToRead = (int)stream.Length;
             var numBytesRead = 0;
-            
+
             while (numBytesToRead > 0)
             {
                 // Read may return anything from 0 to numBytesToRead.
@@ -128,7 +115,7 @@ public static class Utils
                 // Break when the end of the file is reached.
                 if (n == 0) break;
 
-                numBytesRead   += n;
+                numBytesRead += n;
                 numBytesToRead -= n;
             }
 
@@ -147,12 +134,12 @@ public static class Utils
     {
         // Determine path
         Assembly assembly = Assembly.GetExecutingAssembly();
-        var resourcePath  = name;
-        
+        var resourcePath = name;
+
         // Format: "{Namespace}.{Folder}.{filename}.{Extension}"
 
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
-        var stream   = assembly.GetManifestResourceStream(resourcePath);
+        var stream = assembly.GetManifestResourceStream(resourcePath);
 
         return stream == null ? Stream.Null : stream;
 

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
+using PokeCardManager.Data;
 
-namespace PokeCard;
+namespace PokeCardManager.Classes;
 public static class PC
 {
     public static List<string> SubTypes     = new();
@@ -14,6 +14,12 @@ public static class PC
     public static List<CardData> Cards      = new();
 
 
+    public static List<string> LSubTypes     => SubTypes;
+    public static List<string> LSuperTypes   => SuperTypes;
+    public static List<string> LElementTypes => ElementTypes;
+    public static List<string> LRarities     => Rarities;
+
+
     public static bool AddFolder(FolderData folder)
     {
 
@@ -21,7 +27,7 @@ public static class PC
             return false;
 
         if (!Sqlite.Query(@"INSERT INTO Folders (name, folderType) VALUES (@name, @folderType);",
-            new SQLiteParameter("name", folder.name), 
+            new SQLiteParameter("name", folder.name),
             new SQLiteParameter("folderType", folder.folderType))) return false;
 
         Folders = Sqlite.GetFolders();

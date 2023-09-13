@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+
+    <div class="wrapper">
+
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+
+        <div>
+            <NavSearch />
+        </div>
+
+        <!--start page wrapper -->
+        <div class="page-wrapper">
+            <div class="page-content p-0 m-0">
+
+                <main>
+                    @Body
+                </main>
+
+            </div>
+        </div>
+        <!--end page wrapper -->
+        <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+
+        <Modals />
+
+        <footer class="page-footer">
+            <p class="mb-0">&nbsp;</p>
+        </footer>
+    </div>
+</div>

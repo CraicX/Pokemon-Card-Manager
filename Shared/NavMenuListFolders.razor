@@ -1,0 +1,51 @@
+@using PokeCardManager.Classes
+@using PokeCardManager.Classes.Events
+
+@inject AddFolderEvent AddFolderEvent
+@implements IDisposable
+
+
+
+@foreach (var et in PC.Folders)
+{
+    @if (@isLastFolder(@et.folderType)) {
+        
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-header">[ <span>@et.folderType</span> ]</li>
+
+    }
+
+    <li class="pokeFolder"><a href="javascript:;"><i class='bx bx-folder'></i>@et.name</a></li>
+
+}
+
+@if (@isLastFolder()) { }
+
+@code {
+
+    string lastFolderType = "";
+
+    bool isLastFolder(string folderType="")
+    {
+        if (lastFolderType != folderType)
+        {
+            lastFolderType = folderType;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        AddFolderEvent.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AddFolderEvent.OnChange -= StateHasChanged;
+    }
+
+}

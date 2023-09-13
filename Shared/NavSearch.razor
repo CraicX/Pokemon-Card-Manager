@@ -1,0 +1,89 @@
+@using PokeCardManager.Classes
+@using PokeCardManager.Data
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+
+
+<div class="topbar d-flex align-items-center">
+    <nav class="navbar navbar-expand gap-3">
+
+        <div class="position-relative search-bar d-sm-flex">
+            <input type="text" class="form-control px-5" spellcheck="false" placeholder="Search" id="cardSearch" @bind="searchQuery" @onkeyup="(args) => CheckSearchKeys(args)">
+            <span class="position-absolute top-50 search-show ms-3 translate-middle-y start-0 top-50 fs-3"><i class='bx bx-search'></i></span>
+        </div>
+        <div class="top-menu ms-auto">
+            <ul class="navbar-nav align-items-center gap-1">
+                <li class="nav-item mobile-search-icon d-flex d-lg-none">
+                    <a class="nav-link" href="javascript:;">
+                        <i class='bx bx-search'></i>
+                    </a>
+                </li>
+
+                <li class="nav-item dark-mode d-none d-sm-flex">
+                    <a id="themeIcon" class="nav-link dark-mode-icon" href="javascript:;">
+                        <i class='bx bx-moon' @onclick="SetTheme"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+
+@code {
+
+    private IJSObjectReference? module;
+    private string currentTheme = "dark-theme";
+
+    private string query = "";
+
+    private string searchQuery {
+        get
+        {
+            return query;
+        }
+        set { query = value.Trim(); }
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavSearch.razor.js");
+        }
+    }
+
+    private void CheckSearchKeys( KeyboardEventArgs args )
+    {
+        //  Check if Enter key was pressed
+        if (args.Key == "Enter" && query != "")
+        {
+            ExecuteSearch(query);
+
+        }
+    }
+
+    public async void ExecuteSearch(string query)
+    {
+
+        Navigation.NavigateTo("/search", new NavigationOptions
+        {
+            // ForceLoad = true,
+        });
+
+        _ = await PokeAPI.CardSearch(query);
+    }
+
+
+    private async Task SetTheme()
+    {
+        currentTheme = (currentTheme == "light-theme" ? "dark-theme" : "light-theme");
+        
+        await module.InvokeVoidAsync("setTheme", currentTheme);
+    }
+
+}
+

@@ -1,0 +1,46 @@
+@using PokeCardManager.Classes;
+
+
+@foreach (var etype in @MyList) 
+{
+    <li>
+        <div class="bx form-check form-check-default">
+            <input class="form-check-input" type="checkbox" value="" id="@etype">
+            <label class="form-check-label" for="@etype">
+                @etype
+            </label>
+        </div>
+    </li>
+}
+
+@code {
+
+    public Dictionary<string, List<string>> ListDict = new Dictionary<string, List<string>>();
+
+    public List<string> MyList
+    {
+        get
+        {
+            switch( ListName )
+            {
+                case "SuperTypes":
+                    return PC.SuperTypes;
+                case "ElementTypes":
+                    return PC.ElementTypes;
+                case "Rarities":
+                    return PC.Rarities;
+                default:
+                    return PC.SuperTypes;
+
+            }
+
+        }
+    }
+
+    [Parameter]
+    public string ListName { get; set; }
+
+   
+
+   
+}

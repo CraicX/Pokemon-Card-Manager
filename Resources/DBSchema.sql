@@ -53,8 +53,8 @@ CREATE TABLE IF NOT EXISTS [Rarities] (
 );
 
 CREATE TABLE IF NOT EXISTS [Prices] (
-	[id]           INTEGER      NOT NULL PRIMARY KEY,
-	[cardId]       INTEGER      NOT NULL DEFAULT 0,
+	[id]           INTEGER       NOT NULL PRIMARY KEY,
+	[cardId]       INTEGER       NOT NULL DEFAULT 0,
 	[low]          DECIMAL(10,2) NOT NULL DEFAULT 0.00,
 	[mid]          DECIMAL(10,2) NOT NULL DEFAULT 0.00,
 	[high]         DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -79,6 +79,11 @@ CREATE TABLE IF NOT EXISTS [FolderMap] (
 	[date] 	       DATE          NOT NULL DEFAULT '0000-00-00',
     [quantity]     INTEGER       NOT NULL DEFAULT 0,
     [options]      JSON          NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS [Settings] (
+    [name]   VARCHAR(64)  NOT NULL PRIMARY KEY,
+    [value]  VARCHAR(200) NOT NULL DEFAULT ''
 );
 
 CREATE INDEX IF NOT EXISTS MapFolderId ON FolderMap(folderId);

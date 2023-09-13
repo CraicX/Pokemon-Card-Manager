@@ -1,11 +1,28 @@
-﻿<Window x:Class="PokeCard.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PokeCard" xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-        mc:Ignorable="d"
-        Title="PokeCard Manager" Height="650" Width="1500" SizeChanged="Window_SizeChanged" Background="Black">
-    <Grid x:Name="GridApp">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Window
+    x:Class="PokeCardManager.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:PokeCardManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Height="600"
+    Width="1075"
+    MinWidth="1075"
+    MinHeight="600"
+    mc:Ignorable="d">
+    <Grid>
+        <b:BlazorWebView
+            HostPage="wwwroot/index.html"
+            Services="{StaticResource services}">
+            <b:BlazorWebView.RootComponents>
+                <b:RootComponent
+                    ComponentType="{x:Type local:Main}"
+                    Selector="#app"/>
+            </b:BlazorWebView.RootComponents>
+        </b:BlazorWebView>
+
     </Grid>
 </Window>

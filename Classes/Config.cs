@@ -1,18 +1,15 @@
-﻿using System;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
-using System.Windows.Controls;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
+using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
+using System.IO;
 
-
-namespace PokeCard;
+namespace PokeCardManager.Classes;
 public static class Config
 {
-    public static MainWindow Main;
 
     //
     //  Define Paths
@@ -30,10 +27,8 @@ public static class Config
     public static string TempPath    = "";
     public static string AppName     = "PokeCard";
 
-    public static void RunSetup(MainWindow _main)
+    public static void Init()
     {
-        Main = _main;
-
         DefinePaths();
 
         Sqlite.Init();
@@ -44,24 +39,17 @@ public static class Config
 
         GetRecords();
 
-        Browser.Initialize();
-
-        Main.GridApp.Children.Add(Browser.CB);
-
-        Grid.SetColumn(Browser.CB, 0);
-
     }
 
     private static async void AddRecords(bool forceRefresh = false)
     {
-
         //
         //  Check last time Subtypes was updated
         //
-        var lastUpdate = Properties.Settings.Default.SubTypesUpdate; 
+        var lastUpdate = Settings.Get( "SubTypesUpdate", 0 );
         var hours      = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - lastUpdate) / 3600;
-        
-        if (forceRefresh || hours > 24*7 || Sqlite.GetString("SELECT COUNT(*) FROM Subtypes;") == "0")  
+
+        if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Subtypes;") == "0")
         {
             Debug.WriteLine("Refreshing SubTypes...");
 
@@ -71,64 +59,66 @@ public static class Config
 
             foreach (var subType in subTypes.SubType)
             {
-                Sqlite.Query(@"INSERT INTO Subtypes (Name) VALUES (@subType);", 
+                Sqlite.Query(@"INSERT INTO Subtypes (Name) VALUES (@subType);",
                     new SQLiteParameter("subType", subType));
             }
 
-            Properties.Settings.Default.SubTypesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            Properties.Settings.Default.Save();
+            Settings.Set("SubTypesUpdate", DateTime.Now.Ticks / TimeSpan.TicksPerSecond);
         }
 
         //
         //  Check last time Rarities was updated
         //
-        lastUpdate = Properties.Settings.Default.RaritiesUpdate;
+        lastUpdate = Settings.Get("RaritiesUpdate", 0);
         hours      = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - lastUpdate) / 3600;
 
         if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Rarities;") == "0")
         {
             Debug.WriteLine("Refreshing Rarities...");
-            
+
             var rarities = await PokeAPI.pokeClient.GetStringResourceAsync<Rarities>();
 
             Sqlite.Query($"DELETE FROM Rarities;");
-            
+
             foreach (var rarity in rarities.Rarity)
             {
-                Sqlite.Query(@"INSERT INTO Rarities (Name) VALUES (@rarity);", 
+                Sqlite.Query(@"INSERT INTO Rarities (Name) VALUES (@rarity);",
                     new SQLiteParameter("rarity", rarity));
             }
 
-            Properties.Settings.Default.RaritiesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            Properties.Settings.Default.Save();
+            Settings.Set("RaritiesUpdate", DateTime.Now.Ticks / TimeSpan.TicksPerSecond);
+
         }
 
         //
         //  Check last time SuperTypes was updated
         //
-        lastUpdate = Properties.Settings.Default.SuperTypesUpdate;
+        lastUpdate = Settings.Get("SuperTypesUpdate", 0);
         hours      = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - lastUpdate) / 3600;
 
-        if (forceRefresh || hours > 24 * 7 || Properties.Settings.Default.SuperTypes == "")
+        var SuperTypesJoined = Settings.Get("SuperTypes", "");
+
+        if (forceRefresh || hours > 24 * 7 || SuperTypesJoined == "")
         {
             Debug.WriteLine("Refreshing SuperTypes...");
 
-            //var superTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SuperTypes>();
+            var superTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SuperTypes>();
 
-            //var SuperTypesConcat = string.Join(",", superTypes.SuperType);
+            var SuperTypesConcat = string.Join(",", superTypes.SuperType);
 
-            //Properties.Settings.Default.SuperTypes       = SuperTypesConcat;
-            //Properties.Settings.Default.SuperTypesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            //Properties.Settings.Default.Save();
+            Settings.Set("SuperTypes", SuperTypesConcat);
+            Settings.Set("SuperTypesUpdate", DateTime.Now.Ticks / TimeSpan.TicksPerSecond);
         }
 
         //
         //  Check last time Types was updated
         //
-        lastUpdate = Properties.Settings.Default.ElementTypesUpdate;
+        lastUpdate = Settings.Get("ElementTypesUpdate", 0);
         hours      = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - lastUpdate) / 3600;
 
-        if (forceRefresh || hours > 24 * 7 || Properties.Settings.Default.ElementTypes == "")
+        var ElementTypesJoined = Settings.Get("ElementTypes", "");
+        
+        if (forceRefresh || hours > 24 * 7 || ElementTypesJoined == "")
         {
             Debug.WriteLine("Refreshing ElementTypes...");
 
@@ -136,17 +126,17 @@ public static class Config
 
             var ElementTypesConcat = string.Join(",", elementTypes.ElementType);
 
-            Properties.Settings.Default.ElementTypes       = ElementTypesConcat;
-            Properties.Settings.Default.ElementTypesUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            Properties.Settings.Default.Save();
+            Settings.Set("ElementTypes", ElementTypesConcat);
+            Settings.Set("ElementTypesUpdate", DateTime.Now.Ticks / TimeSpan.TicksPerSecond);
+            
         }
 
         //
         //  Check last time Sets were updated
         //
-        lastUpdate = Properties.Settings.Default.SetsUpdate;
+        lastUpdate = Settings.Get("SetsUpdate", 0);
         hours      = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - lastUpdate) / 3600;
-
+        
         if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Sets;") == "0")
         {
             Debug.WriteLine("Refreshing Sets...");
@@ -155,8 +145,7 @@ public static class Config
 
             Sqlite.ImportSets(cardSets);
 
-            Properties.Settings.Default.SetsUpdate = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            Properties.Settings.Default.Save();
+            Settings.Set("SetsUpdate", DateTime.Now.Ticks / TimeSpan.TicksPerSecond);
         }
 
     }
@@ -170,8 +159,8 @@ public static class Config
         PC.SubTypes.AddRange(Sqlite.GetColumn<string>("SELECT Name FROM Subtypes ORDER BY Name;"));
         PC.Rarities.AddRange(Sqlite.GetColumn<string>("SELECT Name FROM Rarities ORDER BY Name;"));
 
-        PC.SuperTypes.AddRange(Properties.Settings.Default.SuperTypes.Split(','));
-        PC.ElementTypes.AddRange(Properties.Settings.Default.ElementTypes.Split(','));
+        PC.SuperTypes.AddRange( Settings.Get("SuperTypes", "Pokémon,Trainer,Energy").Split(',') );
+        PC.ElementTypes.AddRange( Settings.Get("ElementTypes", "Colorless,Darkness,Dragon,Fairy,Fighting,Fire,Grass,Lightning,Metal,Psychic,Water").Split(',') );
 
         PC.Sets    = Sqlite.GetSets();
         PC.Cards   = Sqlite.GetCards();
@@ -188,22 +177,17 @@ public static class Config
     {
         //  Set the App Paths & Create need directories
 
-        RootPath    = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.AppName);
-        AppPath     = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
-        CachePath   = Path.Combine(RootPath, "Cache");
-        WebPath     = Path.Combine(AppPath,  "Web");
-        TPLPath     = Path.Combine(WebPath,  "sections");
-        WidgetPath  = Path.Combine(WebPath,  "widgets");
-        DataPath    = Path.Combine(RootPath, "Data");
+        RootPath   = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.AppName);
+        AppPath    = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
+        CachePath  = Path.Combine(RootPath, "Cache");
+        WebPath    = Path.Combine(AppPath, "Web");
+        TPLPath    = Path.Combine(WebPath, "sections");
+        WidgetPath = Path.Combine(WebPath, "widgets");
+        DataPath   = Path.Combine(RootPath, "Data");
 
         foreach (var path in new string[] { CachePath, WebPath, TPLPath, WidgetPath, DataPath })
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-
     }
-
-
-
-
 
 }

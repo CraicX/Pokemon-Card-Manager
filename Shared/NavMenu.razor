@@ -1,0 +1,129 @@
+﻿@using System.Reflection.Metadata;
+@inherits LayoutComponentBase
+@inject IJSRuntime JS
+
+<div class="sidebar-wrapper" data-simplebar="true">
+    <div class="sidebar-header">
+        <img src="img/icons/pokecard-logo.webp" class="logox-icon" alt="logo icon" data-action="zoom">
+        <h4 class="logo-text">
+
+            <svg width="130" height="48">
+
+                <text x="50%" y="60%" text-anchor="middle">
+                    PokeCard
+                </text>
+            </svg>
+
+        </h4>
+        <div class="toggle-icon ms-auto" @onclick="ToggleSidebar">
+            <i class='bx bx-arrow-back'></i>
+        </div>
+    </div>
+    <!--navigation-->
+    <ul class="metismenu" id="menu">
+        <li>
+            <i class="bxr bx bx-chevron-down" />
+            <a @onclick='() => ToggleNav("mm_folders")' href="javascript:;">
+                <div class="parent-icon">
+                    <img src="/img/icons/folders.png" />
+                </div>
+                <div class="menu-title">Folders</div>
+            </a>
+            <ul id="mm_folders">
+                <li>
+                    <div>
+                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#createFolderModal" class="text-info">
+                            <i class='bx bx-folder-plus text-info'></i>Create Folder
+                        </a>
+                    </div>
+                </li>
+                <NavMenuListFolders />
+                
+            </ul>
+        </li>
+
+        <li class="menu-label">Search Filters</li>
+
+        <li class="menuCol">
+            <i class="bxr bx bx-chevron-left" />
+            <a @onclick='() => ToggleNav("mm_cardtype")' href="javascript:;">
+                <div class="parent-icon">
+                    <img class='bx bx-cart' src="/img/icons/search-card-type.png" />
+                </div>
+                <div class="menu-title">Card Type</div>
+            </a>
+            <ul class="collapse" id="mm_cardtype">
+                <NavMenuList ListName="SuperTypes" />
+            </ul>
+        </li>
+        <li class="menuCol">
+            <i class="bxr bx bx-chevron-left" />
+            <a @onclick='() => ToggleNav("mm_rarity")' href="javascript:;">
+                <div class="parent-icon">
+                    <img class='bx bx-cart' src="/img/icons/search-rarity.png" />
+                </div>
+                <div class="menu-title">Rarity</div>
+            </a>
+            <ul class="collapse" id="mm_rarity">
+                <NavMenuList ListName="Rarities" />
+            </ul>
+        </li>
+        <li class="menuCol">
+            <i class="bxr bx bx-chevron-left" />
+            <a @onclick='() => ToggleNav("mm_energytype")' href="javascript:;">
+                <div class="parent-icon">
+                    <img class='bx bx-cart' src="/img/icons/search-energy.png" />
+                </div>
+                <div class="menu-title">Energy Type</div>
+            </a>
+            <ul class="collapse" id="mm_energytype">
+                <NavMenuList ListName="ElementTypes" />
+            </ul>
+        </li>
+        <li class="menuCol">
+            <i class="bxr bx bx-chevron-left" />
+            <a @onclick='() => ToggleNav("mm_set")' href="javascript:;">
+                
+                <div class="parent-icon">
+                    <img class='bx bx-cart' src="/img/icons/search-set.png" />
+                </div>
+                <div class="menu-title">Set</div>
+            </a>
+            <ul class="collapse" id="mm_set">
+                <NavMenuListSets />
+            </ul>
+        </li>
+
+
+    </ul>
+    <!--end navigation-->
+</div>
+
+@code {
+
+
+    private IJSObjectReference module;
+    [Parameter]
+    public ElementReference Control { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavMenu.razor.js");
+
+            
+        }
+    }
+
+    void ToggleNav(string xref)
+    {
+        //Console.WriteLine(xref);
+        module.InvokeVoidAsync("ToggleMenu", xref);
+    }
+
+    void ToggleSidebar()
+    {
+        module.InvokeVoidAsync("ToggleSidebar");
+    }
+}

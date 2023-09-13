@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokeCardManager", "PokeCardManager.csproj", "{F3677CFA-2471-4F5E-8587-1BAB97CF7592}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3677CFA-2471-4F5E-8587-1BAB97CF7592}.Debug|x64.ActiveCfg = Debug|x64
+		{F3677CFA-2471-4F5E-8587-1BAB97CF7592}.Debug|x64.Build.0 = Debug|x64
+		{F3677CFA-2471-4F5E-8587-1BAB97CF7592}.Release|x64.ActiveCfg = Release|x64
+		{F3677CFA-2471-4F5E-8587-1BAB97CF7592}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4024166-8470-4F19-87F1-FA8936ED0B7B}
+	EndGlobalSection
+EndGlobal
