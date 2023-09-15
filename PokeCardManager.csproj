@@ -23,10 +23,12 @@
 
     <ItemGroup>
       <None Remove="Resources\DBSchema.sql" />
+      <None Remove="Shared\NavMenuListFolders.razor.js" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="Resources\PokeCard.ico" />
+      <Content Include="Shared\NavMenuListFolders.razor.js" />
     </ItemGroup>
 
     <ItemGroup>
@@ -54,10 +56,6 @@
         <Content Update="wwwroot\index.html">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\" />
     </ItemGroup>
 
 

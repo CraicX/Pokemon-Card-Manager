@@ -1,45 +1,55 @@
 @using PokeCardManager.Classes
 @using PokeCardManager.Classes.Events
-
-@inject AddFolderEvent AddFolderEvent
+@using PokeCardManager.Data
 @implements IDisposable
+@inject AddFolderEvent AddFolderEvent
+@inject IJSRuntime JS
 
 
-
-@foreach (var et in PC.Folders)
+@foreach (var pair in PC.FolderTypes)
 {
-    @if (@isLastFolder(@et.folderType)) {
-        
-        <li class="dropdown-divider"></li>
-        <li class="dropdown-header">[ <span>@et.folderType</span> ]</li>
+    @if (!FoldersByType.ContainsKey(pair.Key)) continue;
+    
+    <li class="dropdown-divider"></li>
+    <li class="dropdown-header folderTitle" data-foldertype="@pair.Key">[ <span class="ui-droppable">@pair.Value</span> ]</li>
+    <ul data-foldertype="@pair.Key">
 
+    @foreach( var folder in FoldersByType[pair.Key] ) {
+        <li class="pokeFolder" data-foldertype="@folder.folderType"><div class="dropzone"></div><a href="javascript:;" class="ui-droppable"><i class='bx bx-folder'></i>@folder.name</a></li>
     }
+    </ul>
 
-    <li class="pokeFolder"><a href="javascript:;"><i class='bx bx-folder'></i>@et.name</a></li>
 
 }
 
-@if (@isLastFolder()) { }
+
 
 @code {
-
-    string lastFolderType = "";
-
-    bool isLastFolder(string folderType="")
+    private IJSObjectReference module;
+    public Dictionary<string, List<FolderData>> FoldersByType = new();
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (lastFolderType != folderType)
+        if (firstRender)
         {
-            lastFolderType = folderType;
-            return true;
-        }
-        else
-        {
-            return false;
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavMenuListFolders.razor.js");
+
+            await module.InvokeVoidAsync("initFolderDrop");
         }
     }
-
     protected override void OnInitialized()
     {
+        foreach (var folder in PC.Folders)
+        {
+            if (!FoldersByType.ContainsKey(folder.folderType))
+            {
+                FoldersByType.Add(folder.folderType, new List<FolderData>());
+            }
+
+            FoldersByType[ folder.folderType ].Add(folder);
+
+        }
+
         AddFolderEvent.OnChange += StateHasChanged;
     }
 

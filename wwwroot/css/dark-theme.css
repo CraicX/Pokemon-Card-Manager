@@ -1,3 +1,6 @@
+html.dark-theme .dropdown-header span {
+    color: #f8f9fa;
+}
 html.dark-theme .logo-text {
     margin-bottom: 0;
     letter-spacing: 1px;

@@ -29,10 +29,10 @@
                         <div class="position-relative select-icon">
                             <select class="form-select form-control" id="folderType" @oninput="CheckNewFolder" @bind="folderType">
                                 <option value="" selected="">Select the type of folder</option>
-                                <option value="owned">Owned</option>
-                                <option value="wishlist">Wishlist</option>
-                                <option value="selling">Selling</option>
-                                <option value="list">List</option>
+                                @foreach( var pair in PC.FolderTypes )
+                                {
+                                    <option value="@pair.Key">@pair.Value</option>
+                                })
                             </select>
                             <span class="position-absolute top-50 translate-middle-y"><i class="bx bx-folder"></i></span>
                         </div>

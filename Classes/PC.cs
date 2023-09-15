@@ -13,6 +13,13 @@ public static class PC
     public static List<FolderData> Folders  = new();
     public static List<CardData> Cards      = new();
 
+    public static Dictionary<string, string> FolderTypes = new()
+    {
+        { "owned",    "Owned"    },
+        { "wishlist", "Wishlist" },
+        { "selling",  "Selling"  },
+        { "list",     "List"     },
+    };
 
     public static List<string> LSubTypes     => SubTypes;
     public static List<string> LSuperTypes   => SuperTypes;

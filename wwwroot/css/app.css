@@ -53,13 +53,16 @@ a {
 }
 
 .dropdown-header span {
-    color: #f8f9fa;
+    color: #000;
 }
 
 .pokeFolder {
     margin-left: 10px;
 }
-
+.pokeFolder li, .pokeFolder a {
+    margin: 0px 0px 0px 15px !important;
+    padding: 0px !important;
+}
 #menu .form-check {
     padding: 3px 0 3px 40px;
 }
