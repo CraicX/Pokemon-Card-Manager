@@ -1,11 +1,16 @@
 ﻿using System.Data.SQLite;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
-using System.IO;
+using System.Net.NetworkInformation;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Microsoft.Extensions.Configuration;
+
 
 namespace PokeCardManager.Classes;
 public static class Config

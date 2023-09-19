@@ -77,8 +77,9 @@
 
         if (AddFolderEvent.AddFolder(folder))
         {
-            JS.InvokeVoidAsync("showAlert", "Added a new folder", "success");
+            JS.InvokeVoidAsync("showAlert", $" \"<b>{folder.name}</b>\" added to folders.", "info", @"{""size"":""mini""}");
             folderName = "";
+            module.InvokeVoidAsync("closeFolderModal");
         }
         else
         {

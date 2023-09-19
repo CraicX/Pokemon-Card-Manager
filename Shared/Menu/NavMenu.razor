@@ -1,6 +1,9 @@
 ﻿@using System.Reflection.Metadata;
-@inherits LayoutComponentBase
+@using PokeCardManager.Classes.Events
+
+@inherits ComponentBase
 @inject IJSRuntime JS
+@inject AddFolderEvent AddFolderEvent
 
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
@@ -110,15 +113,14 @@
     {
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavMenu.razor.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenu.razor.js");
 
-            
+
         }
     }
 
     void ToggleNav(string xref)
     {
-        //Console.WriteLine(xref);
         module.InvokeVoidAsync("ToggleMenu", xref);
     }
 
@@ -126,4 +128,5 @@
     {
         module.InvokeVoidAsync("ToggleSidebar");
     }
+
 }

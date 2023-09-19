@@ -16,19 +16,19 @@ public static class Startup
 
         //JSHost.ImportAsync("Interop", "/js/interop.js");
 
-        var host = Host.CreateDefaultBuilder()
-                       .ConfigureServices(WireupServices)
-                       .Build();
-        Services = host.Services;
+        //var host = Host.CreateDefaultBuilder()
+        //               .ConfigureServices(WireupServices)
+        //               .Build();
+        //Services = host.Services;
     }
 
     private static void WireupServices(IServiceCollection services)
     {
         services.AddWpfBlazorWebView();
         services.AddSingleton<AddFolderEvent>();
+        services.AddBlazorWebViewDeveloperTools();
 
 #if DEBUG
-        services.AddBlazorWebViewDeveloperTools();
 #endif
     }
 }

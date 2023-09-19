@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <Content Include="Resources\PokeCard.ico" />
-      <Content Include="Shared\NavMenuListFolders.razor.js" />
+      <Content Include="Shared\Menu\NavMenuListFolders.razor.js" />
     </ItemGroup>
 
     <ItemGroup>

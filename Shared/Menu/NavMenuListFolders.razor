@@ -1,6 +1,7 @@
 @using PokeCardManager.Classes
 @using PokeCardManager.Classes.Events
 @using PokeCardManager.Data
+@inherits ComponentBase
 @implements IDisposable
 @inject AddFolderEvent AddFolderEvent
 @inject IJSRuntime JS
@@ -27,12 +28,12 @@
 @code {
     private IJSObjectReference module;
     public Dictionary<string, List<FolderData>> FoldersByType = new();
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavMenuListFolders.razor.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenuListFolders.razor.js");
 
             await module.InvokeVoidAsync("initFolderDrop");
         }
@@ -50,12 +51,29 @@
 
         }
 
-        AddFolderEvent.OnChange += StateHasChanged;
+        AddFolderEvent.OnChange += SChanged;
+    }
+
+    public void SChanged()
+    {
+        FoldersByType.Clear();
+
+        foreach (var folder in PC.Folders)
+        {
+            if (!FoldersByType.ContainsKey(folder.folderType))
+            {
+                FoldersByType.Add(folder.folderType, new List<FolderData>());
+            }
+
+            FoldersByType[folder.folderType].Add(folder);
+
+        }
+
     }
 
     public void Dispose()
     {
-        AddFolderEvent.OnChange -= StateHasChanged;
+        AddFolderEvent.OnChange -= SChanged;
     }
 
 }

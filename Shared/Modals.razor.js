@@ -5,5 +5,11 @@
     } else {
         $('#folderAdd').addClass('disabled');
     }
+}
 
+export function closeFolderModal() {
+    $('#folderName').val('');
+    $('#folderType').val('');
+    $('#folderAdd').addClass('disabled');
+    $('#createFolderModal').modal('hide');
 }

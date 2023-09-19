@@ -65,27 +65,36 @@ function validateFolderName() {
     }
 }
 
-function showAlert(msg, type = 'success') {
-    const IconMap = {
-        "success": "bx bx-check-circle",
-        "error": "bx bx-x-circle",
-        "warning": "bx bx-error",
-        "info": "bx bx-info-circle",
-        "primary": "bx bx-info-circle",
-        "secondary": "bx bx-info-circle",
-        "default": "bx bx-info-circle",
-    };
+const IconMap = {
+    "success": "bx bx-check-circle",
+    "error": "bx bx-x-circle",
+    "warning": "bx bx-error",
+    "info": "bx bx-info-circle",
+    "primary": "bx bx-info-circle",
+    "secondary": "bx bx-info-circle",
+    "default": "bx bx-info-circle",
+};
 
-    Lobibox.notify(type, {
+function showAlert(msg, type = 'success', options = '{}') {
+
+    let defaults = {
+        sound: false,
         rounded: true,
-        position: 'top right',
+        closeButton: false,
+        position: 'bottom right',
         showClass: 'fadeInScale',
         hideClass: 'zoomOut',
         icon: IconMap[type],
         delayIndicator: false,
-        msg: msg
-    });
+        msg: msg,
+        size: "normal"
+    };
+
+    let alertOptions = Object.assign(defaults, JSON.parse(options));
+
+    Lobibox.notify(type, alertOptions);
 };
+
 
 $(function () {
     $('#themeIcon').on("click", async function () {
