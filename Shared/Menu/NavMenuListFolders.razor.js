@@ -18,12 +18,16 @@ export function initFolderSort() {
         
 }
 
+export function disableFolderSort() {
+    $('.folderGroup').nestedSortable('disable');
+}
+
 export function runFolderSort() {
     $('.pokeFolder').each(function () {
         
         if ($(this).data('parent') != 0)
         {
-            let parent = $('.pokeFolder[data-folderid="' + $(this).data('parent') + '"]');
+            let parent = $('.pokeFolder[data-folder-id="' + $(this).data('parent-id') + '"]');
             console.info("parent: ", parent);
             //parent.hide();
             //if (!parent.find('ul')) parent.append('<ul></ul>');

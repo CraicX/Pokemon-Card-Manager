@@ -4,7 +4,7 @@
 @inject IJSRuntime JS
 @inject AddFolderEvent AddFolderEvent
 
-<div class="modal fade" id="createFolderModal" tabindex="-1" style="display: none;">
+<div class="modal fade" id="createFolderModal" tabindex="-1" style="display: none;" @onactivate="FocusFolderName">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,7 +17,7 @@
                     <label for="folderName" class="col-sm-4 col-form-label">Name the Folder</label>
                     <div class="col-sm-8">
                         <div class="position-relative input-icon">
-                            <input type="text" class="form-control" id="folderName" placeholder="Folder Name" @bind="folderName" @onkeypress="CheckNewFolder">
+                            <input type="text" class="form-control" id="folderName" placeholder="Folder Name" spellcheck="false" @bind="folderName" @onkeypress="CheckNewFolder">
                             <span class="position-absolute top-50 translate-middle-y"><i class="bx bx-message-edit"></i></span>
                         </div>
                     </div>
@@ -86,6 +86,11 @@
             JS.InvokeVoidAsync("showAlert", "Folder already exists", "error");
         }
 
+    }
+
+    private void FocusFolderName()
+    {
+        JS.InvokeVoidAsync("$('#folderName').focus();");
     }
 }
 

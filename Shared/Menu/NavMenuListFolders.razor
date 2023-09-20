@@ -15,11 +15,15 @@
     @if (!FoldersByType.ContainsKey(pair.Key)) continue;
     
     <li class="dropdown-divider"></li>
-    <li class="dropdown-header folderTitle" data-foldertype="@pair.Key">[ <span class="ui-droppable">@pair.Value</span> ]</li>
+    <li class="dropdown-header folderTitle" data-folder-type="@pair.Key">[ <span class="ui-droppable">@pair.Value</span> ]</li>
     <ul data-foldertype="@pair.Key" class="folderGroup">
 
     @foreach( var folder in FoldersByType[pair.Key] ) {
-            <li class="pokeFolder" data-foldertype="@folder.folderType" data-folderpos="@folder.sortIndex" data-parent="@folder.parentId" data-folderid="@folder.id"><div class="dropzone"><a href="javascript:;" class="ui-droppable"><i class='bx bx-folder'></i>@folder.name</a></div></li>
+        <li class="pokeFolder" data-folder-type="@folder.folderType" data-sort-index="@folder.sortIndex" data-parent-id="@folder.parentId" data-folder-id="@folder.id">
+            <div class="dropzone">
+                <a href="javascript:;" class="ui-droppable"><i class='bx bx-folder'></i>@folder.name</a>
+            </div>
+        </li>
     }
     </ul>
 }
@@ -40,7 +44,6 @@
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenuListFolders.razor.js");
 
-            // await module.InvokeVoidAsync("initFolderDrop");
             await module.InvokeVoidAsync("initFolderSort");
         }
 
@@ -49,16 +52,7 @@
     protected override void OnInitialized()
     {
         SChanged();
-        // foreach (var folder in PC.Folders)
-        // {
-        //     if (!FoldersByType.ContainsKey(folder.folderType))
-        //     {
-        //         FoldersByType.Add(folder.folderType, new List<FolderData>());
-        //     }
 
-        //     FoldersByType[ folder.folderType ].Add(folder);
-
-        // }
 
         AddFolderEvent.OnChange += SChanged;
     }
@@ -97,6 +91,8 @@
     public void Dispose()
     {
         AddFolderEvent.OnChange -= SChanged;
+
+        module.InvokeVoidAsync("disableFolderSort");
     }
 
 }

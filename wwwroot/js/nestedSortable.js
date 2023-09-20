@@ -655,9 +655,9 @@
                 this._sort_current === this._uiHash().item.index())) {
 
                 this._relocate_event.stuff = {
-                    folderId: this._uiHash().item.data('folderid'),
+                    folderId: this._uiHash().item.data('folder-id'),
                     sortIndex: this._uiHash().item.index(),
-                    parentId: this._uiHash().item.parent().parent().data('folderid') ?? 0,
+                    parentId: this._uiHash().item.parent().parent().data('folder-id') ?? 0,
                 };
 
 				this._trigger("relocate", this._relocate_event, this._uiHash());

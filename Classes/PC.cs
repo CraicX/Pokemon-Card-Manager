@@ -68,6 +68,10 @@ public static class PC
 
         }
 
+        IEnumerable<FolderData> SortedFolders = Folders.OrderBy(folder => folder.sortIndex);
+
+        Folders = SortedFolders.ToList();
+
         return true;
     }
 
