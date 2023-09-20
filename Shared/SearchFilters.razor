@@ -1,0 +1,105 @@
+@using PokeCardManager.Classes
+@using PokeCardManager.Classes.Events
+@using PokeCardManager.Data
+@using Microsoft.JSInterop
+@using System.Text.Json
+
+@inherits ComponentBase
+@implements IDisposable
+@inject UpdateFiltersEvent UpdateFiltersEvent
+@inject IJSRuntime JS
+
+<div class="card m-0 p-0">
+    <div class="card-body">
+            @foreach( Filter filter in PC.Filters )
+            {
+                if (filter.Type == Filter.FilterTypes.SuperTypes)
+                {
+                    <div class="chip chip-sm">
+                        @filter.Value <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
+                    </div>
+
+                } else if (filter.Type == Filter.FilterTypes.Rarities) {
+
+                <div class="chip chip-sm bg-rarity text-dark">
+                    <img src="/img/icons/rarity/r-@(filter.GetImage).png" />
+                        @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
+                </div>
+
+                } else if (filter.Type == Filter.FilterTypes.ElementTypes)
+
+                {
+                    <div class="chip chip-sm bg-dark text-white">
+                        @filter.Value <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
+                    </div>
+                }
+                else if (filter.Type == Filter.FilterTypes.SetName)
+
+                {
+                    <div class="chip chip-sm bg-black text-white">
+                        @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
+                    </div>
+                }
+            }
+    </div>
+</div>
+
+
+@code {
+    private IJSObjectReference module;
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenuListFolders.razor.js");
+
+    //         await module.InvokeVoidAsync("initFolderSort");
+    //     }
+
+    //     await module.InvokeVoidAsync("runFolderSort");
+    // }
+
+
+    protected override void OnInitialized()
+    {
+        SChanged();
+
+        UpdateFiltersEvent.OnChange += SChanged;
+    }
+
+
+    void CloseChip(int filterHash, MouseEventArgs e)
+    {
+        UpdateFiltersEvent.RemoveFilter(filterHash);
+    }
+
+
+    public void SChanged()
+    {
+        // FoldersByType.Clear();
+
+        // foreach (var folder in PC.Folders)
+        // {
+        //     if (!FoldersByType.ContainsKey(folder.folderType))
+        //     {
+        //         FoldersByType.Add(folder.folderType, new List<FolderData>());
+        //     }
+
+        //     FoldersByType[folder.folderType].Add(folder);
+
+        // }
+
+        StateHasChanged();
+
+    }
+
+
+    public void Dispose()
+    {
+        UpdateFiltersEvent.OnChange -= SChanged;
+
+        //module.InvokeVoidAsync("disableFolderSort");
+    }
+
+}

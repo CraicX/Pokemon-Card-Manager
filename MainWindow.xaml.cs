@@ -30,6 +30,7 @@ public partial class MainWindow : Window
 
         serviceCollection.AddWpfBlazorWebView();
         serviceCollection.AddSingleton<AddFolderEvent>();
+        serviceCollection.AddSingleton<UpdateFiltersEvent>();
         serviceCollection.AddBlazorWebViewDeveloperTools();
 
         Resources.Add("services", serviceCollection.BuildServiceProvider());

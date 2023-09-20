@@ -1000,8 +1000,8 @@ form select.error, form textarea.error, form input.error, form input.error:focus
 	display: inline-block;
 	height: 32px;
 	padding: 0 12px;
-	margin-right: 1rem;
-	margin-bottom: 1rem;
+	margin-right: 5px;
+	margin-bottom: 5px;
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 32px;
@@ -1037,6 +1037,27 @@ form select.error, form textarea.error, form input.error, form input.error:focus
 	height: 42px;
 	width: 42px;
 }
+
+.chip.chip-sm {
+    height: 26px;
+    line-height: 26px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.chip.chip-sm img {
+    margin: 0px;
+    height: 22px !important;
+    width: auto !important;
+    border-radius: 0;
+    float: none;
+}
+.chip.bg-rarity {
+    background-color: #F1F1F1CC !important;
+    color: #000 !important;
+    padding-left: 5px !important;
+}
+
 /*Invoice Page*/
 #invoice {
 	padding: 0px;

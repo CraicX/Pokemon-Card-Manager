@@ -19,3 +19,7 @@ export function focusFolderName() {
         $(this).find('#folderName').focus();
     });
 }
+
+export function dispose() {
+    $("#createFolderModal").off('shown.bs.modal');
+}

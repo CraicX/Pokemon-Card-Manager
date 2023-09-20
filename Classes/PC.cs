@@ -12,6 +12,7 @@ public static class PC
     public static List<SetData> Sets        = new();
     public static List<FolderData> Folders  = new();
     public static List<CardData> Cards      = new();
+    public static List<Filter> Filters      = new();
 
     public static Dictionary<string, string> FolderTypes = new()
     {

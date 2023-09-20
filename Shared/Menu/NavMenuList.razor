@@ -1,11 +1,13 @@
 @using PokeCardManager.Classes;
-
+@using PokeCardManager.Classes.Events;
+@using PokeCardManager.Data;
+@inject UpdateFiltersEvent UpdateFiltersEvent
 
 @foreach (var etype in @MyList) 
 {
     <li>
         <div class="bx form-check form-check-default">
-            <input class="form-check-input" type="checkbox" value="" id="@etype">
+            <input class="form-check-input" type="checkbox" id="@etype" @onchange="eventArgs => { CheckFilter(etype, eventArgs); }" />
             <label class="form-check-label" for="@etype">
                 @etype
             </label>
@@ -14,6 +16,9 @@
 }
 
 @code {
+
+    [Parameter]
+    public string ListName { get; set; }
 
     public Dictionary<string, List<string>> ListDict = new Dictionary<string, List<string>>();
 
@@ -37,8 +42,34 @@
         }
     }
 
-    [Parameter]
-    public string ListName { get; set; }
+    public void CheckFilter(string etype, ChangeEventArgs e)
+    {
+        if ((bool)e.Value)
+        {
+            Filter filter = new()
+            {
+                Type  = (Filter.FilterTypes)Enum.Parse(typeof(Filter.FilterTypes), ListName),
+                Title = etype,
+                Value = etype,
+            };
+
+            UpdateFiltersEvent.AddFilter(filter);
+        }
+        else
+        {
+            Filter filter = new()
+            {
+                Type  = (Filter.FilterTypes)Enum.Parse(typeof(Filter.FilterTypes), ListName),
+                Title = etype,
+                Value = etype,
+            };
+
+            UpdateFiltersEvent.RemoveFilter(filter);
+
+        }
+    }
+
+    
 
    
 
