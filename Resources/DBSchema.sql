@@ -66,11 +66,15 @@ CREATE TABLE IF NOT EXISTS [Prices] (
 CREATE INDEX IF NOT EXISTS PriceCardId ON Prices(cardId);
 
 CREATE TABLE IF NOT EXISTS [Folders] (
-	[id]		   INTEGER      NOT NULL PRIMARY KEY,
-	[name]	       VARCHAR(64)  NOT NULL DEFAULT '',
-	[folderType]   VARCHAR(64)  NOT NULL DEFAULT '',
-	[icon]	       VARCHAR(128) NOT NULL DEFAULT ''
+  [id]           INTEGER      NOT NULL PRIMARY KEY,
+  [parentId]     INTEGER      NOT NULL DEFAULT 0,
+  [sortIndex]    INTEGER      NOT NULL DEFAULT 0,
+  [name]         VARCHAR(64)  NOT NULL DEFAULT '',
+  [folderType]   VARCHAR(64)  NOT NULL DEFAULT '',
+  [icon]         VARCHAR(128) NOT NULL DEFAULT ''
 );
+
+CREATE INDEX IF NOT EXISTS FolderSortIndex ON Folders(sortIndex);
 
 CREATE TABLE IF NOT EXISTS [FolderMap] (
 	[cardId]	   INTEGER       NOT NULL DEFAULT 0,

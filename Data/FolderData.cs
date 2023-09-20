@@ -8,6 +8,17 @@ public class FolderData
         get; set;
     }
 
+    public int parentId
+    {
+
+        get; set;
+    }
+
+    public int sortIndex
+    {
+        get; set;
+    }
+
     public string name
     {
         get; set;

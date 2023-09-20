@@ -113,7 +113,7 @@ public static class Sqlite
 
         con.Open();
 
-        using var cmd = new SQLiteCommand("SELECT id, name, folderType, icon FROM Folders ORDER BY folderType, name", con);
+        using var cmd = new SQLiteCommand("SELECT id, parentId, sortIndex, name, folderType, icon FROM Folders ORDER BY folderType, sortIndex, name", con);
 
         SQLiteDataReader r = cmd.ExecuteReader();
 
@@ -122,9 +122,11 @@ public static class Sqlite
             folders.Add(new FolderData()
             {
                 id         = r.GetInt32(0),
-                name       = r.GetString(1),
-                folderType = r.GetString(2),
-                icon       = r.GetString(3)
+                parentId   = r.GetInt32(1),
+                sortIndex  = r.GetInt32(2),
+                name       = r.GetString(3),
+                folderType = r.GetString(4),
+                icon       = r.GetString(5)
             });
         }
 
@@ -255,6 +257,8 @@ public static class Sqlite
         if (result == null) return string.Empty;
         else return result.ToString();
     }
+
+    public static int GetInt(string query) => (!int.TryParse(GetString(query), out var res)) ? 0 : res;
 
 
     public static T[] GetColumn<T>(string query)

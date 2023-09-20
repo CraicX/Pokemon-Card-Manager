@@ -33,11 +33,40 @@ public static class PC
         if (Folders.Exists(f => f.name == folder.name))
             return false;
 
-        if (!Sqlite.Query(@"INSERT INTO Folders (name, folderType) VALUES (@name, @folderType);",
+        var maxPos = Sqlite.GetInt($"SELECT MAX(sortIndex) FROM Folders WHERE folderType = '{folder.folderType}'");
+
+        if (!Sqlite.Query(@"INSERT INTO Folders (name, folderType, sortIndex) VALUES (@name, @folderType, @sortIndex);",
             new SQLiteParameter("name", folder.name),
-            new SQLiteParameter("folderType", folder.folderType))) return false;
+            new SQLiteParameter("folderType", folder.folderType),
+            new SQLiteParameter("sortIndex", maxPos + 1)
+            )) return false;
 
         Folders = Sqlite.GetFolders();
+
+        return true;
+    }
+
+    public static bool SortFolder(FolderSort folder)
+    {
+        for (var i = Folders.Count; --i >= 0;)
+        {
+            if (Folders[i].id == folder.folderId)
+            {
+                Folders[i].sortIndex = folder.sortIndex;
+                Folders[i].parentId  = folder.parentId;
+            }
+            else if (Folders[i].parentId == folder.parentId)
+            {
+                if (Folders[i].sortIndex >= folder.sortIndex) Folders[i].sortIndex++;
+            }
+            else continue;
+
+            Sqlite.Query(@"UPDATE Folders SET sortIndex = @sortIndex, parentId = @parentId WHERE id = @id;",
+                new SQLiteParameter("sortIndex", Folders[i].sortIndex),
+                new SQLiteParameter("parentId",  Folders[i].parentId),
+                new SQLiteParameter("id",        Folders[i].id));
+
+        }
 
         return true;
     }
