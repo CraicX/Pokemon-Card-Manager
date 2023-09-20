@@ -4,7 +4,7 @@
 @inject IJSRuntime JS
 @inject AddFolderEvent AddFolderEvent
 
-<div class="modal fade" id="createFolderModal" tabindex="-1" style="display: none;" @onactivate="FocusFolderName">
+<div class="modal fade" id="createFolderModal" tabindex="-1" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,6 +60,8 @@
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Modals.razor.js");
         }
+
+        await module.InvokeVoidAsync("focusFolderName");
     }
 
     private void CheckNewFolder()
@@ -88,9 +90,5 @@
 
     }
 
-    private void FocusFolderName()
-    {
-        JS.InvokeVoidAsync("$('#folderName').focus();");
-    }
 }
 

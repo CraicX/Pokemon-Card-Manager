@@ -32,11 +32,13 @@
 
 
 @code {
-    private bool x;
     private IJSObjectReference module;
-    public Dictionary<string, List<FolderData>> FoldersByType = new();
 
-    public Dictionary<int, List<FolderData>> FoldersByParent = new();
+    public Dictionary<string, List<FolderData>> FoldersByType
+    {
+        get;
+        set;
+    } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -49,6 +51,8 @@
 
         await module.InvokeVoidAsync("runFolderSort");
     }
+
+
     protected override void OnInitialized()
     {
         SChanged();
@@ -56,6 +60,7 @@
 
         AddFolderEvent.OnChange += SChanged;
     }
+
 
     [JSInvokable]
     public static Task<string> FolderSorted(string sortInfo)
@@ -68,6 +73,7 @@
 
         return Task.FromResult("");
     }
+
 
     public void SChanged()
     {
@@ -84,8 +90,9 @@
 
         }
 
-    }
+        StateHasChanged();
 
+    }
 
 
     public void Dispose()

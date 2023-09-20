@@ -13,3 +13,9 @@ export function closeFolderModal() {
     $('#folderAdd').addClass('disabled');
     $('#createFolderModal').modal('hide');
 }
+
+export function focusFolderName() {
+    $("#createFolderModal").on('shown.bs.modal', function () {
+        $(this).find('#folderName').focus();
+    });
+}
