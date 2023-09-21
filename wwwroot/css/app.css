@@ -1047,20 +1047,57 @@ form select.error, form textarea.error, form input.error, form input.error:focus
 
 .chip.chip-sm img {
     margin: 0px;
+    padding-right: 2px;
     height: 22px !important;
     width: auto !important;
     border-radius: 0;
     float: none;
 }
-.chip.bg-rarity {
-    background-color: #F1F1F1CC !important;
-    color: #000 !important;
-    padding-left: 5px !important;
+html.light-theme .bg-rarity img {
+    filter: invert(0.3);
 }
+
+html.light-theme .chip.bg-element,
+html.light-theme .chip.bg-supertype,
+html.light-theme .chip.bg-sets,
+html.light-theme .chip.bg-rarity {
+    background-color: #e3e3e3;
+    color: #050505 !important;
+    padding-left: 10px;
+    border: 1px solid #0d6efd99;
+}
+html.dark-theme .chip.bg-element {
+    background-color: #111111 !important;
+    color: #FFF !important;
+    padding-left: 10px !important;
+    border: 1px solid #ffc10799 !important;
+}
+
+html.dark-theme .chip.bg-sets {
+    background-color: #111111 !important;
+    color: #FFF !important;
+    padding-left: 10px !important;
+    border: 1px solid #ff000099 !important;
+}
+
+html.dark-theme .chip.bg-supertype {
+    background-color: #111111 !important;
+    color: #FFF !important;
+    padding-left: 10px !important;
+    border: 1px solid #00811299 !important;
+}
+
+html.dark-theme .chip.bg-rarity {
+    background-color: #111111 !important;
+    color: #FFF !important;
+    padding-left: 5px !important;
+    border: 1px solid #0d6efd99 !important;
+}
+
 
 /*Invoice Page*/
 #invoice {
-	padding: 0px;
+    padding: 0px;
 }
 .invoice {
 	position: relative;

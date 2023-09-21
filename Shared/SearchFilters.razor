@@ -15,13 +15,13 @@
             {
                 if (filter.Type == Filter.FilterTypes.SuperTypes)
                 {
-                    <div class="chip chip-sm">
+                <div class="chip chip-sm bg-supertype text-white">
                         @filter.Value <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                     </div>
 
                 } else if (filter.Type == Filter.FilterTypes.Rarities) {
 
-                <div class="chip chip-sm bg-rarity text-dark">
+                <div class="chip chip-sm bg-rarity text-white">
                     <img src="/img/icons/rarity/r-@(filter.GetImage).png" />
                         @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                 </div>
@@ -29,14 +29,14 @@
                 } else if (filter.Type == Filter.FilterTypes.ElementTypes)
 
                 {
-                    <div class="chip chip-sm bg-dark text-white">
+                    <div class="chip chip-sm bg-element text-white">
                         @filter.Value <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                     </div>
                 }
                 else if (filter.Type == Filter.FilterTypes.SetName)
 
                 {
-                    <div class="chip chip-sm bg-black text-white">
+                    <div class="chip chip-sm bg-sets text-white">
                         @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                     </div>
                 }
