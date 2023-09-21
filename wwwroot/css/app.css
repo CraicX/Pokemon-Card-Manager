@@ -1045,7 +1045,7 @@ form select.error, form textarea.error, form input.error, form input.error:focus
     font-size: 14px;
 }
 
-.chip.chip-sm img {
+.bg-rarity img {
     margin: 0px;
     padding-right: 2px;
     height: 22px !important;
@@ -1055,6 +1055,15 @@ form select.error, form textarea.error, form input.error, form input.error:focus
 }
 html.light-theme .bg-rarity img {
     filter: invert(0.3);
+}
+
+.bg-sets img {
+    margin: 0px;
+    padding-right: 2px;
+    height: 16px !important;
+    width: auto !important;
+    border-radius: 0;
+    float: none;
 }
 
 html.light-theme .chip.bg-element,
@@ -1070,7 +1079,7 @@ html.dark-theme .chip.bg-element {
     background-color: #111111 !important;
     color: #FFF !important;
     padding-left: 10px !important;
-    border: 1px solid #ffc10799 !important;
+    border: 1px solid #0d6efd33 !important;
 }
 
 html.dark-theme .chip.bg-sets {

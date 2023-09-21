@@ -1,4 +1,9 @@
 ﻿using System.Data.SQLite;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Windows.Shapes;
+using System.Xml.Linq;
 using PokeCardManager.Data;
 
 namespace PokeCardManager.Classes;
@@ -74,6 +79,34 @@ public static class PC
         Folders = SortedFolders.ToList();
 
         return true;
+    }
+
+    public static async Task<bool> GetSetImages()
+    {
+        Console.WriteLine("Checking Set Images");
+
+        foreach (var set in Sets)
+        {
+            var symbolPath = $"{Config.WWWRootPath}\\img\\icons\\sets\\{set.id}.png";
+
+            if (!File.Exists(symbolPath))
+            {
+                using var client = new HttpClient();
+
+                var res = await client.GetAsync(set.imgSymbol);
+
+                var bytes = await res.Content.ReadAsByteArrayAsync();
+
+                await File.WriteAllBytesAsync(symbolPath, bytes);
+
+                Console.WriteLine($"Saved set image for [ {set.id} ]");
+
+            }
+            
+        }
+
+        return true;
+
     }
 
 }

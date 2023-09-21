@@ -20,9 +20,9 @@
                     </a>
                 </li>
 
-                <li class="nav-item dark-mode d-none d-sm-flex">
-                    <a id="themeIcon" class="nav-link dark-mode-icon" href="javascript:;">
-                        <i class='bx bx-moon' @onclick="SetTheme"></i>
+                <li class="nav-item @currentTheme d-none d-sm-flex">
+                    <a id="themeIcon" class="nav-link dark-mode-icon" href="javascript:;" @onclick="SetTheme">
+                        <i class='bx @currentThemeIcon' />
                     </a>
                 </li>
             </ul>
@@ -34,8 +34,11 @@
 
 @code {
 
-    private IJSObjectReference? module;
-    private string currentTheme = "dark-theme";
+    private IJSObjectReference module;
+
+    public string currentTheme { get; set; } = Config.Settings.Theme;
+
+    string currentThemeIcon => currentTheme == "light-theme" ? "bx-sun" : "bx-moon";
 
     private string query = "";
 
@@ -53,6 +56,8 @@
         if (firstRender)
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavSearch.razor.js");
+
+            await module.InvokeVoidAsync("setTheme", Config.Settings.Theme);
         }
     }
 
@@ -81,8 +86,12 @@
     private async Task SetTheme()
     {
         currentTheme = (currentTheme == "light-theme" ? "dark-theme" : "light-theme");
-        
+
         await module.InvokeVoidAsync("setTheme", currentTheme);
+
+        Config.Settings.Theme = currentTheme;
+
+        Config.Settings.Save();
     }
 
 }

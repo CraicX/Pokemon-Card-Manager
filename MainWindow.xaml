@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PokeCardManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    SizeChanged="WindowResized"
+    WindowStartupLocation="CenterScreen"
     Title="Pokemon Card Manager"
     Height="600"
     Width="1075"

@@ -37,6 +37,7 @@
 
                 {
                     <div class="chip chip-sm bg-sets text-white">
+                        <img src="/img/icons/sets/@(filter.Value).png" />
                         @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                     </div>
                 }
