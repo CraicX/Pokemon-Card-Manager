@@ -28,10 +28,15 @@ public partial class MainWindow : Window
 
     public void WindowResized(object sender, RoutedEventArgs e)
     {
+        
+    }
+
+    void Shutdown(object sender, EventArgs e)
+    {
         Config.Settings.WindowWidth  = (int)Width;
         Config.Settings.WindowHeight = (int)Height;
-
         Config.Settings.Save();
     }
+
 
 }

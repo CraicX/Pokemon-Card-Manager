@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     SizeChanged="WindowResized"
     WindowStartupLocation="CenterScreen"
+    Closing="Shutdown"
     Title="Pokemon Card Manager"
     Height="600"
     Width="1075"

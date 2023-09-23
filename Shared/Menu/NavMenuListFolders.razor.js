@@ -1,5 +1,4 @@
 ﻿
-
 export function initFolderSort() {
     $('.folderGroup').nestedSortable({
         listType: 'ul',
@@ -32,4 +31,30 @@ export function runFolderSort() {
         }
     });
 
+}
+
+export function toggleFolder(folderType) 
+{
+    $('.folderGroup[data-folder-type="' + folderType + '"]').toggle();
+
+    let collapsed = false;
+
+    if ($('.folderGroup[data-folder-type="' + folderType + '"]').css('display') == 'none' ) {
+
+        $('.bx[data-folder-type="' + folderType + '"]').removeClass('bx-minus').addClass('bx-plus');
+
+    } else {
+
+        $('.bx[data-folder-type="' + folderType + '"]').removeClass('bx-plus').addClass('bx-minus');
+
+        collapsed = true;
+
+    }
+
+    let tfObj = {
+        'folderType': folderType,
+        'collapsed': collapsed,
+    };
+
+    DotNet.invokeMethodAsync('PokeCardManager', 'FolderGroupCollapsed', folderType, collapsed);
 }
