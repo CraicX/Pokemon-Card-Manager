@@ -1,4 +1,6 @@
-﻿namespace PokeCardManager.Data;
+﻿using System.Collections.Generic;
+
+namespace PokeCardManager.Data;
 public class Filter
 {
     public FilterTypes Type { get; set; }

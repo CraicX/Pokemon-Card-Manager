@@ -1,9 +1,10 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
-using System.Windows.Shapes;
-using System.Xml.Linq;
+using System.Threading.Tasks;
 using PokeCardManager.Data;
 
 namespace PokeCardManager.Classes;

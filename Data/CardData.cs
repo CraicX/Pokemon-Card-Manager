@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace PokeCardManager.Data;
 public class CardData
 {

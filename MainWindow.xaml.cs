@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using PokeCardManager.Classes;
 using PokeCardManager.Classes.Events;

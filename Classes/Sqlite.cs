@@ -4,7 +4,8 @@ using System.Text;
 using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
 using System.IO;
-
+using System.Collections.Generic;
+using System;
 
 namespace PokeCardManager.Classes;
 public static class Sqlite

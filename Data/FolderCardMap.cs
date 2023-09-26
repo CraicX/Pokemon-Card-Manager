@@ -1,4 +1,6 @@
-﻿namespace PokeCardManager.Data;
+﻿using System;
+
+namespace PokeCardManager.Data;
 public class FolderCardMap
 {
     public int cardId { get; set; }

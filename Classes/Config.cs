@@ -1,7 +1,9 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;

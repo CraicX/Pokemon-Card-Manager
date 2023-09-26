@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PokeCardManager.Classes;
 public static class Utils

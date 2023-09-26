@@ -1,4 +1,6 @@
-﻿using PokeCardManager.Data;
+﻿using System;
+using System.Linq;
+using PokeCardManager.Data;
 
 namespace PokeCardManager.Classes.Events;
 public class UpdateFiltersEvent
