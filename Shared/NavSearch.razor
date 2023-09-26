@@ -1,5 +1,6 @@
 @using PokeCardManager.Classes
 @using PokeCardManager.Data
+@using System.Net
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
@@ -71,15 +72,16 @@
         }
     }
 
-    public async void ExecuteSearch(string query)
+    public void ExecuteSearch(string query)
     {
+        query = WebUtility.UrlEncode(query);
 
-        Navigation.NavigateTo("/search", new NavigationOptions
+        Navigation.NavigateTo($"/search/{query}/", new NavigationOptions
         {
             // ForceLoad = true,
         });
 
-        _ = await PokeAPI.CardSearch(query);
+        //_ = await PokeAPI.CardSearch(query);
     }
 
 

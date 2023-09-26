@@ -1,20 +1,65 @@
-﻿@page "/Search"
+﻿@using System.Net;
+@using PokeCardManager.Data;
+@using PokeCardManager.Classes;
+
+@page "/Search/{query}"
+@inject IJSRuntime JS
+
 
 <div class="card radius-10 m-0 p-0">
     <div class="card-body">
         <div class="d-flex align-items-center">
-            <div>
-                <span class="mb-0 pe-3 text-secondary" id="searchText">Searching...</span>
-            </div>
-            <div class="spinner-grow left me-3 ps-3" role="status" id="searchSpinner">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <div class="font-22 ms-auto">
-                <i class="bx bx-dots-horizontal-rounded ms-3"></i>
-            </div>
+            @if (Results == null)
+            {
+                <div>
+                    <span class="mb-0 pe-3 text-secondary" id="searchText">Searching...</span>
+                </div>
+                <div class="spinner-grow left me-3 ps-3" role="status" id="searchSpinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <span class="mb-0 pe-3 text-secondary" id="searchText">Results: @Results.Count</span>
+                </div>
+            }
         </div>
     </div>
 </div>
 <div class="poke-card-container p-1" id="pcc-search">
     
+    @if (Results != null && Results.Count > 0)
+    {
+        @foreach (var card in Results)
+        {
+            <PokeCard card="@card" />
+        }
+    }        
 </div>
+
+@code {
+    [Parameter]
+    public string query { get; set; }
+
+    private IJSObjectReference module;
+
+    public string queryDecoded => WebUtility.UrlDecode(query);
+
+    private List<CardX> Results;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Results = await PokeAPI.CardSearch(queryDecoded);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Pages/Search.razor.js");
+        }
+
+        await module.InvokeVoidAsync("initCardEffects");
+    }
+}

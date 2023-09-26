@@ -1,23 +1,13 @@
 ﻿namespace PokeCardManager.Data;
 public class Filter
 {
-    public FilterTypes Type
-    {
-        get; set;
-    }
+    public FilterTypes Type { get; set; }
 
-    public string Value
-    {
-        get; set;
-    }
+    public string Value { get; set; }
 
-    public string Title
-    {
-        get; set;
-    }
+    public string Title { get; set; }
 
-    public int Hash => GetHashCode();
-
+    public int Hash => GetHashCode(); 
 
     public string GetImage
     {

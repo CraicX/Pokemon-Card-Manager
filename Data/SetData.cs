@@ -1,61 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PokeCardManager.Data;
+﻿namespace PokeCardManager.Data;
 public class SetData
 {
-    [Column("rowId")]
-    public int rowId
-    {
-        get; set;
-    }
+    public int rowId { get; set; }
 
-    [Column("id")]
-    public string id
-    {
-        get; set;
-    }
+    public string id { get; set; }
 
-    [Column("name")]
-    public string name
-    {
-        get; set;
-    }
+    public string name { get; set; }
 
-    [Column("series")]
-    public string series
-    {
-        get; set;
-    }
+    public string series { get; set; }
 
-    [Column("printedTotal")]
-    public int printedTotal
-    {
-        get; set;
-    }
+    public int printedTotal { get; set; }
 
-    [Column("Total")]
-    public int Total
-    {
-        get; set;
-    }
+    public int Total { get; set; }
 
-    [Column("releaseDate")]
-    public DateTime releaseDate
-    {
-        get; set;
-    }
+    public DateTime releaseDate { get; set; }
 
-    [Column("imgSymbol")]
-    public string imgSymbol
-    {
-        get; set;
-    }
+    public string imgSymbol { get; set; }
 
-    [Column("imgLogo")]
-    public string imgLogo
-    {
-        get; set;
-    }
-
+    public string imgLogo { get; set; }
 
 }
