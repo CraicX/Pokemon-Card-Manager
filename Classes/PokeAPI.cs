@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
@@ -24,7 +23,7 @@ public static class PokeAPI
 {
     static readonly string ApiKey = "3e058698-4207-4151-a9ba-c1973a1514df";
 
-    public static PokemonApiClient pokeClient;
+    public static PokemonApiClient PokeClient;
     public static SubTypes SubTypes;
     public static SuperTypes SuperTypes;
     public static Rarities Rarities;
@@ -45,30 +44,26 @@ public static class PokeAPI
     //
     public static void Init()
     {
-        pokeClient = new PokemonApiClient(ApiKey);
+        PokeClient = new PokemonApiClient(ApiKey);
     }
 
 
     public static async Task<string[]> GetSubTypes()
     {
-        var types = await pokeClient.GetStringResourceAsync<SubTypes>();
-
+        var types = await PokeClient.GetStringResourceAsync<SubTypes>();
         PokemonSubTypes  = types.SubType.ToArray();
-
-        return types.SubType.ToArray();
+        return PokemonSubTypes;
     }
 
 
-    public static async Task<List<PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set.Set>> GetSetsFromAPI()
+    public static async Task<List<Set>> GetSetsFromAPI()
     {
-        var cardSets = await pokeClient.GetApiResourceAsync<PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set.Set>();
-
-        CardSets = cardSets.Results;
-
+        var cardSetsResponse = await PokeClient.GetApiResourceAsync<Set>();
+        CardSets = cardSetsResponse.Results;
         return CardSets;
     }
 
-
+   
     public static Dictionary<string, string> BuildFilterDict()
     {
         var dict = new Dictionary<string, string>();
@@ -85,6 +80,17 @@ public static class PokeAPI
     }
 
 
+    private static void AddToFilter(string key, string value)
+    {
+        if (!Filter.ContainsKey(key))
+        {
+            Filter.Add(key, new List<string>());
+        }
+
+        Filter[key].Add(value.ToLower());
+    }
+
+
     //
     // ─── CARD SEARCH ────────────────────────────────────────────────────────────────
     //
@@ -96,27 +102,19 @@ public static class PokeAPI
 
         if (query == null || query == string.Empty) query = Query;
 
-        //  split query into words
-        
         if (query != string.Empty) { 
         
             var words = query.Split(' ');
 
-            //  loop through words
-        
             foreach (var word in words)
             {
                 if (PC.SubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
                 {
-                    if (!Filter.ContainsKey("subtypes")) Filter.Add("subtypes", new List<string>());
-
-                    Filter["subtypes"].Add(word);
+                    AddToFilter("subtypes", word);
                 }
                 else
                 {
-                    if (!Filter.ContainsKey("name")) Filter.Add("name", new List<string>());
-
-                    Filter["name"].Add(word);
+                    AddToFilter("name", word);
                 }
             }
 
@@ -128,38 +126,25 @@ public static class PokeAPI
             {
                 if (filter.Type == Data.Filter.FilterTypes.SubTypes) 
                 {
-                    if (!Filter.ContainsKey("subtypes")) Filter.Add("subtypes", new List<string>());
-                    Filter["subtypes"].Add(filter.Value.ToLower());
-                    continue;
+                    AddToFilter("subtypes", filter.Value);
                 }
                 else if (filter.Type == Data.Filter.FilterTypes.Rarities)
                 {
-                    if (!Filter.ContainsKey("rarities")) Filter.Add("rarity", new List<string>());
-                    Filter["rarity"].Add(filter.Value.ToLower());
-                    continue;
+                    AddToFilter("rarity", filter.Value);
                 }
                 else if (filter.Type == Data.Filter.FilterTypes.ElementTypes)
                 {
-                    if (!Filter.ContainsKey("types")) Filter.Add("types", new List<string>());
-                    Filter["types"].Add(filter.Value.ToLower());
-                    continue;
+                    AddToFilter("types", filter.Value);
                 }
                 else if (filter.Type == Data.Filter.FilterTypes.SetName)
                 {
-                    if (!Filter.ContainsKey("set.id")) Filter.Add("set.id", new List<string>());
-                    Filter["set.id"].Add(filter.Value.ToLower());
-                    continue;
+                    AddToFilter("set.id", filter.Value);
                 }
             }
         }
 
-        JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-        };
-
         var searchFilter = BuildFilterDict();
-        var cards = await pokeClient.GetApiResourceAsync<Card>(searchFilter);
+        var cards = await PokeClient.GetApiResourceAsync<Card>(searchFilter);
 
 
         ResultSet = new()
@@ -186,8 +171,5 @@ public static class PokeAPI
 
         return CardResults;
     }
-
-
-    
 
 }

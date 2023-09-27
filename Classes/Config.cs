@@ -26,16 +26,8 @@ public static class Config
     //
     public static string RootPath    = "";
     public static string WWWRootPath = "";
-    public static string CachePath   = "";
     public static string AppPath     = "";
-    public static string AvatarsPath = "";
     public static string DataPath    = "";
-    public static string VoicesPath  = "";
-    public static string ExportPath  = "";
-    public static string WebPath     = "";
-    public static string TPLPath     = "";
-    public static string WidgetPath  = "";
-    public static string TempPath    = "";
     public static string AppName     = "PokeCard";
     public static Settings Settings  = new();
 
@@ -66,7 +58,7 @@ public static class Config
         {
             Debug.WriteLine("Refreshing SubTypes...");
 
-            var subTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SubTypes>();
+            var subTypes = await PokeAPI.PokeClient.GetStringResourceAsync<SubTypes>();
 
             Sqlite.Query($"DELETE FROM Subtypes;");
 
@@ -90,7 +82,7 @@ public static class Config
         {
             Debug.WriteLine("Refreshing Rarities...");
 
-            var rarities = await PokeAPI.pokeClient.GetStringResourceAsync<Rarities>();
+            var rarities = await PokeAPI.PokeClient.GetStringResourceAsync<Rarities>();
 
             Sqlite.Query($"DELETE FROM Rarities;");
 
@@ -116,7 +108,7 @@ public static class Config
         {
             Debug.WriteLine("Refreshing SuperTypes...");
 
-            var superTypes = await PokeAPI.pokeClient.GetStringResourceAsync<SuperTypes>();
+            var superTypes = await PokeAPI.PokeClient.GetStringResourceAsync<SuperTypes>();
 
             Settings.SuperTypes        = superTypes.SuperType.ToArray();
             Settings.SuperTypesUpdated = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
@@ -135,7 +127,7 @@ public static class Config
         {
             Debug.WriteLine("Refreshing ElementTypes...");
 
-            var elementTypes = await PokeAPI.pokeClient.GetStringResourceAsync<ElementTypes>();
+            var elementTypes = await PokeAPI.PokeClient.GetStringResourceAsync<ElementTypes>();
 
             Settings.ElementTypes        = elementTypes.ElementType.ToArray();
             Settings.ElementTypesUpdated = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
@@ -196,14 +188,10 @@ public static class Config
 
         RootPath    = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.AppName);
         AppPath     = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
-        CachePath   = Path.Combine(RootPath, "Cache");
-        WebPath     = Path.Combine(AppPath, "Web");
-        TPLPath     = Path.Combine(WebPath, "sections");
-        WidgetPath  = Path.Combine(WebPath, "widgets");
         DataPath    = Path.Combine(RootPath, "Data");
         WWWRootPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
-        foreach (var path in new string[] { CachePath, WebPath, TPLPath, WidgetPath, DataPath })
+        foreach (var path in new string[] { DataPath })
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
     }

@@ -41,6 +41,8 @@
     }        
 </div>
 
+<div class="clearfix p-5"></div>
+
 @code {
     [Parameter]
     public string queryhash { get; set; }
@@ -51,7 +53,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        //Results = null;
+        Results = null;
         Results = await PokeAPI.CardSearch();
     }
 
