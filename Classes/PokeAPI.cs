@@ -1,6 +1,12 @@
-﻿using System;
+﻿//   _____     _                        _____           _    _____                         
+//  |  _  |___| |_ ___ _____ ___ ___   |   __|___ ___ _| |  |     |___ ___ ___ ___ ___ ___ 
+//  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
+//  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
+//                                                                            |___|        
+//  PokeAPI
+//
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -23,34 +29,35 @@ public static class PokeAPI
     public static SuperTypes SuperTypes;
     public static Rarities Rarities;
     public static ElementTypes ElementTypes;
-    public static ResultSet ResultSet = new();
 
     static readonly Dictionary<string, List<string>> Filter = new();
 
     public static List<CardX> CardResults = new();
     public static List<Set> CardSets      = new();
     public static string Query            = string.Empty;
-
+    public static ResultSet ResultSet     = new();
 
     public static string[] PokemonSubTypes;
 
 
-
+    //
+    // ─── INIT ────────────────────────────────────────────────────────────────
+    //
     public static void Init()
     {
         pokeClient = new PokemonApiClient(ApiKey);
     }
 
+
     public static async Task<string[]> GetSubTypes()
     {
         var types = await pokeClient.GetStringResourceAsync<SubTypes>();
 
-        Debug.WriteLine(types.SubType.FirstOrDefault());
-
-        PokemonSubTypes = types.SubType.ToArray();
+        PokemonSubTypes  = types.SubType.ToArray();
 
         return types.SubType.ToArray();
     }
+
 
     public static async Task<List<PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set.Set>> GetSetsFromAPI()
     {
@@ -62,8 +69,28 @@ public static class PokeAPI
     }
 
 
+    public static Dictionary<string, string> BuildFilterDict()
+    {
+        var dict = new Dictionary<string, string>();
+
+        foreach (var item in Filter)
+        {
+            if (item.Value.Count > 0)
+            {
+                dict.Add(item.Key, string.Join(';', item.Value));
+            }
+        }
+
+        return dict;
+    }
+
+
+    //
+    // ─── CARD SEARCH ────────────────────────────────────────────────────────────────
+    //
     public static async Task<List<CardX>> CardSearch(string query="")
     {
+        
         Filter.Clear();
         CardResults.Clear();
 
@@ -75,8 +102,8 @@ public static class PokeAPI
         
             var words = query.Split(' ');
 
-
             //  loop through words
+        
             foreach (var word in words)
             {
                 if (PC.SubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
@@ -124,20 +151,16 @@ public static class PokeAPI
                     continue;
                 }
             }
-
         }
-
-
-
-        var searchFilter = BuildFilterDict();
 
         JsonConvert.DefaultSettings = () => new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
         };
 
-
+        var searchFilter = BuildFilterDict();
         var cards = await pokeClient.GetApiResourceAsync<Card>(searchFilter);
+
 
         ResultSet = new()
         {
@@ -150,7 +173,6 @@ public static class PokeAPI
 
         if (cards.Results.Count > 0)
         {
-            Debug.WriteLine("Results found: " + cards.Results.Count);
             CardResults.Clear();
 
             foreach (var card in cards.Results)
@@ -158,7 +180,6 @@ public static class PokeAPI
                 // change to CardX
                 CardX xcard = new();
                 xcard.Map(card);
-
                 CardResults.Add(xcard);
             }
         }
@@ -167,19 +188,6 @@ public static class PokeAPI
     }
 
 
-    public static Dictionary<string, string> BuildFilterDict()
-    {
-        var dict = new Dictionary<string, string>();
-
-        foreach (var item in Filter)
-        {
-            if (item.Value.Count > 0)
-            {
-                dict.Add(item.Key, string.Join(';', item.Value));
-            }
-        }
-
-        return dict;
-    }
+    
 
 }

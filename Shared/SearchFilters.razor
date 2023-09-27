@@ -78,6 +78,7 @@
 
     public void SChanged()
     {
+        StateHasChanged();
 
         if (PokeAPI.Query == "" && PC.Filters.Count == 0) return;
 
@@ -87,7 +88,6 @@
 
         Navigation.NavigateTo($"/search/{queryHash}", false, true);
 
-        StateHasChanged();
 
     }
 

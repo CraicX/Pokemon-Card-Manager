@@ -1,4 +1,11 @@
-﻿using System;
+﻿//   _____     _                        _____           _    _____                         
+//  |  _  |___| |_ ___ _____ ___ ___   |   __|___ ___ _| |  |     |___ ___ ___ ___ ___ ___ 
+//  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
+//  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
+//                                                                            |___|        
+//  MainWindow
+//
+using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using PokeCardManager.Classes;
@@ -27,17 +34,11 @@ public partial class MainWindow : Window
         Resources.Add("services", serviceCollection.BuildServiceProvider());
     }
 
-    public void WindowResized(object sender, RoutedEventArgs e)
-    {
-        
-    }
-
     void Shutdown(object sender, EventArgs e)
     {
         Config.Settings.WindowWidth  = (int)Width;
         Config.Settings.WindowHeight = (int)Height;
         Config.Settings.Save();
     }
-
 
 }

@@ -51,7 +51,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Results = null;
+        //Results = null;
         Results = await PokeAPI.CardSearch();
     }
 

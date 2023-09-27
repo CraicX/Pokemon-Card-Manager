@@ -1,8 +1,14 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using System.IO;
+﻿//   _____     _                        _____           _    _____                         
+//  |  _  |___| |_ ___ _____ ___ ___   |   __|___ ___ _| |  |     |___ ___ ___ ___ ___ ___ 
+//  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
+//  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
+//                                                                            |___|        
+//  Utils
+//
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace PokeCardManager.Classes;
 public static class Utils

@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿//   _____     _                        _____           _    _____                         
+//  |  _  |___| |_ ___ _____ ___ ___   |   __|___ ___ _| |  |     |___ ___ ___ ___ ___ ___ 
+//  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
+//  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
+//                                                                            |___|        
+//  Filter
+//
+using System.Collections.Generic;
 
 namespace PokeCardManager.Data;
 public class Filter
 {
     public FilterTypes Type { get; set; }
-
     public string Value { get; set; }
-
     public string Title { get; set; }
-
     public int Hash => GetHashCode(); 
-
     public string GetImage
     {
         get
@@ -46,8 +49,8 @@ public class Filter
                 { "Rare Ultra"     , "rare-ultra"     },
                 { "Ultra Rare"     , "ultra-rare"     },
                 { "Amazing Rare"   , "amazing-rare"   },
-                { "Illustration Rare"     , "illustration-rare"     },
-                { "Classic Collection"     , "rare-classic"     },
+                { "Illustration Rare"             , "illustration-rare"             },
+                { "Classic Collection"            , "rare-classic"                  },
                 { "Special Illustration Rare"     , "special-illustration-rare"     },
                 { "Trainer Gallery Rare Holo"     , "trainer-gallery-holo-rare"     },
             };

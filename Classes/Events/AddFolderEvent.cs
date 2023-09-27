@@ -3,12 +3,31 @@
 //  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
 //  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
 //                                                                            |___|        
-//  FolderSort
+//  AddFolderEvent
 //
-namespace PokeCardManager.Data;
-public class FolderSort
+using System;
+using PokeCardManager.Data;
+
+namespace PokeCardManager.Classes.Events;
+
+public class AddFolderEvent
 {
-    public int folderId { get; set; }
-    public int parentId { get; set; }
-    public int sortIndex { get; set; }
+    public event Action OnChange;
+
+    private void NotifyStateChanged() => OnChange?.Invoke();
+
+    public bool AddFolder(FolderData folder)
+    {
+
+        if (PC.AddFolder( folder )) { 
+
+            NotifyStateChanged();
+
+            return true;
+
+        }
+
+        return false;
+    }
+
 }
