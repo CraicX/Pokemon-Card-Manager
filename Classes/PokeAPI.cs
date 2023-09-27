@@ -27,7 +27,8 @@ public static class PokeAPI
     static readonly Dictionary<string, List<string>> Filter = new();
 
     public static List<CardX> CardResults = new();
-    public static List<Set> CardSets = new();
+    public static List<Set> CardSets      = new();
+    public static string Query            = string.Empty;
 
 
     public static string[] PokemonSubTypes;
@@ -60,10 +61,12 @@ public static class PokeAPI
     }
 
 
-    public static async Task<List<CardX>> CardSearch(string query)
+    public static async Task<List<CardX>> CardSearch(string query="")
     {
         Filter.Clear();
         CardResults.Clear();
+
+        if (query == null || query == string.Empty) query = Query;
 
         //  split query into words
         var words = query.Split(' ');

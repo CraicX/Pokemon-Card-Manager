@@ -2,7 +2,10 @@
 @using PokeCardManager.Data;
 @using PokeCardManager.Classes;
 
-@page "/Search/{query}"
+@inherits LayoutComponentBase
+
+@page "/search/{query}"
+
 @inject IJSRuntime JS
 
 
@@ -46,10 +49,11 @@
 
     public string queryDecoded => WebUtility.UrlDecode(query);
 
-    private List<CardX> Results;
+    private List<CardX> Results = null;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        Results = null;
         Results = await PokeAPI.CardSearch(queryDecoded);
     }
 

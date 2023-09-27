@@ -74,12 +74,11 @@
 
     public void ExecuteSearch(string query)
     {
+        PokeAPI.Query = query;
+
         query = WebUtility.UrlEncode(query);
 
-        Navigation.NavigateTo($"/search/{query}/", new NavigationOptions
-        {
-            // ForceLoad = true,
-        });
+        Navigation.NavigateTo($"/search/{query}", false, true);
 
         //_ = await PokeAPI.CardSearch(query);
     }
