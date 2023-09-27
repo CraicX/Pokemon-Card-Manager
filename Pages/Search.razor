@@ -4,7 +4,7 @@
 
 @inherits LayoutComponentBase
 
-@page "/search/{query}"
+@page "/search/{queryhash}"
 
 @inject IJSRuntime JS
 
@@ -24,7 +24,7 @@
             else
             {
                 <div>
-                    <span class="mb-0 pe-3 text-secondary" id="searchText">Results: @Results.Count</span>
+                    <span class="mb-0 pe-3 text-secondary" id="searchText">Results: @PokeAPI.ResultSet.TotalCount</span>
                 </div>
             }
         </div>
@@ -43,18 +43,16 @@
 
 @code {
     [Parameter]
-    public string query { get; set; }
+    public string queryhash { get; set; }
 
     private IJSObjectReference module;
-
-    public string queryDecoded => WebUtility.UrlDecode(query);
 
     private List<CardX> Results = null;
 
     protected override async Task OnParametersSetAsync()
     {
         Results = null;
-        Results = await PokeAPI.CardSearch(queryDecoded);
+        Results = await PokeAPI.CardSearch();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

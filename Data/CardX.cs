@@ -47,7 +47,7 @@ public class CardX : Card
     }
 
     public string RarityEffect => Rarity?.ToLower();
-    public string SubtypeEffect => string.Join(' ', Subtypes).ToLower();
+    public string SubtypeEffect => (Subtypes != null && Subtypes.Count > 0) ? string.Join(' ', Subtypes).ToLower() : "";
 
     public string ImageHtml
     {

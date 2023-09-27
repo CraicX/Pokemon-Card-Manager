@@ -85,6 +85,18 @@
         </li>
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
+            <a @onclick='() => ToggleNav("mm_subtype")' href="javascript:;">
+                <div class="parent-icon">
+                    <img class='bx micon' src="/img/icons/search-subtype.png" />
+                </div>
+                <div class="menu-title">SubType</div>
+            </a>
+            <ul class="collapse" id="mm_subtype">
+                <NavMenuList ListName="SubTypes" />
+            </ul>
+        </li>
+        <li class="menuCol">
+            <i class="bxr bx bx-chevron-left" />
             <a @onclick='() => ToggleNav("mm_set")' href="javascript:;">
                 
                 <div class="parent-icon">

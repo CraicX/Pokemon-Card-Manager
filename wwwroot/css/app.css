@@ -1076,6 +1076,7 @@ html.light-theme .bg-rarity img {
 
 html.light-theme .chip.bg-element,
 html.light-theme .chip.bg-supertype,
+html.light-theme .chip.bg-subtype,
 html.light-theme .chip.bg-sets,
 html.light-theme .chip.bg-rarity {
     background-color: #e3e3e3;
@@ -1102,6 +1103,13 @@ html.dark-theme .chip.bg-supertype {
     color: #FFF !important;
     padding-left: 10px !important;
     border: 1px solid #00811299 !important;
+}
+
+html.dark-theme .chip.bg-subtype {
+    background-color: #111111 !important;
+    color: #FFF !important;
+    padding-left: 10px !important;
+    border: 1px solid #0d968599 !important;
 }
 
 html.dark-theme .chip.bg-rarity {

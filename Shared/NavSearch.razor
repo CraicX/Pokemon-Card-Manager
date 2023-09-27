@@ -64,6 +64,8 @@
 
     private void CheckSearchKeys( KeyboardEventArgs args )
     {
+        PokeAPI.Query = query;
+
         //  Check if Enter key was pressed
         if (args.Key == "Enter" && query != "")
         {
@@ -74,13 +76,13 @@
 
     public void ExecuteSearch(string query)
     {
+        if (query == "" && PC.Filters.Count == 0) return;
+
         PokeAPI.Query = query;
 
-        query = WebUtility.UrlEncode(query);
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode();
 
-        Navigation.NavigateTo($"/search/{query}", false, true);
-
-        //_ = await PokeAPI.CardSearch(query);
+        Navigation.NavigateTo($"/search/{queryHash}", false, true);
     }
 
 

@@ -8,6 +8,8 @@
 @implements IDisposable
 @inject UpdateFiltersEvent UpdateFiltersEvent
 @inject IJSRuntime JS
+@inject NavigationManager Navigation
+
 
 <div class="card m-0 p-0">
     <div class="card-body">
@@ -15,9 +17,17 @@
             {
                 if (filter.Type == Filter.FilterTypes.SuperTypes)
                 {
-                <div class="chip chip-sm bg-supertype text-white">
+                    <div class="chip chip-sm bg-supertype text-white">
                         @filter.Value <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
                     </div>
+
+                }
+                else if (filter.Type == Filter.FilterTypes.SubTypes)
+                {
+
+                <div class="chip chip-sm bg-subtype text-white">
+                    @filter.Title <span class="closebtn" @onclick="eventArgs => { CloseChip(filter.Hash, eventArgs); }">×</span>
+                </div>
 
                 } else if (filter.Type == Filter.FilterTypes.Rarities) {
 
@@ -49,17 +59,7 @@
 @code {
     private IJSObjectReference module;
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenuListFolders.razor.js");
-
-    //         await module.InvokeVoidAsync("initFolderSort");
-    //     }
-
-    //     await module.InvokeVoidAsync("runFolderSort");
-    // }
+    
 
 
     protected override void OnInitialized()
@@ -78,18 +78,14 @@
 
     public void SChanged()
     {
-        // FoldersByType.Clear();
 
-        // foreach (var folder in PC.Folders)
-        // {
-        //     if (!FoldersByType.ContainsKey(folder.folderType))
-        //     {
-        //         FoldersByType.Add(folder.folderType, new List<FolderData>());
-        //     }
+        if (PokeAPI.Query == "" && PC.Filters.Count == 0) return;
 
-        //     FoldersByType[folder.folderType].Add(folder);
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode();
 
-        // }
+        // JS.InvokeVoidAsync("showAlert", "QueryHash: " + queryHash, "error");
+
+        Navigation.NavigateTo($"/search/{queryHash}", false, true);
 
         StateHasChanged();
 
@@ -100,7 +96,6 @@
     {
         UpdateFiltersEvent.OnChange -= SChanged;
 
-        //module.InvokeVoidAsync("disableFolderSort");
     }
 
 }
