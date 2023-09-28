@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
@@ -72,7 +73,7 @@ public static class PokeAPI
         {
             if (item.Value.Count > 0)
             {
-                dict.Add(item.Key, string.Join(';', item.Value));
+                dict.Add(item.Key, string.Join(',', item.Value));
             }
         }
 
@@ -139,6 +140,10 @@ public static class PokeAPI
                 else if (filter.Type == Data.Filter.FilterTypes.SetName)
                 {
                     AddToFilter("set.id", filter.Value);
+                }
+                else if (filter.Type == Data.Filter.FilterTypes.SuperTypes)
+                {
+                    AddToFilter("supertype", filter.Value);
                 }
             }
         }
