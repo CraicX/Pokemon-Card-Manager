@@ -3,11 +3,9 @@
 @using PokeCardManager.Classes;
 
 @inherits LayoutComponentBase
-
 @page "/search/{queryhash}"
 
 @inject IJSRuntime JS
-
 
 <div class="card radius-10 m-0 p-0">
     <div class="card-body">
@@ -30,15 +28,17 @@
         </div>
     </div>
 </div>
-<div class="poke-card-container p-1" id="pcc-search">
+<div id="search-container">
+    <div class="poke-card-container p-1" id="pcc-search">
     
-    @if (Results != null && Results.Count > 0)
-    {
-        @foreach (var card in Results)
+        @if (Results != null && Results.Count > 0)
         {
-            <PokeCard card="@card" />
-        }
-    }        
+            @foreach (var card in Results)
+            {
+                <PokeCard card="@card" />
+            }
+        }        
+    </div>
 </div>
 
 <div class="clearfix p-5"></div>

@@ -19,20 +19,20 @@
     </div>
     <div class="pokecard-info">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap m-0 p-1">
-                <span class="mb-0">@card.Supertype</span>
+            <li class="card-details">
+                @card.Supertype
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap m-0 p-1">
+            <li class="card-details">
                 <h6 class="mb-0">@card.Name</h6>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap m-0 p-1">
-                <span class="mb-0">@card.SetName</span>
+            <li class="card-details">
+                @card.SetName
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap m-0 p-1">
-                <span class="mb-0">@card.Rarity - #@card.Number</span>
+            <li class="card-details">
+                @card.Rarity - #@card.Number
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap m-0 p-1">
-                <h4 class="mb-0 text-danger">@card.Price @if (card.Tcgplayer != null)
+            <li class="card-details">
+                <h4 class="text-danger">@card.Price @if (card.Tcgplayer != null)
                     {
                         <a href="@card.Tcgplayer.Url.ToString()" target="_blank"><img src="/img/icons/tcgplayer.png" class="tcgicon" /></a>
                     }
