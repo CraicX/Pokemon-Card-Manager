@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
@@ -22,8 +21,6 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
 namespace PokeCardManager.Classes;
 public static class PokeAPI
 {
-    static readonly string ApiKey = "3e058698-4207-4151-a9ba-c1973a1514df";
-
     public static PokemonApiClient PokeClient;
     public static SubTypes SubTypes;
     public static SuperTypes SuperTypes;
@@ -36,6 +33,7 @@ public static class PokeAPI
     public static List<Set> CardSets      = new();
     public static string Query            = string.Empty;
     public static ResultSet ResultSet     = new();
+    public static int PageNumber          = 1;
 
     public static string[] PokemonSubTypes;
 
@@ -45,7 +43,7 @@ public static class PokeAPI
     //
     public static void Init()
     {
-        PokeClient = new PokemonApiClient(ApiKey);
+        PokeClient = new PokemonApiClient(Config.Settings.APIKey);
     }
 
 
@@ -97,7 +95,6 @@ public static class PokeAPI
     //
     public static async Task<List<CardX>> CardSearch(string query="")
     {
-        
         Filter.Clear();
         CardResults.Clear();
 
@@ -149,8 +146,7 @@ public static class PokeAPI
         }
 
         var searchFilter = BuildFilterDict();
-        var cards = await PokeClient.GetApiResourceAsync<Card>(searchFilter);
-
+        var cards = await PokeClient.GetApiResourceAsync<Card>(Config.Settings.PerPage, PageNumber, searchFilter);
 
         ResultSet = new()
         {

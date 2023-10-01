@@ -1,4 +1,6 @@
-﻿<Router AppAssembly="@GetType().Assembly">
+﻿@using PokeCardManager.Shared
+@layout MainLayout
+<Router AppAssembly="@GetType().Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>

@@ -33,7 +33,7 @@
         Loading...
     </div>
 
-    
+
 
     <script src="_framework/blazor.webview.js"></script>
     <!--plugins-->
@@ -50,6 +50,16 @@
     <script src="js/app.js"></script>
     <script src="js/main.js"></script>
     <script src="js/card-effects.js"></script>
+
+    <script>
+        document.addEventListener('keydown', (e) => {
+            e = e || window.event;
+            if (e.keyCode == 116) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

@@ -9,7 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace BlazorSample.JavaScriptInterop;
+namespace PokeCardManager;
 
 public partial class JsInterop : IDisposable
 {

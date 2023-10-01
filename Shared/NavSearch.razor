@@ -80,9 +80,10 @@
 
         PokeAPI.Query = query;
 
-        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode();
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode() + DateTime.Now.Second;
+        int timeX     = DateTime.Now.Second;
 
-        Navigation.NavigateTo($"/search/{queryHash}", false, true);
+        Navigation.NavigateTo($"/search/{queryHash}", false, false);
     }
 
 

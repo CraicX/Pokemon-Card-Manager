@@ -40,10 +40,11 @@ public class Settings
     public string Theme { get; set; }             = "dark-theme";
     public int WindowWidth { get; set; }          = 1000;
     public int WindowHeight { get; set; }         = 600;
+    public int PerPage { get; set; }              = 30; 
     public string ShowAPIKeyWarning { get; set; } = "true";
     public string AnimateLogo { get; set; }       = "true";
     public string AddCardEffects { get; set; }    = "true";
-    public string APIKey { get; set; }            = "";
+    public string APIKey { get; set; }            = "3e058698-4207-4151-a9ba-c1973a1514df";
     public long SubTypesUpdated { get; set; }     = 0;
     public long RaritiesUpdated { get; set; }     = 0;
     public long SuperTypesUpdated { get; set; }   = 0;

@@ -92,6 +92,7 @@ function initCard(acard)
 function startCardEffects() {
     $(function () {
         // on hover
+        $('.cardeffect').off('mouseenter').off('mouseleave').off('click');
         $('.cardeffect').on("mouseenter", function () {
 
             if (ZoomCard != null) {

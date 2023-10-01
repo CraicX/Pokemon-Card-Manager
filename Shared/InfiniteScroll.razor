@@ -1,0 +1,36 @@
+@using System.Threading
+@using PokeCardManager.Classes.Events;
+
+@inject IJSRuntime JSRuntime
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ObserverTargetId { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ObservableTargetReached { get; set; }
+
+    private IJSObjectReference module;
+    private DotNetObjectReference<InfiniteScroll> objectRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module         = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/Shared/InfiniteScroll.razor.js");
+            objectRef      = DotNetObjectReference.Create(this);
+            var initResult = await module.InvokeAsync<dynamic>("InfiniteInit", objectRef, ObserverTargetId);
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnIntersection()
+    {
+        await ObservableTargetReached.InvokeAsync(true);
+    }
+}

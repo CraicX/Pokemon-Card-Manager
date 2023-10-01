@@ -19,30 +19,6 @@ a {
 	text-decoration: none;
 }
 
-/*#pcc-search {
-    position: fixed;
-    overflow-y: auto;
-    height: calc(100% - 210px);
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 10px;
-    align-content: flex-start;
-    align-items: flex-start;*/
-/*    justify-content: flex-start;*/
-/*}
-
-.pokecard-div {
-    border-radius: 8px;
-    height: 230px;
-    padding: 10px;
-    margin: 15px;*/
-/*    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;*/
-    /*flex: 1 1 0px;
-    min-width: 425px;
-    max-width: 850px;
-}*/
 #search-container {
     height: calc(100% - 210px);
     position: fixed;

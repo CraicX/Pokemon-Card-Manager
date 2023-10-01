@@ -1,58 +1,30 @@
-﻿export function initCardEffects() {
+﻿var ps;
+
+export function initCardEffects() {
+
     startCardEffects();
-    const ps = new PerfectScrollbar('#search-container', {
-        wheelSpeed: 1,
-        wheelPropagation: true,
-        minScrollbarLength: 20
-    });
-    ps.update();
-    const container = document.querySelector('#search-container');
-    container.scrollTop = 0;
+
+    var container = document.getElementById('search-container');
+
+    if (ps != null) ps.update(container);
 }
 
-export function initialize(lastItemIndicator, componentInstance) {
-    const options = {
-        root: findClosestScrollContainer(lastItemIndicator),
-        rootMargin: '0px',
-        threshold: 0,
-    };
-
-    const observer = new IntersectionObserver(async (entries) => {
-        // When the lastItemIndicator element is visible => invoke the C# method `LoadMoreItems`
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                observer.unobserve(lastIndicator);
-                await componentInstance.invokeMethodAsync("LoadMoreItems");
-            }
-        }
-    }, options);
-
-    observer.observe(lastItemIndicator);
-
-    // Allow to cleanup resources when the Razor component is removed from the page
-    return {
-        dispose: () => dispose(observer),
-        onNewItems: () => {
-            observer.unobserve(lastIndicator);
-            observer.observe(lastIndicator);
-        },
-    };
+export function initPS() {
+     ps = new PerfectScrollbar('#search-container', {
+         wheelSpeed: 1,
+         wheelPropagation: true,
+         minScrollbarLength: 1
+     });
 }
 
-// Cleanup resources
-function dispose(observer) {
-    observer.disconnect();
+export function updateResultCount(totalCount) {
+    $('#searchText').text("Results: " + totalCount + " found");
 }
 
-// Find the parent element with a vertical scrollbar
-// This container should be use as the root for the IntersectionObserver
-function findClosestScrollContainer(element) {
-    while (element) {
-        const style = getComputedStyle(element);
-        if (style.overflowY !== 'visible') {
-            return element;
-        }
-        element = element.parentElement;
-    }
-    return null;
+export function hideSearching() {
+    $('#searchSpinner').hide();
+}
+
+export function showSearching() {
+    $('#searchSpinner').show();
 }
