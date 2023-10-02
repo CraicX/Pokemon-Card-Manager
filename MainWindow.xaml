@@ -17,7 +17,7 @@
     mc:Ignorable="d">
     <Grid>
         <b:BlazorWebView
-            HostPage="wwwroot/index.html" x:Name="blazorWebView" Services="{DynamicResource services}">
+            HostPage="wwwroot/index.html" x:Name="blazorWebView" Services="{DynamicResource services}" Background="Black">
             <b:BlazorWebView.RootComponents>
                 <b:RootComponent
                     ComponentType="{x:Type local:Main}"

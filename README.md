@@ -1,4 +1,4 @@
-# PokeCard -- [ Pokemon Card Manager ]
+# PCM -- [ Pokemon Card Manager ]
 
 ---
 

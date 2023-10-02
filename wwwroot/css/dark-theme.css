@@ -119,6 +119,16 @@ html.dark-theme .text-option {
     color: #ffffff;
 }
 
+html.dark-theme .card-details {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-width: 0 0 1px;
+}
+
+html.light-theme .card-details {
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-width: 0 0 1px;
+}
+
 html.dark-theme .topbar {
 	background-color: #12181a;
 	border-bottom: 1px solid rgb(237 237 237 / 12%);
@@ -174,7 +184,9 @@ html.dark-theme .topbar .navbar-nav .nav-link {
 	color: #e4e5e6;
 }
 
-
+html.dark-theme .pokecard__rotator {
+    box-shadow: 0 10px 20px -5px #000;
+}
 
 html.dark-theme .topbar .navbar .dropdown-app .dropdown-menu .app-name {
 	color: #e4e5e6

@@ -1,3 +1,15 @@
-﻿@page "/"
+﻿@using System.Net;
+@using PokeCardManager.Data;
+@using PokeCardManager.Classes;
+@using PokeCardManager.Shared;
 
-<h1></h1>
+@inherits LayoutComponentBase
+@page "/"
+@page "/index"
+
+@layout MainLayout
+
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
+@namespace PokeCardManager.Pages
+<p>-</p>

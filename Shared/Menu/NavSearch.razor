@@ -56,7 +56,7 @@
     {
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/NavSearch.razor.js");
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavSearch.razor.js");
 
             await module.InvokeVoidAsync("setTheme", Config.Settings.Theme);
         }

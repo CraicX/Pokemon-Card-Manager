@@ -2,9 +2,14 @@
 
     window.Observer = {
         observer: null,
+        lastFound: 0,
         Initialize: function (component, observerTargetId) {
             this.observer = new IntersectionObserver(e => {
-                component.invokeMethodAsync('OnIntersection');
+                if (Math.floor(Date.now() / 1000) - this.lastFound > 3) {
+                    this.lastFound = Math.floor(Date.now() / 1000);
+                    component.invokeMethodAsync('OnIntersection');
+                    this.lastFound = Math.floor(Date.now() / 1000);
+                }
             });
 
             let element = document.getElementById(observerTargetId);

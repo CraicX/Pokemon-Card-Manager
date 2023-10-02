@@ -48,9 +48,6 @@ a {
 }
 .card-details {
     align-items: center;
-    background-color: rgb(33, 37, 41);
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-width: 0 0 1px;
     color: rgb(179, 180, 181);
     display: flex;
     flex-wrap: wrap;

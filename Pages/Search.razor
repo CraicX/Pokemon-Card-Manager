@@ -1,12 +1,13 @@
-﻿@using System.Net;
-@using PokeCardManager.Data;
-@using PokeCardManager.Classes;
-@using PokeCardManager.Shared;
-
-@inherits LayoutComponentBase
-@page "/search"
+﻿@page "/search"
 @page "/search/{QueryHash?}"
 
+@using System.Net
+@using System.Threading;
+
+@inherits LayoutComponentBase
+@implements IDisposable
+
+@namespace PokeCardManager.Pages
 @layout MainLayout
 
 @inject NavigationManager NavManager
@@ -29,8 +30,8 @@
             {
                 <PokeCard card="@card" />
             }
-            <div class="spinner-grow me-3 ps-3" role="status" id="searchSpinner" style="display: none;">
-                <span class="visually-hidden">Loading...</span>
+            <div class="spinner-grow me-3 ps-3" role="status" id="searchSpinner">
+                
             </div>
         </InfiniteScroll>
 
@@ -42,35 +43,27 @@
 @code {
     [Parameter]
     public string QueryHash { get; set; }
-    public string Timex { get; set; }
-
-    public string LastHash { get; set; } = "";
-    public int PageNumber { get; set; } = 0;
+    public string LastHash { get; set; }     = "";
+    public int PageNumber { get; set; }      = 0;
     public string TotalResults { get; set; } = "";
-    public List<CardX> Cards { get; set; } = new List<CardX>();
+    public List<CardX> Cards { get; set; }   = new List<CardX>();
+    private CancellationTokenSource cts;
 
     private IJSObjectReference module;
 
     private List<CardX> Results = null;
 
-    // call OnParameters
-
     public async override Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
-
-
     }
 
     protected override void OnParametersSet()
     {
         Cards.Clear();
         PageNumber = 0;
-        // StateHasChanged();
         if (module != null) module.InvokeVoidAsync("showSearching");
     }
-
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -80,11 +73,13 @@
         }
 
         await module.InvokeVoidAsync("initCardEffects");
-
     }
 
-    async Task<IEnumerable<CardX>> GetCards()
+
+    protected async Task<IEnumerable<CardX>> GetCards()
     {
+        cts = new(new TimeSpan(0,0,30));
+
         List<CardX> NewCards = new();
 
         if (QueryHash != LastHash)
@@ -104,7 +99,9 @@
 
         PokeAPI.PageNumber = PageNumber;
 
-        NewCards = await PokeAPI.CardSearch();
+        NewCards = await PokeAPI.CardSearch(cts.Token);
+
+        await module.InvokeVoidAsync("initCardEffects");
 
         if (NewCards.Count == 0)
         {
@@ -114,9 +111,26 @@
 
         Cards.AddRange(NewCards);
 
+        if (Cards.Count >= PokeAPI.ResultSet.TotalCount)
+        {
+            await module.InvokeVoidAsync("hideSearching");
+        }
+
+
         await module.InvokeVoidAsync("initCardEffects");
         await module.InvokeVoidAsync("updateResultCount", PokeAPI.ResultSet.TotalCount);
 
+
+        cts.TryReset();
         return NewCards;
+    }
+
+    public void Dispose()
+    {
+        if (cts != null) {
+            cts.Cancel();
+            cts.Dispose();
+        }
+        
     }
 }

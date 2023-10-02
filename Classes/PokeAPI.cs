@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using PokeCardManager.Data;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients;
@@ -17,6 +18,7 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
+using Serilog;
 
 namespace PokeCardManager.Classes;
 public static class PokeAPI
@@ -93,12 +95,12 @@ public static class PokeAPI
     //
     // ─── CARD SEARCH ────────────────────────────────────────────────────────────────
     //
-    public static async Task<List<CardX>> CardSearch(string query="")
+    public static async Task<List<CardX>> CardSearch(CancellationToken cancellationToken)
     {
         Filter.Clear();
         CardResults.Clear();
 
-        if (query == null || query == string.Empty) query = Query;
+        var query = Query;
 
         if (query != string.Empty) { 
         
@@ -145,29 +147,39 @@ public static class PokeAPI
             }
         }
 
-        var searchFilter = BuildFilterDict();
-        var cards = await PokeClient.GetApiResourceAsync<Card>(Config.Settings.PerPage, PageNumber, searchFilter);
-
-        ResultSet = new()
+        try
         {
-            Count      = cards.Count,
-            FromCache  = cards.FromCache,
-            Page       = int.Parse(cards.Page),
-            PageSize   = int.Parse(cards.PageSize),
-            TotalCount = cards.TotalCount,
-        };
+            var searchFilter = BuildFilterDict();
+            
+            Log.Information("Searching for cards with query:{query} filters:{searchFilter}", query, searchFilter);
 
-        if (cards.Results.Count > 0)
-        {
-            CardResults.Clear();
+            var cards = await PokeClient.GetApiResourceAsync<Card>(Config.Settings.PerPage, PageNumber, searchFilter);
 
-            foreach (var card in cards.Results)
+            ResultSet = new()
             {
-                // change to CardX
-                CardX xcard = new();
-                xcard.Map(card);
-                CardResults.Add(xcard);
+                Count      = cards.Count,
+                FromCache  = cards.FromCache,
+                Page       = int.Parse(cards.Page),
+                PageSize   = int.Parse(cards.PageSize),
+                TotalCount = cards.TotalCount,
+            };
+
+            if (cards.Results.Count > 0)
+            {
+                CardResults.Clear();
+
+                foreach (var card in cards.Results)
+                {
+                    // change to CardX
+                    CardX xcard = new();
+                    xcard.Map(card);
+                    CardResults.Add(xcard);
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
         }
 
         return CardResults;
