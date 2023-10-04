@@ -2,13 +2,13 @@
 
     if (theme == 'dark-theme') {
         $('html').removeClass('light-theme');
-        $(".dark-mode-icon i").removeClass('bx-sun');
-        $(".dark-mode-icon i").addClass('bx-moon');
+        $("#themeIcon").removeClass('bx-sun');
+        $("#themeIcon").addClass('bx-moon');
     }
     else {
         $('html').removeClass('dark-theme')
-        $(".dark-mode-icon i").removeClass('bx-moon');
-        $(".dark-mode-icon i").addClass('bx-sun');
+        $("#themeIcon").removeClass('bx-moon');
+        $("#themeIcon").addClass('bx-sun');
     }
 
     $('html').addClass(theme);

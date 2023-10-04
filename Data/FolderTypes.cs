@@ -3,19 +3,26 @@
 //  |   __| . | '_| -_|     | . |   |  |  |__  .'|  _| . |  | | | | .'|   | .'| . | -_|  _|
 //  |__|  |___|_,_|___|_|_|_|___|_|_|  |_____|__,|_| |___|  |_|_|_|__,|_|_|__,|_  |___|_|  
 //                                                                            |___|        
-//  FolderData
+//  FolderTypes
 //
-using System.Collections.Generic;
 
 namespace PokeCardManager.Data;
-public class FolderData
+public class FolderTypes
 {
-    public int id { get; set; }
-    public int parentId { get; set; }
-    public int sortIndex { get; set; }
-    public string name { get; set; }
-    public string folderType { get; set; }
-    public string icon { get; set; }
-    public string color { get; set; } = "#CCCCCC";
-    public List<FolderCardMap> CardMaps { get; set; }
+    public string Name
+    {
+        get; set;
+    }
+    public string Title
+    {
+        get; set;
+    }
+    public bool Collapsed
+    {
+        get; set;
+    }
+    public int Order
+    {
+        get; set;
+    }
 }

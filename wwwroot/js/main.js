@@ -97,9 +97,7 @@ function showAlert(msg, type = 'success', options = '{}') {
 
 
 $(function () {
-    $('#themeIcon').on("click", async function () {
-        alert('ok');
-    });
+    
 
 
     $('.logo-text').on("click", async function () {

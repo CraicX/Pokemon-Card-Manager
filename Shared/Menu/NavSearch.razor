@@ -16,14 +16,20 @@
         <div class="top-menu ms-auto">
             <ul class="navbar-nav align-items-center gap-1">
                 <li class="nav-item mobile-search-icon d-flex d-lg-none">
-                    <a class="nav-link" href="javascript:;">
+                    <a class="nav-link">
                         <i class='bx bx-search'></i>
                     </a>
                 </li>
 
                 <li class="nav-item @currentTheme d-none d-sm-flex">
-                    <a id="themeIcon" class="nav-link dark-mode-icon" href="javascript:;" @onclick="SetTheme">
-                        <i class='bx @currentThemeIcon' />
+                    <a id="iconTheme" class="nav-link dark-mode-icon" @onclick="SetTheme">
+                        <i id="themeIcon" class='bx @currentThemeIcon' />
+                    </a>
+                </li>
+
+                <li class="nav-item @currentTheme d-none d-sm-flex">
+                    <a data-bs-toggle="modal" data-bs-target="#openSettings" class="nav-link dark-mode-icon">
+                        <i class='bx bx-cog' />
                     </a>
                 </li>
             </ul>

@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS [Folders] (
   [sortIndex]    INTEGER       NOT NULL DEFAULT 0,
   [name]         VARCHAR(64)   NOT NULL DEFAULT '',
   [folderType]   VARCHAR(64)   NOT NULL DEFAULT '',
-  [icon]         VARCHAR(128)  NOT NULL DEFAULT ''
+  [icon]         VARCHAR(128)  NOT NULL DEFAULT '',
+  [color]        VARCHAR(16)   NOT NULL DEFAULT '#CCCCCC'
 );
 
 CREATE INDEX IF NOT EXISTS FolderSortIndex ON Folders(sortIndex);

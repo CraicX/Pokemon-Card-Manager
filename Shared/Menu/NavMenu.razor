@@ -8,7 +8,7 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <img src="/img/icons/pokecard-logo.webp" class="logox-icon" alt="logo icon" data-action="zoom">
-        <h4 class="logo-text">
+        <h4 class="@GetLogoClass() logo-text">
 
             <svg width="130" height="55">
 
@@ -26,16 +26,16 @@
     <ul class="metismenu" id="menu">
         <li>
             <i class="bxr bx bx-chevron-down" />
-            <a @onclick='() => ToggleNav("mm_folders")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_folders")'>
                 <div class="parent-icon">
                     <img src="/img/icons/folders.png" />
                 </div>
                 <div class="menu-title">Folders</div>
             </a>
             <ul id="mm_folders">
-                <li>
+                <li class="mx-3">
                     <div>
-                        <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#createFolderModal" class="text-info">
+                        <a data-bs-toggle="modal" data-bs-target="#createFolderModal" class="text-info">
                             <i class='bx bx-folder-plus text-info'></i>Create Folder
                         </a>
                     </div>
@@ -49,7 +49,7 @@
 
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
-            <a @onclick='() => ToggleNav("mm_cardtype")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_cardtype")'>
                 <div class="parent-icon">
                     <img class='bx micon' src="/img/icons/search-card-type.png" />
                 </div>
@@ -61,7 +61,7 @@
         </li>
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
-            <a @onclick='() => ToggleNav("mm_rarity")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_rarity")'>
                 <div class="parent-icon">
                     <img class='bx micon' src="/img/icons/search-rarity.png" />
                 </div>
@@ -73,7 +73,7 @@
         </li>
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
-            <a @onclick='() => ToggleNav("mm_energytype")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_energytype")'>
                 <div class="parent-icon">
                     <img class='bx micon' src="/img/icons/search-energy.png" />
                 </div>
@@ -85,7 +85,7 @@
         </li>
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
-            <a @onclick='() => ToggleNav("mm_subtype")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_subtype")'>
                 <div class="parent-icon">
                     <img class='bx micon' src="/img/icons/search-subtype.png" />
                 </div>
@@ -97,7 +97,7 @@
         </li>
         <li class="menuCol">
             <i class="bxr bx bx-chevron-left" />
-            <a @onclick='() => ToggleNav("mm_set")' href="javascript:;">
+            <a @onclick='() => ToggleNav("mm_set")'>
                 
                 <div class="parent-icon">
                     <img class='bx micon' src="/img/icons/search-set.png" />
@@ -115,12 +115,13 @@
 </div>
 
 @code {
-
-
-    private IJSObjectReference module;
     [Parameter]
     public ElementReference Control { get; set; }
 
+    private IJSObjectReference module;
+    
+    private string GetLogoClass() => Config.Settings.AnimateLogo.ToLower() == "true" ? "animateLogo" : "logoStatic";
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

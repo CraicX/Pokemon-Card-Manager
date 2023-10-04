@@ -89,6 +89,27 @@ function initCard(acard)
  }
 
 
+function setCardClick() {
+    $(function () {
+        $('.cardeffect').off('mouseenter').off('mouseleave').off('click');
+        $('.cardeffect').on("click", function () {
+            if ($(this).hasClass("cardZoom")) {
+
+                $(this).removeClass("cardZoom");
+                ZoomCard = null;
+
+
+            } else {
+
+                $(this).addClass("cardZoom");
+
+                ZoomCard = $(this);
+
+            }
+        });
+    });
+}
+
 function startCardEffects() {
     $(function () {
         // on hover

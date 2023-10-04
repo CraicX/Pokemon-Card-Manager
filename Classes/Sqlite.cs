@@ -121,7 +121,7 @@ public static class Sqlite
 
         con.Open();
 
-        using var cmd = new SQLiteCommand("SELECT id, parentId, sortIndex, name, folderType, icon FROM Folders ORDER BY folderType, sortIndex, name", con);
+        using var cmd = new SQLiteCommand("SELECT id, parentId, sortIndex, name, folderType, icon, color FROM Folders ORDER BY folderType, sortIndex, name", con);
 
         SQLiteDataReader r = cmd.ExecuteReader();
 
@@ -134,7 +134,8 @@ public static class Sqlite
                 sortIndex  = r.GetInt32(2),
                 name       = r.GetString(3),
                 folderType = r.GetString(4),
-                icon       = r.GetString(5)
+                icon       = r.GetString(5),
+                color      = r.GetString(6)
             });
         }
 

@@ -13,19 +13,23 @@ html.dark-theme .dropdown-header span {
 html.dark-theme .logo-text {
     margin-bottom: 0;
     letter-spacing: 1px;
-    color: #FDF736;
-    -webkit-text-stroke: 2px #3622E1;
     font: 400 4em 'Carter One', cursive;
     letter-spacing: 0;
     display: block;
     margin: 0 auto;
 }
-html.dark-theme svg text {
+html.dark-theme .logo-text svg text {
     font-family: "Carter One";
-    stroke: #3622E1;
     font-size: 36px;
     font-weight: 400;
     stroke-width: 1;
+}
+
+html.dark-theme .logoStatic svg {
+    stroke: #c9cbce;
+}
+html.dark-theme .animateLogo svg text {
+    stroke: #3622E1;
     animation: textAnimate 10s infinite alternate;
 }
 

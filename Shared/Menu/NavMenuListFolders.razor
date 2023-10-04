@@ -10,19 +10,28 @@
 @inject IJSRuntime JS
 
 
-@foreach (var pair in PC.FolderTypes)
+@foreach (var folderType in PC.FolderTypes)
 {
-    @if (!FoldersByType.ContainsKey(pair.Key)) continue;
+    @if (!FoldersByType.ContainsKey(folderType.Name)) continue;
+    string folderTypeIcon  = folderType.Collapsed ? "bx-plus" : "bx-minus";
+    string folderTypeClass = folderType.Collapsed ? "display: none" : "";
 
     <li class="dropdown-divider"></li>
-    <li class="dropdown-header folderTitle pb-1" data-folder-type="@pair.Key" @onclick="@(e => ToggleFolder(@pair.Key))">[ <span class="ui-droppable">@pair.Value</span> ] <i class="bx bx-minus" data-folder-type="@pair.Key" /></li>
-    <ul data-folder-type="@pair.Key" class="folderGroup">
+    <li class="dropdown-header folderTitle pb-1" data-folder-type="@folderType.Name" @onclick="@(e => ToggleFolder(@folderType.Name))">
+        <i class="bx @folderTypeIcon" data-folder-type="@folderType.Name" /> [ <span class="ui-droppable">@folderType.Title</span> ]
+    </li>
+    <ul data-folder-type="@folderType.Name" class="folderGroup" style="@folderTypeClass">
 
-        @foreach (var folder in FoldersByType[pair.Key])
+        @foreach (var folder in FoldersByType[folderType.Name])
         {
             <li class="pokeFolder" data-folder-type="@folder.folderType" data-sort-index="@folder.sortIndex" data-parent-id="@folder.parentId" data-folder-id="@folder.id">
                 <div class="dropzone">
-                    <a href="javascript:;" class="ui-droppable"><i class='bx bx-folder'></i>@folder.name</a>
+                    <a class="ui-droppable">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.color">
+                           <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA"/>
+                       </svg> 
+                        @folder.name
+                    </a>
                 </div>
             </li>
         }
@@ -75,9 +84,18 @@
         return Task.FromResult("");
     }
 
-    public void ToggleFolder(string folderType)
+    public void ToggleFolder(string folderName)
     {
-        module.InvokeVoidAsync("toggleFolder", folderType);
+        module.InvokeVoidAsync("toggleFolder", folderName);
+        
+        for(int i = 0; i < PC.FolderTypes.Count; i++)
+        {
+            if (PC.FolderTypes[i].Name == folderName)
+            {
+                PC.FolderTypes[i].Collapsed = !PC.FolderTypes[i].Collapsed;
+                break;
+            }
+        }
     }
 
     [JSInvokable]

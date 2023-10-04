@@ -29,9 +29,9 @@
                         <div class="position-relative select-icon">
                             <select class="form-select form-control" id="folderType" @oninput="CheckNewFolder" @bind="folderType">
                                 <option value="" selected="">Select the type of folder</option>
-                                @foreach( var pair in PC.FolderTypes )
+                                @foreach( var _folderType in PC.FolderTypes )
                                 {
-                                    <option value="@pair.Key">@pair.Value</option>
+                                    <option value="@_folderType.Name">@_folderType.Title</option>
                                 })
                             </select>
                             <span class="position-absolute top-50 translate-middle-y"><i class="bx bx-folder"></i></span>
@@ -39,6 +39,15 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="folderName" class="col-sm-4 col-form-label">Color</label>
+                    <div class="col-sm-8">
+                        <div class="position-relative input-icon">
+                            <input type="color" id="folderColor" style="width:64px;" @bind="folderColor">
+                        </div>
+                    </div>
+                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -48,17 +57,79 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="openSettings" tabindex="-1" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-700">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><img src="/img/icons/settings.png" class="me-2 img-spin"  /> Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row mb-3">
+                    <label for="s_apikey" class="col-sm-4 col-form-label">API Key</label>
+                    <div class="col-sm-7">
+                        <div class="position-relative input-icon">
+                            <input type="text" class="form-control" id="s_apikey" placeholder="API Key" spellcheck="false" @bind="s_ApiKey">
+                            <span class="position-absolute top-50 translate-middle-y"><i class="bx bx-key"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <a href="https://dev.pokemontcg.io/">
+                            <img src="/img/icons/pokehelp.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Click here to get an API Key" />
+                        </a>
+                    </div>
+                    
+                </div>
+
+                <div class="row mb-3">
+                    <label for="s_cardEffects" class="col-sm-4 col-form-label">Use Card Effects</label>
+                    <div class="col-sm-8">
+                        <div class="position-relative input-icon">
+                            <div class="form-check form-switch">
+								<input class="form-check-input poke-switch" type="checkbox" id="s_cardEffects" @bind="s_cardEffects">
+							</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="s_animateLogo" class="col-sm-4 col-form-label">Animate Logo</label>
+                    <div class="col-sm-8">
+                        <div class="position-relative input-icon">
+                            <div class="form-check form-switch">
+								<input class="form-check-input poke-switch" type="checkbox" id="s_animateLogo" @bind="s_animateLogo">
+							</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="RevertSettings">Cancel</button>
+                <button type="button" class="btn btn-primary" id="settingsSave" @onclick="SaveSettings">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
 
     private IJSObjectReference module;
-    private string folderName { get; set; }
-    private string folderType { get; set; }
+    private string folderName    { get; set; }
+    private string folderType    { get; set; }
+    private string folderColor   { get; set; }
+    private string s_ApiKey      { get; set; } = Config.Settings.APIKey;
+    private bool s_cardEffects   { get; set; } = Config.Settings.AddCardEffects.ToLower() == "true";
+    private bool s_animateLogo   { get; set; } = Config.Settings.AnimateLogo.ToLower() == "true";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Modals.razor.js");
+            await module.InvokeVoidAsync("initModals");
         }
 
         await module.InvokeVoidAsync("focusFolderName");
@@ -69,12 +140,30 @@
         module.InvokeVoidAsync("validateFolderName");
     }
 
+    private void SaveSettings()
+    {
+        Config.Settings.APIKey         = s_ApiKey;
+        Config.Settings.AddCardEffects = s_cardEffects.ToString();
+        Config.Settings.AnimateLogo    = s_animateLogo.ToString();
+        Config.Settings.Save();
+        module.InvokeVoidAsync("closeModal", "openSettings");
+    }
+
+    private void RevertSettings()
+    {
+        s_ApiKey      = Config.Settings.APIKey;
+        s_cardEffects = Config.Settings.AddCardEffects.ToLower() == "true";
+        s_animateLogo = Config.Settings.AnimateLogo.ToLower() == "true";
+        module.InvokeVoidAsync("closeModal", "openSettings");
+    }
+
     private void AddFolder()
     {
         FolderData folder = new FolderData()
         {
             name       = folderName, 
             folderType = folderType,
+            color      = folderColor,
         };
 
         if (AddFolderEvent.AddFolder(folder))

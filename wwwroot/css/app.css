@@ -17,8 +17,32 @@ body {
 }
 a {
 	text-decoration: none;
+    cursor: pointer;
+}
+.pf {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+/*    filter: drop-shadow(0.5px 0.5px 0.1px #CCC);*/
 }
 
+#openSettings {
+    
+}
+.modal-700 {
+    min-width: 700px;
+}
+.img-spin {
+    animation: spin 25s infinite linear;
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
 #search-container {
     height: calc(100% - 210px);
     position: fixed;
@@ -142,19 +166,25 @@ padding: 0px 0px 0px 0px;
     width: 100%;
     position: relative;
 }
+
+.poke-switch {
+    height: 20px;
+    width: 40px !important;
+}
+
 /* Sidebar */
 .sidebar-wrapper {
-	width: 250px;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	background: #fff;
-	border-right: 0 solid #e4e4e4;
-	z-index: 11;
-	box-shadow: 0 .3rem .8rem rgba(0, 0, 0, .12);
-	transition: all .2s ease-out
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    border-right: 0 solid #e4e4e4;
+    z-index: 11;
+    box-shadow: 0 .3rem .8rem rgba(0, 0, 0, .12);
+    transition: all .2s ease-out
 }
 .sidebar-header {
 	width: 250px;

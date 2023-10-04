@@ -44,7 +44,7 @@ public class Settings
     public string ShowAPIKeyWarning { get; set; } = "true";
     public string AnimateLogo { get; set; }       = "true";
     public string AddCardEffects { get; set; }    = "true";
-    public string APIKey { get; set; }            = "3e058698-4207-4151-a9ba-c1973a1514df";
+    public string APIKey { get; set; }            = "";
     public long SubTypesUpdated { get; set; }     = 0;
     public long RaritiesUpdated { get; set; }     = 0;
     public long SuperTypesUpdated { get; set; }   = 0;

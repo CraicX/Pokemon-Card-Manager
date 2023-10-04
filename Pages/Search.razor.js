@@ -8,6 +8,9 @@ export function initCardEffects() {
 
     if (ps != null) ps.update(container);
 }
+export function addCardClick() {
+    setCardClick();
+}
 
 export function initPS() {
      ps = new PerfectScrollbar('#search-container', {

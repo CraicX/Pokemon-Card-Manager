@@ -72,7 +72,8 @@
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Pages/Search.razor.js");
         }
 
-        await module.InvokeVoidAsync("initCardEffects");
+        if (Config.Settings.AddCardEffects.ToLower() == "true") { await module.InvokeVoidAsync("initCardEffects"); }
+        else { await module.InvokeVoidAsync("addCardClick"); }
     }
 
 
@@ -101,7 +102,7 @@
 
         NewCards = await PokeAPI.CardSearch(cts.Token);
 
-        await module.InvokeVoidAsync("initCardEffects");
+        // await module.InvokeVoidAsync("initCardEffects");
 
         if (NewCards.Count == 0)
         {
@@ -117,7 +118,9 @@
         }
 
 
-        await module.InvokeVoidAsync("initCardEffects");
+        if (Config.Settings.AddCardEffects.ToLower() == "true") await module.InvokeVoidAsync("initCardEffects");
+        else await module.InvokeVoidAsync("addCardClick");
+
         await module.InvokeVoidAsync("updateResultCount", PokeAPI.ResultSet.TotalCount);
 
 
