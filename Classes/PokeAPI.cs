@@ -154,6 +154,19 @@ public static class PokeAPI
                 }
             }
         }
+        else if( words == null || words.Length == 0)
+        {
+            ResultSet = new()
+            {
+                Count      = 0,
+                Page       = 0,
+                PageSize   = 0,
+                TotalCount = 0,
+            };
+            CardResults.Clear();
+            return CardResults;
+
+        }
 
         try
         {

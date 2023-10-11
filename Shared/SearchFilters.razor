@@ -80,13 +80,9 @@
     {
         StateHasChanged();
 
-        if (PokeAPI.Query == "" && PC.Filters.Count == 0) return;
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.QueryList.GetHashCode() + DateTime.Now.Second;
 
-        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode();
-
-        // JS.InvokeVoidAsync("showAlert", "QueryHash: " + queryHash, "error");
-
-        Navigation.NavigateTo($"/search/{queryHash}", false, true);
+        Navigation.NavigateTo($"/search/{queryHash}", false, false);
 
 
     }

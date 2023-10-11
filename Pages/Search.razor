@@ -107,6 +107,7 @@
         if (NewCards.Count == 0)
         {
             await module.InvokeVoidAsync("hideSearching");
+            await module.InvokeVoidAsync("updateResultCount", PokeAPI.ResultSet.TotalCount);
             return NewCards;
         }
 

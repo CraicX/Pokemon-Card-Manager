@@ -139,11 +139,11 @@
 
     public void ExecuteSearch(string query)
     {
-        if (query == "" && PC.Filters.Count == 0) return;
+        // if (query == "" && PC.Filters.Count == 0) return;
 
-        PokeAPI.Query = query;
+        // PokeAPI.Query = query;
 
-        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode() + DateTime.Now.Second;
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.QueryList.GetHashCode() + DateTime.Now.Second;
         int timeX     = DateTime.Now.Second;
 
         Navigation.NavigateTo($"/search/{queryHash}", false, false);
@@ -171,7 +171,8 @@
             PokeAPI.QueryList.Add(value);
         }
 
-        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode() + DateTime.Now.Second;
+        //int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode() + DateTime.Now.Second;
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.QueryList.GetHashCode() + DateTime.Now.Second;
         int timeX = DateTime.Now.Second;
 
         Navigation.NavigateTo($"/search/{queryHash}", false, false);
