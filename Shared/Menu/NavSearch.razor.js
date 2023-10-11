@@ -1,4 +1,5 @@
-﻿export function setTheme(theme) {
+﻿var dotNetHelper;
+export function setTheme(theme) {
 
     if (theme == 'dark-theme') {
         $('html').removeClass('light-theme');
@@ -13,5 +14,16 @@
 
     $('html').addClass(theme);
 
+}
+
+export function initSearch(_dotNetHelper) {
+    dotNetHelper = _dotNetHelper;
+    $('.blazored-typeahead__input-multiselect-wrapper').mutationSummary("connect", updatedQuery, [{
+        all: true
+    }]);
+}
+
+function updatedQuery(summaries) {
+    dotNetHelper.invokeMethodAsync('UpdatedQuery');
 }
 

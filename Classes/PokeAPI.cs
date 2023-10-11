@@ -37,6 +37,8 @@ public static class PokeAPI
     public static ResultSet ResultSet     = new();
     public static int PageNumber          = 1;
 
+    public static List<string> QueryList  = new();
+
     public static string[] PokemonSubTypes;
 
 
@@ -101,11 +103,18 @@ public static class PokeAPI
         CardResults.Clear();
 
         var query = Query;
+        string[] words;
+
 
         if (query != string.Empty) { 
-        
-            var words = query.Split(' ');
+            words = query.Split(' ');
+        } else
+        {
+            words = QueryList.ToArray();
+        }
 
+        if (words != null && words.Length > 0)
+        {
             foreach (var word in words)
             {
                 if (PC.SubTypes.Contains(word, StringComparer.OrdinalIgnoreCase))
@@ -117,7 +126,6 @@ public static class PokeAPI
                     AddToFilter("name", word);
                 }
             }
-
         }
 
         if (PC.Filters.Count >= 1)

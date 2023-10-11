@@ -1,17 +1,42 @@
 @using PokeCardManager.Classes
 @using PokeCardManager.Data
 @using System.Net
+@using Serilog
+@using Microsoft.JSInterop
+
+@implements IDisposable
+
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-
-
 
 <div class="topbar d-flex align-items-center">
     <nav class="navbar navbar-expand gap-3">
 
-        <div class="position-relative search-bar d-sm-flex">
-            <input type="text" class="form-control px-5" spellcheck="false" placeholder="Search" id="cardSearch" @bind="searchQuery" @onkeyup="(args) => CheckSearchKeys(args)">
-            <span class="position-absolute top-50 search-show ms-3 translate-middle-y start-0 top-50 fs-3"><i class='bx bx-search'></i></span>
+        <div class="position-relative search-bar d-sm-flex flex-nowrap">
+
+          @*  <input type="text" class="form-control-sm px-5" spellcheck="false" placeholder="Search" id="cardSearch" @bind="searchQuery" @onkeyup="(args) => CheckSearchKeys(args)"> *@
+            <span class="input-group-text search-icon"><i class="bx bx-search"></i></span>
+
+                <BlazoredTypeahead id="cardSearch" class="form-control-sm"
+                    @bind-Values="_selectedHints"
+                    SearchMethod="SearchHints"
+                    EnableDropDown="true"
+                    MinimumLength="2"
+                    AddItemOnEmptyResultMethod="ItemAddedMethod"
+                    Value="selectedResult"
+                    ValueExpression="@(() => selectedResult)"
+                    placeholder="Pokemon or Search Term..."
+                    @ref="_localTypeahead" >
+
+                    <SelectedTemplate Context="context">
+                        @context
+                    </SelectedTemplate>
+                    
+                    <ResultTemplate Context="context">
+                        @context
+                    </ResultTemplate>
+                </BlazoredTypeahead>
+         
         </div>
         <div class="top-menu ms-auto">
             <ul class="navbar-nav align-items-center gap-1">
@@ -42,6 +67,15 @@
 @code {
 
     private IJSObjectReference module;
+    private DotNetObjectReference<NavSearch> objRef;
+
+    private List<string> HintsList = new();
+    public IList<string> _selectedHints;
+    public IList<string> _selectedHintsNotFound;
+
+    private BlazoredTypeahead<string, string> _localTypeahead;
+
+    private string selectedResult;
 
     public string currentTheme { get; set; } = Config.Settings.Theme;
 
@@ -57,6 +91,26 @@
         set { query = value.Trim(); }
     }
 
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    private async Task<IEnumerable<string>> SearchHints(string searchText)
+    {
+        if (HintsList.Count == 0)
+        {
+            HintsList.AddRange(Utils.ReadResource("PokemonList.txt").Split(Environment.NewLine));
+        }    
+
+        return await Task.FromResult(HintsList.Where(x => x.ToLower().Contains(searchText.ToLower())).ToList());
+    }
+
+    private Task<string> ItemAddedMethod(string searchText)
+    {
+        return Task.FromResult(searchText);
+    }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -65,8 +119,12 @@
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavSearch.razor.js");
 
             await module.InvokeVoidAsync("setTheme", Config.Settings.Theme);
+            await module.InvokeVoidAsync("initSearch", objRef);
+
         }
     }
+
+
 
     private void CheckSearchKeys( KeyboardEventArgs args )
     {
@@ -76,7 +134,6 @@
         if (args.Key == "Enter" && query != "")
         {
             ExecuteSearch(query);
-
         }
     }
 
@@ -103,6 +160,30 @@
 
         Config.Settings.Save();
     }
+
+    [JSInvokable]
+    public Task<string> UpdatedQuery()
+    {
+        PokeAPI.QueryList.Clear();
+        
+        foreach (var value in _selectedHints)
+        {
+            PokeAPI.QueryList.Add(value);
+        }
+
+        int queryHash = Utils.GetListHashCode(PC.Filters) + PokeAPI.Query.GetHashCode() + DateTime.Now.Second;
+        int timeX = DateTime.Now.Second;
+
+        Navigation.NavigateTo($"/search/{queryHash}", false, false);
+
+        return Task.FromResult("");
+    }
+
+    public override void Dispose()
+    {
+        objRef?.Dispose();
+    }
+
 
 }
 

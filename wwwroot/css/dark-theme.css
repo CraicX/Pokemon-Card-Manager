@@ -7,8 +7,53 @@
     src: url(/fonts/carter-one.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+html.dark-theme .blazored-typeahead__input-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+html.dark-theme .blazored-typeahead__input-icon:hover {
+    background-color: #212529;
+    color: #f8f9fa;
+    fill: #f8f9fa;
+}
+html.dark-theme .blazored-typeahead__down-arrow path {
+    fill: #f8f9fa !important;
+
+}
 html.dark-theme .dropdown-header span {
     color: #f8f9fa;
+}
+html.dark-theme .search-icon {
+    border-radius: 3px 0px 0px 3px;
+}
+html.dark-theme .blazored-typeahead__result {
+    border: 0px;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+html.dark-theme .blazored-typeahead__results {
+    background: #212529;
+    color: #e4e5e6;
+    border: 0px;
+}
+html.dark-theme .blazored-typeahead:focus-within {
+    box-shadow: none;
+}
+
+html.dark-theme .blazored-typeahead__input {
+    background-color: #212529;
+    color: #e4e5e6;
+}
+html.dark-theme .blazored-typeahead__controls {
+    background-color: #212529;
+    border: 1px solid rgb(255 255 255 / 12%);
+    color: #e4e5e6;
+    border-radius: 0px 3px 3px 0px;
+}
+
+html.dark-theme .blazored-typeahead {
+    border: 0px;
 }
 html.dark-theme .logo-text {
     margin-bottom: 0;
@@ -959,10 +1004,10 @@ html.dark-theme .apexcharts-datalabel-value {
 		opacity: 0.4;
 	}
 	html.dark-theme .full-search-bar {
-		background: #212529;
+		background: #212529 !important;
 	}
 	html.dark-theme .search-bar .btn-search-back {
-		background: rgb(3 11 35 / 0%);
+		background: rgb(3 11 35 / 0%) !important;
 		border: 1px solid rgb(217 211 211 / 0%);
 		height: calc(1.6em + .75rem + 2px);
 	}

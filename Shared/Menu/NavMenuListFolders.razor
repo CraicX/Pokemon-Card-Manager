@@ -44,6 +44,7 @@
 @code {
     private static IJSObjectReference module;
 
+
     public static Dictionary<string, List<FolderData>> FoldersByType
     {
         get;
@@ -65,9 +66,8 @@
 
     protected override void OnInitialized()
     {
+        
         SChanged();
-
-
         AddFolderEvent.OnChange += SChanged;
     }
 
@@ -127,7 +127,6 @@
     public void Dispose()
     {
         AddFolderEvent.OnChange -= SChanged;
-
         module.InvokeVoidAsync("disableFolderSort");
     }
 
