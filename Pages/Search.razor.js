@@ -1,5 +1,6 @@
 ﻿var ps;
 
+
 export function initCardEffects() {
 
     startCardEffects();
@@ -7,9 +8,17 @@ export function initCardEffects() {
     var container = document.getElementById('search-container');
 
     if (ps != null) ps.update(container);
+
+    
 }
+
 export function addCardClick() {
     setCardClick();
+}
+
+export function parkToolSet() {
+    $('.pokecard-tool-set').appendTo($('.toolset-parking'));
+    $('.pokecard-tool-set').hide(); 
 }
 
 export function initPS() {

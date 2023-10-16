@@ -26,6 +26,7 @@ public static class PC
     public static List<CardData> Cards          = new();
     public static List<Filter> Filters          = new();
     public static List<FolderTypes> FolderTypes = new();
+    public static List<FolderTypes> FolderTree  = new();
 
     public static List<string> LSubTypes     => SubTypes;
     public static List<string> LSuperTypes   => SuperTypes;
@@ -80,6 +81,39 @@ public static class PC
         Folders = SortedFolders.ToList();
 
         return true;
+    }
+
+    public static List<FolderTypes> GetFolderTree()
+    {
+        FolderTree = new();
+
+        foreach (var folderType in FolderTypes)
+        {
+
+            var folders = Folders.Where(f => f.folderType == folderType.Name).ToList();
+
+            foreach( var folder in folders)
+            {
+                folder.childCount = Folders.Count(f => f.parentId == folder.id);
+
+                if (folder.childCount > 0)
+                {
+                    folder.children = Folders.Where(f => f.parentId == folder.id).ToList();
+                }
+               
+            }
+
+            foreach (var folder in folders)
+            {
+                folderType.Folders = folders.Where(f => f.parentId == 0).ToList();
+            }
+            
+            if( folderType.Folders.Count > 0 ) FolderTree.Add(folderType);
+            
+        }
+
+        return FolderTree;
+
     }
 
     public static async Task<bool> GetSetImages()

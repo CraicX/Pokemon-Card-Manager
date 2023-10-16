@@ -5,8 +5,10 @@
 //                                                                            |___|        
 //  CardX
 //
+using Microsoft.VisualBasic;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Cards;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
+using System.Reflection;
 
 namespace PokeCardManager.Data;
 public class CardX : Card
@@ -17,6 +19,19 @@ public class CardX : Card
     public string RarityEffect  => Rarity?.ToLower();
     public string SubtypeEffect => (Subtypes != null && Subtypes.Count > 0) ? string.Join(' ', Subtypes).ToLower() : "";
     public string ImageHtml { get; set; }
+
+    public string TcgUrl => (Tcgplayer != null && Tcgplayer.Url != null) ? Tcgplayer.Url.ToString() : "";
+
+
+    public string Safe(string propName)
+    {
+        if (this.GetType().GetProperty(propName) != null )
+        {
+            return this.GetType().GetProperty(propName).GetValue(this, null)?.ToString() ?? "";
+        }
+        return "";
+    }
+
 
     public string Price
     {

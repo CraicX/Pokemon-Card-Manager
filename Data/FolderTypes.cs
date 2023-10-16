@@ -6,23 +6,14 @@
 //  FolderTypes
 //
 
+using System.Collections.Generic;
+
 namespace PokeCardManager.Data;
 public class FolderTypes
 {
-    public string Name
-    {
-        get; set;
-    }
-    public string Title
-    {
-        get; set;
-    }
-    public bool Collapsed
-    {
-        get; set;
-    }
-    public int Order
-    {
-        get; set;
-    }
+    public string Name { get; set; }
+    public string Title { get; set; }
+    public bool Collapsed { get; set; }
+    public int Order { get; set; }
+    public List<FolderData> Folders { get; set; } = new();
 }

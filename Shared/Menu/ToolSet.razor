@@ -1,0 +1,150 @@
+@using PokeCardManager.Classes
+@using PokeCardManager.Data
+@using System.Net
+@using Serilog
+@using Microsoft.JSInterop
+
+@implements IDisposable
+
+@inject IJSRuntime JS
+
+<div class="pokecard-tool-set">
+    <div class="btn-group btn-group-sm dropdown" role="group" name="pts-det">
+        <button type="button" class="btn btn-dark">
+            <i class="bx bx-detail me-0"></i>
+        </button>
+
+        <button type="button" class="btn btn-dark" name="pts-tcg">
+            <i class="bx bx-dollar me-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View on TCGPlayer"></i>
+        </button>
+
+
+        <button type="button" class="btn btn-dark sel-folder" name="pts-fld" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="@ToolTip(@selectedFolder)"
+                data-child-count="@selectedFolder.childCount"
+                data-folder-type="@selectedFolder.folderType"
+                data-sort-index="@selectedFolder.sortIndex"
+                data-parent-id="@selectedFolder.parentId"
+                data-folder-id="@selectedFolder.id">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@selectedFolder.color">
+                <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA" />
+            </svg> 
+
+            @selectedFolder.name
+        </button>
+
+        <button type="button" class="btn btn-dark split-bg-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" />
+
+        <div class="dropdown-hover-all">
+            <div class="dropdown">
+                <div class="dropdown-menu">
+
+                    @if (FolderTree != null)
+                    {
+                        foreach( var folderTree in FolderTree() )
+                        {
+                            <div class="dropdown dropend">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown">@folderTree.Name</a>
+                                <div class="dropdown-menu">
+                                    @foreach (var folder in folderTree.Folders)
+                                    {
+                                        <FolderDropdown folder="@folder" OnFolderSelected="FolderSelected" />
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@code {
+    private static DotNetObjectReference<Search> objRef;
+
+
+    public static FolderData selectedFolder { get; set; } = new();
+
+    private static List<FolderTypes> _FolderTree;
+
+    public static List<FolderTypes> FolderTree()
+    {
+        if (_FolderTree == null) _FolderTree = PC.GetFolderTree();
+
+        return _FolderTree;
+
+    }
+
+    
+
+    public static Dictionary<string, List<FolderData>> FoldersByType { get; set; } = new();
+
+    private IJSObjectReference module;
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/ToolSet.razor.js");
+
+            FoldersByType.Clear();
+
+
+            foreach (var folder in PC.Folders)
+            {
+                if (!FoldersByType.ContainsKey(folder.folderType))
+                {
+                    FoldersByType.Add(folder.folderType, new List<FolderData>());
+                }
+
+                FoldersByType[folder.folderType].Add(folder);
+            }
+        }
+
+        await module.InvokeVoidAsync("buildCardFolders");
+
+    }
+
+    public string ToolTip(FolderData folder)
+    {
+        if (selectedFolder.id != 0)
+        {
+            return $"Add to {folder.name}";
+        }
+        else
+        {
+            return "First, select a folder";
+        }
+    }
+
+    [JSInvokable]
+    public static Task<string> FolderSelectedx(string folderId)
+    {
+        //  convert sortInfo json to FolderSort object
+        int fId = 0;
+        if (int.TryParse(folderId, out fId))
+        {
+            selectedFolder = PC.Folders.Find(x => x.id == fId);
+        }
+
+        return Task.FromResult("");
+    }
+
+    protected async void FolderSelected(int folderId)
+    {
+        selectedFolder = PC.Folders.Find(x => x.id == folderId);
+        await module.InvokeVoidAsync("folderSelected");
+    }
+
+    public override void Dispose()
+    {
+        
+    }
+}

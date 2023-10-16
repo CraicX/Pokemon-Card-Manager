@@ -13,9 +13,13 @@ public class FolderData
     public int id { get; set; }
     public int parentId { get; set; }
     public int sortIndex { get; set; }
+    public int childCount { get; set; } = 0;
     public string name { get; set; }
     public string folderType { get; set; }
     public string icon { get; set; }
     public string color { get; set; } = "#CCCCCC";
     public List<FolderCardMap> CardMaps { get; set; }
+    public List<FolderData> children { get; set; } = new();
+
 }
+

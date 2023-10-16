@@ -5,7 +5,7 @@
         lastFound: 0,
         Initialize: function (component, observerTargetId) {
             this.observer = new IntersectionObserver(e => {
-                if (Math.floor(Date.now() / 1000) - this.lastFound > 3) {
+                if (Math.floor(Date.now() / 1000) - this.lastFound > 1.5) {
                     this.lastFound = Math.floor(Date.now() / 1000);
                     component.invokeMethodAsync('OnIntersection');
                     this.lastFound = Math.floor(Date.now() / 1000);

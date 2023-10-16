@@ -32,12 +32,12 @@ public static class PokeAPI
     static readonly Dictionary<string, List<string>> Filter = new();
 
     public static List<CardX> CardResults = new();
+    public static List<string> QueryList  = new();
     public static List<Set> CardSets      = new();
     public static string Query            = string.Empty;
     public static ResultSet ResultSet     = new();
     public static int PageNumber          = 1;
 
-    public static List<string> QueryList  = new();
 
     public static string[] PokemonSubTypes;
 
@@ -165,7 +165,6 @@ public static class PokeAPI
             };
             CardResults.Clear();
             return CardResults;
-
         }
 
         try

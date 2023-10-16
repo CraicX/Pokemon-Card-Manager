@@ -4,7 +4,8 @@ var LastCard = null;
 var CurrentDeg = 0;
 var parentOffset = null;
 var ZoomCard = null;
-
+var jqToolSet;
+var toolTipdone = false;
 
 function OrientCard(Xdeg, Ydeg) {
     if (!MvAuto) {
@@ -91,6 +92,7 @@ function initCard(acard)
 
 function setCardClick() {
     $(function () {
+
         $('.cardeffect').off('mouseenter').off('mouseleave').off('click');
         $('.cardeffect').on("click", function () {
             if ($(this).hasClass("cardZoom")) {
@@ -107,11 +109,38 @@ function setCardClick() {
 
             }
         });
+        
     });
 }
 
+function setCardTools() {
+    //$(function () {
+    //    showAlert('hovered', 'info', '{ "size": "mini" }');
+    //    //$('.pokecard-info').off('mouseenter');
+    //    $('.pokecard-div').on('click', function () {
+    //        showAlert('hovered', 'info', '{ "size": "mini" }');
+    //        //$('.pokecard-tool-set').appendTo($(this).find('.pokecard-tools'));
+    //        //$('.pokecard-tool-set').show();
+    //    });
+    //});
+}
 function startCardEffects() {
     $(function () {
+
+        $('.pokecard-div').off('mouseenter');
+        $('.pokecard-div').on('mouseenter', function () {
+            $('.pokecard-tool-set').appendTo($(this).find('.pokecard-tools'));
+            $('.pokecard-tool-set').show();
+        });
+
+        if (!toolTipdone) {
+            toolTipdone = true;
+            $('.pokecard-div .sel-folder').off('click');
+            $('.pokecard-div .sel-folder').on('click', function () { showAlert('clicky'); });
+            //$('.pokecard-div').find('[data-bs-toggle="tooltip"]').tooltip();
+        }
+
+
         // on hover
         $('.cardeffect').off('mouseenter').off('mouseleave').off('click');
         $('.cardeffect').on("mouseenter", function () {
@@ -176,6 +205,8 @@ function startCardEffects() {
             }
 
         });
+
+        
 
     });
 }

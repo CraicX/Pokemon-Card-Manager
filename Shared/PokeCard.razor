@@ -3,7 +3,7 @@
 
 <div class="pokecard-div border-primary border-bottom border-3 border-0">
     <div class="pokecard-img">
-        <div class="cardeffect" data-rarity="@card.RarityEffect" data-subtypes="@card.SubtypeEffect">
+        <div class="cardeffect" data-rarity="@card.RarityEffect" data-subtypes="@card.SubtypeEffect?">
             <div class="pokecard__translater">
                 <button class="pokecard__rotator" tabindex="0">
 
@@ -17,28 +17,28 @@
             </div>
         </div>
     </div>
-    <div class="pokecard-info">
-        <ul class="list-group list-group-flush">
-            <li class="card-details">
-                @card.Supertype
+    <div class="pokecard-info" data-tcg="@card.TcgUrl">
+        <ul class="pc-dets">
+            <li>
+                @card.Safe("Supertype")
             </li>
-            <li class="card-details">
+            <li>
                 <h6 class="mb-0">@card.Name</h6>
             </li>
-            <li class="card-details">
-                @card.SetName
+            <li>
+                @card.Safe("SetName")
             </li>
-            <li class="card-details">
-                @card.Rarity - #@card.Number
+            <li>
+                @card.Safe("Rarity") - #@card.Number
             </li>
-            <li class="card-details">
-                <h4 class="text-danger">@card.Price @if (card.Tcgplayer != null)
-                    {
-                        <a href="@card.Tcgplayer.Url.ToString()" target="_blank"><img src="/img/icons/tcgplayer.png" class="tcgicon" /></a>
-                    }
+            <li>
+                <h4 class="text-danger">
+                    @card.Price 
                 </h4>
             </li>
         </ul>
+        <div class="pokecard-tools">
+        </div>
     </div>
 </div>
 

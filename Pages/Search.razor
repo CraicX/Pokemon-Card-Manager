@@ -38,7 +38,11 @@
     </div>
 </div>
 
+<div class="toolset-parking"></div>
+
 <div class="clearfix p-5"></div>
+
+<ToolSet />
 
 @code {
     [Parameter]
@@ -48,6 +52,10 @@
     public string TotalResults { get; set; } = "";
     public List<CardX> Cards { get; set; }   = new List<CardX>();
     private CancellationTokenSource cts;
+
+    private static DotNetObjectReference<Search> objRef;
+
+    public static Dictionary<string, List<FolderData>> FoldersByType { get; set; } = new();
 
     private IJSObjectReference module;
 
@@ -60,6 +68,7 @@
 
     protected override void OnParametersSet()
     {
+        if (module != null) module.InvokeVoidAsync("parkToolSet");
         Cards.Clear();
         PageNumber = 0;
         if (module != null) module.InvokeVoidAsync("showSearching");
@@ -70,12 +79,24 @@
         if (firstRender)
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Pages/Search.razor.js");
+            
+            FoldersByType.Clear();
+
+            foreach (var folder in PC.Folders)
+            {
+                if (!FoldersByType.ContainsKey(folder.folderType))
+                {
+                    FoldersByType.Add(folder.folderType, new List<FolderData>());
+                }
+
+                FoldersByType[folder.folderType].Add(folder);
+            }
         }
 
         if (Config.Settings.AddCardEffects.ToLower() == "true") { await module.InvokeVoidAsync("initCardEffects"); }
         else { await module.InvokeVoidAsync("addCardClick"); }
-    }
 
+    }
 
     protected async Task<IEnumerable<CardX>> GetCards()
     {
@@ -102,8 +123,6 @@
 
         NewCards = await PokeAPI.CardSearch(cts.Token);
 
-        // await module.InvokeVoidAsync("initCardEffects");
-
         if (NewCards.Count == 0)
         {
             await module.InvokeVoidAsync("hideSearching");
@@ -119,11 +138,14 @@
         }
 
 
-        if (Config.Settings.AddCardEffects.ToLower() == "true") await module.InvokeVoidAsync("initCardEffects");
-        else await module.InvokeVoidAsync("addCardClick");
-
+        if (Config.Settings.AddCardEffects.ToLower() == "true") 
+        {
+            await module.InvokeVoidAsync("initCardEffects");
+        }
+        else {
+            await module.InvokeVoidAsync("addCardClick");
+        }
         await module.InvokeVoidAsync("updateResultCount", PokeAPI.ResultSet.TotalCount);
-
 
         cts.TryReset();
         return NewCards;
@@ -135,6 +157,5 @@
             cts.Cancel();
             cts.Dispose();
         }
-        
     }
 }

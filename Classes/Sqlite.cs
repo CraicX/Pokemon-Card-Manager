@@ -13,6 +13,7 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Set;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace PokeCardManager.Classes;
 public static class Sqlite
@@ -159,6 +160,14 @@ public static class Sqlite
                 });
             }
         }
+
+        foreach (var folder in folders)
+        {
+            // count children
+            folder.childCount = folders.Count(f => f.parentId == folder.id);
+
+        }
+
 
         return folders;
     }

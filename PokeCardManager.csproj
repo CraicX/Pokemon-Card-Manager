@@ -56,8 +56,8 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.Typeahead" Version="4.7.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.92" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="7.0.96" />
         <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
