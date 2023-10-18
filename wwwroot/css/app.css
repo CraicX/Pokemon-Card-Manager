@@ -15,10 +15,7 @@
 .sel-folder:hover .tooltip-text {
     visibility: visible;
 }
-.bottom {
-    top: 25px;
-    left: -50%;
-}
+
 .dropdown-submenu > .dropdown-menu {
     top: 0;
     left: 100%;

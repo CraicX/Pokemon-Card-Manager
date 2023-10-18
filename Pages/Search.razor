@@ -50,7 +50,10 @@
     public string LastHash { get; set; }     = "";
     public int PageNumber { get; set; }      = 0;
     public string TotalResults { get; set; } = "";
-    public List<CardX> Cards { get; set; }   = new List<CardX>();
+    public List<CardX> Cards { 
+        get { return PC.CardResults; }
+    }
+
     private CancellationTokenSource cts;
 
     private static DotNetObjectReference<Search> objRef;
@@ -58,8 +61,6 @@
     public static Dictionary<string, List<FolderData>> FoldersByType { get; set; } = new();
 
     private IJSObjectReference module;
-
-    private List<CardX> Results = null;
 
     public async override Task SetParametersAsync(ParameterView parameters)
     {
@@ -69,8 +70,10 @@
     protected override void OnParametersSet()
     {
         if (module != null) module.InvokeVoidAsync("parkToolSet");
-        Cards.Clear();
+
+        PC.CardResults.Clear();
         PageNumber = 0;
+
         if (module != null) module.InvokeVoidAsync("showSearching");
     }
 
@@ -84,19 +87,21 @@
 
             foreach (var folder in PC.Folders)
             {
-                if (!FoldersByType.ContainsKey(folder.folderType))
+                if (!FoldersByType.ContainsKey(folder.FolderType))
                 {
-                    FoldersByType.Add(folder.folderType, new List<FolderData>());
+                    FoldersByType.Add(folder.FolderType, new List<FolderData>());
                 }
 
-                FoldersByType[folder.folderType].Add(folder);
+                FoldersByType[folder.FolderType].Add(folder);
             }
         }
 
         if (Config.Settings.AddCardEffects.ToLower() == "true") { await module.InvokeVoidAsync("initCardEffects"); }
         else { await module.InvokeVoidAsync("addCardClick"); }
 
+        await module.InvokeVoidAsync("setToolEvents");
     }
+
 
     protected async Task<IEnumerable<CardX>> GetCards()
     {
@@ -130,7 +135,7 @@
             return NewCards;
         }
 
-        Cards.AddRange(NewCards);
+        PC.CardResults.AddRange(NewCards);
 
         if (Cards.Count >= PokeAPI.ResultSet.TotalCount)
         {
@@ -146,6 +151,8 @@
             await module.InvokeVoidAsync("addCardClick");
         }
         await module.InvokeVoidAsync("updateResultCount", PokeAPI.ResultSet.TotalCount);
+        
+        await module.InvokeVoidAsync("setToolEvents");
 
         cts.TryReset();
         return NewCards;

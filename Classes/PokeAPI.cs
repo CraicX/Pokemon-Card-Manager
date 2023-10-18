@@ -28,8 +28,7 @@ public static class PokeAPI
     public static SuperTypes SuperTypes;
     public static Rarities Rarities;
     public static ElementTypes ElementTypes;
-
-    static readonly Dictionary<string, List<string>> Filter = new();
+    private static readonly Dictionary<string, List<string>> Filter = new();
 
     public static List<CardX> CardResults = new();
     public static List<string> QueryList  = new();
@@ -82,6 +81,8 @@ public static class PokeAPI
         return dict;
     }
 
+
+   
 
     private static void AddToFilter(string key, string value)
     {

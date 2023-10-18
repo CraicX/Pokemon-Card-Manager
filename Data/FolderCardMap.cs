@@ -10,9 +10,10 @@ using System;
 namespace PokeCardManager.Data;
 public class FolderCardMap
 {
-    public int cardId { get; set; }
-    public decimal cost { get; set; }
-    public DateTime date { get; set; }
-    public int quantity { get; set; }
-    public string options { get; set; }
+    public int CardId { get; set; }
+    public int MapId { get; set; }
+    public decimal Cost { get; set; }
+    public DateTime Date { get; set; }
+    public int Quantity { get; set; }
+    public string Options { get; set; }
 }

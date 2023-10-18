@@ -69,7 +69,7 @@ public static class Config
 
         if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Subtypes;") == "0")
         {
-            Debug.WriteLine("Refreshing SubTypes...");
+            Log.Information("Refreshing SubTypes...");
 
             var subTypes = await PokeAPI.PokeClient.GetStringResourceAsync<SubTypes>();
 
@@ -93,7 +93,7 @@ public static class Config
 
         if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Rarities;") == "0")
         {
-            Debug.WriteLine("Refreshing Rarities...");
+            Log.Information("Refreshing Rarities...");
 
             var rarities = await PokeAPI.PokeClient.GetStringResourceAsync<Rarities>();
 
@@ -115,15 +115,16 @@ public static class Config
         //
         hours = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - Settings.SuperTypesUpdated) / 3600;
 
-        var SuperTypesJoined = Settings.Get("SuperTypes", "");
+        //var SuperTypesJoined = Settings.Get("SuperTypes", "");
+        var SuperTypesJoined = string.Join(',', Settings.SuperTypes);
 
         if (forceRefresh || hours > 24 * 7 || SuperTypesJoined == "")
         {
-            Debug.WriteLine("Refreshing SuperTypes...");
+            Log.Information("Refreshing SuperTypes...");
 
-            var superTypes = await PokeAPI.PokeClient.GetStringResourceAsync<SuperTypes>();
+            var superTypes    = await PokeAPI.PokeClient.GetStringResourceAsync<SuperTypes>();
 
-            Settings.SuperTypes = superTypes.SuperType.ToArray();
+            Settings.SuperTypes        = superTypes.SuperType.ToArray();
             Settings.SuperTypesUpdated = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
 
             Settings.Save();
@@ -134,15 +135,16 @@ public static class Config
         //
         hours = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - Settings.ElementTypesUpdated) / 3600;
 
-        var ElementTypesJoined = Settings.Get("ElementTypes", "");
+        //var ElementTypesJoined = Settings.Get("ElementTypes", "");
+        var ElementTypesJoined = string.Join(',', Settings.ElementTypes); 
 
         if (forceRefresh || hours > 24 * 7 || ElementTypesJoined == "")
         {
-            Debug.WriteLine("Refreshing ElementTypes...");
+            Log.Information("Refreshing ElementTypes...");
 
-            var elementTypes = await PokeAPI.PokeClient.GetStringResourceAsync<ElementTypes>();
+            var elementTypes   = await PokeAPI.PokeClient.GetStringResourceAsync<ElementTypes>();
 
-            Settings.ElementTypes = elementTypes.ElementType.ToArray();
+            Settings.ElementTypes        = elementTypes.ElementType.ToArray();
             Settings.ElementTypesUpdated = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
 
             Settings.Save();
@@ -150,12 +152,11 @@ public static class Config
 
         //
         //  Check last time Sets were updated
-        //
         hours = (DateTime.Now.Ticks / TimeSpan.TicksPerSecond - Settings.SetsUpdated) / 3600;
 
         if (forceRefresh || hours > 24 * 7 || Sqlite.GetString("SELECT COUNT(*) FROM Sets;") == "0")
         {
-            Debug.WriteLine("Refreshing Sets...");
+            Log.Information("Refreshing Sets...");
 
             var cardSets = await PokeAPI.GetSetsFromAPI();
 
@@ -243,8 +244,11 @@ public static class Config
         WWWRootPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
         foreach (var path in new string[] { DataPath })
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-
+        {
+            if (!Directory.Exists(path)) {
+                Directory.CreateDirectory(path);
+            }
+        }
     }
 
 }

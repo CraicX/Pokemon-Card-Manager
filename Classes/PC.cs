@@ -27,27 +27,63 @@ public static class PC
     public static List<Filter> Filters          = new();
     public static List<FolderTypes> FolderTypes = new();
     public static List<FolderTypes> FolderTree  = new();
+    public static List<CardX> CardResults       = new();
 
     public static List<string> LSubTypes     => SubTypes;
     public static List<string> LSuperTypes   => SuperTypes;
     public static List<string> LElementTypes => ElementTypes;
     public static List<string> LRarities     => Rarities;
 
+    //
+    // ─── FOLDER FUNCTIONS ────────────────────────────────────────────────────────────────
+    //
+    public static bool AddCardToFolder(FolderData folder, CardX card)
+    {
+        if (folder.CardMaps.Exists(x => x.CardId == card.CardId))
+        {
+            return false;
+        }
+
+        CardData cardData = CreateCardData(card);
+
+        FolderCardMap fcm = new();
+
+        cardData.Map(fcm);
+
+        folder.CardMaps.Add(fcm);
+
+        return true;
+
+    }
+
+    public static CardData CreateCardData(CardX card)
+    {
+        var cardData = new CardData();
+
+        cardData.Map(card);
+        
+        return cardData;
+    }
 
     public static bool AddFolder(FolderData folder)
     {
 
-        if (Folders.Exists(f => f.name == folder.name))
+        if (Folders.Exists(f => f.Name == folder.Name))
+        {
             return false;
+        }
 
-        var maxPos = Sqlite.GetInt($"SELECT MAX(sortIndex) FROM Folders WHERE folderType = '{folder.folderType}'");
+        var maxPos = Sqlite.GetInt($"SELECT MAX(sortIndex) FROM Folders WHERE folderType = '{folder.FolderType}'");
 
         if (!Sqlite.Query(@"INSERT INTO Folders (name, folderType, sortIndex, color) VALUES (@name, @folderType, @sortIndex, @color);",
-            new SQLiteParameter("name", folder.name),
-            new SQLiteParameter("folderType", folder.folderType),
+            new SQLiteParameter("name", folder.Name),
+            new SQLiteParameter("folderType", folder.FolderType),
             new SQLiteParameter("sortIndex", maxPos + 1),
-            new SQLiteParameter("color", folder.color)
-            )) return false;
+            new SQLiteParameter("color", folder.Color)
+            ))
+        {
+            return false;
+        }
 
         Folders = Sqlite.GetFolders();
 
@@ -58,25 +94,31 @@ public static class PC
     {
         for (var i = Folders.Count; --i >= 0;)
         {
-            if (Folders[i].id == folder.folderId)
+            if (Folders[i].Id == folder.FolderId)
             {
-                Folders[i].sortIndex = folder.sortIndex;
-                Folders[i].parentId  = folder.parentId;
+                Folders[i].SortIndex = folder.SortIndex;
+                Folders[i].ParentId  = folder.ParentId;
             }
-            else if (Folders[i].parentId == folder.parentId)
+            else if (Folders[i].ParentId == folder.ParentId)
             {
-                if (Folders[i].sortIndex >= folder.sortIndex) Folders[i].sortIndex++;
+                if (Folders[i].SortIndex >= folder.SortIndex)
+                {
+                    Folders[i].SortIndex++;
+                }
             }
-            else continue;
+            else
+            {
+                continue;
+            }
 
             Sqlite.Query(@"UPDATE Folders SET sortIndex = @sortIndex, parentId = @parentId WHERE id = @id;",
-                new SQLiteParameter("sortIndex", Folders[i].sortIndex),
-                new SQLiteParameter("parentId",  Folders[i].parentId),
-                new SQLiteParameter("id",        Folders[i].id));
+                new SQLiteParameter("sortIndex", Folders[i].SortIndex),
+                new SQLiteParameter("parentId",  Folders[i].ParentId),
+                new SQLiteParameter("id",        Folders[i].Id));
 
         }
 
-        IEnumerable<FolderData> SortedFolders = Folders.OrderBy(folder => folder.sortIndex);
+        IEnumerable<FolderData> SortedFolders = Folders.OrderBy(folder => folder.SortIndex);
 
         Folders = SortedFolders.ToList();
 
@@ -90,25 +132,27 @@ public static class PC
         foreach (var folderType in FolderTypes)
         {
 
-            var folders = Folders.Where(f => f.folderType == folderType.Name).ToList();
+            var folders = Folders.Where(f => f.FolderType == folderType.Name).ToList();
 
             foreach( var folder in folders)
             {
-                folder.childCount = Folders.Count(f => f.parentId == folder.id);
+                folder.ChildCount = Folders.Count(f => f.ParentId == folder.Id);
 
-                if (folder.childCount > 0)
+                if (folder.ChildCount > 0)
                 {
-                    folder.children = Folders.Where(f => f.parentId == folder.id).ToList();
+                    folder.Children = Folders.Where(f => f.ParentId == folder.Id).ToList();
                 }
                
             }
 
             foreach (var folder in folders)
             {
-                folderType.Folders = folders.Where(f => f.parentId == 0).ToList();
+                folderType.Folders = folders.Where(f => f.ParentId == 0).ToList();
             }
             
-            if( folderType.Folders.Count > 0 ) FolderTree.Add(folderType);
+            if( folderType.Folders.Count > 0 ) {
+                FolderTree.Add(folderType);
+            }
             
         }
 

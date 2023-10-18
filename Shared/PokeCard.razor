@@ -1,7 +1,7 @@
 @using PokeCardManager.Data
 
 
-<div class="pokecard-div border-primary border-bottom border-3 border-0">
+<div class="pokecard-div border-primary border-bottom border-3 border-0" data-card-id="@card.Id">
     <div class="pokecard-img">
         <div class="cardeffect" data-rarity="@card.RarityEffect" data-subtypes="@card.SubtypeEffect?">
             <div class="pokecard__translater">
@@ -44,7 +44,6 @@
 
 @code 
 {
-    
     [Parameter]
     public CardX card { get; set; }
 

@@ -10,18 +10,18 @@ using System.Collections.Generic;
 namespace PokeCardManager.Data;
 public class CardData
 {
-    public int rowId { get; set; }
-    public string id { get; set; }
-    public string name { get; set; }
-    public string supertype { get; set; }
-    public List<string> subTypes { get; set; }
-    public int setId { get; set; }
-    public int number { get; set; }
-    public string rarity { get; set; }
-    public string imgSmall { get; set; }
-    public string imgLarge { get; set; }
-    public string tcgUrl { get; set; }
-    public string tcgUrlReal { get; set; }
-    public string cmUrl { get; set; }
-    public string apiJson { get; set; }
+    public int CardId { get; set; }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Supertype { get; set; }
+    public List<string> SubTypes { get; set; }
+    public int SetId { get; set; }
+    public string Number { get; set; }
+    public string Rarity { get; set; }
+    public string ImgSmall { get; set; }
+    public string ImgLarge { get; set; }
+    public string TcgUrl { get; set; }
+    public string TcgUrlReal { get; set; }
+    public string CmUrl { get; set; }
+    public string ApiJson { get; set; }
 }

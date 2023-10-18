@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS [Cards] (
     [name]         VARCHAR(128) NOT NULL DEFAULT '',
     [supertype]    VARCHAR(128) NOT NULL DEFAULT '',
     [setId]        INTEGER      NOT NULL DEFAULT 0,
-    [number]       INTEGER      NOT NULL DEFAULT 0,
+    [number]       VARCHAR(128) NOT NULL DEFAULT '',
     [rarity]       VARCHAR(64)  NOT NULL DEFAULT '',
     [imgSmall]     VARCHAR(200) NOT NULL DEFAULT '',
     [imgLarge]     VARCHAR(200) NOT NULL DEFAULT '',
@@ -78,8 +78,9 @@ CREATE TABLE IF NOT EXISTS [Folders] (
 CREATE INDEX IF NOT EXISTS FolderSortIndex ON Folders(sortIndex);
 
 CREATE TABLE IF NOT EXISTS [FolderMap] (
-    [cardId]     INTEGER       NOT NULL DEFAULT 0,
+    [id]         INTEGER       NOT NULL PRIMARY KEY,    
     [folderId]   INTEGER       NOT NULL DEFAULT 0,
+    [cardId]     INTEGER       NOT NULL DEFAULT 0,
     [cost]       DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     [date]       DATE          NOT NULL DEFAULT '0000-00-00',
     [quantity]   INTEGER       NOT NULL DEFAULT 0,

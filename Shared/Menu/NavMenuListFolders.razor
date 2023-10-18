@@ -24,13 +24,13 @@
 
         @foreach (var folder in FoldersByType[folderType.Name])
         {
-            <li class="pokeFolder" data-folder-type="@folder.folderType" data-sort-index="@folder.sortIndex" data-parent-id="@folder.parentId" data-folder-id="@folder.id">
+            <li class="pokeFolder" data-folder-type="@folder.FolderType" data-sort-index="@folder.SortIndex" data-parent-id="@folder.ParentId" data-folder-id="@folder.Id">
                 <div class="dropzone">
                     <a class="ui-droppable">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.color">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.Color">
                            <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA"/>
                        </svg> 
-                        @folder.name
+                        @folder.Name
                     </a>
                 </div>
             </li>
@@ -110,12 +110,12 @@
 
         foreach (var folder in PC.Folders)
         {
-            if (!FoldersByType.ContainsKey(folder.folderType))
+            if (!FoldersByType.ContainsKey(folder.FolderType))
             {
-                FoldersByType.Add(folder.folderType, new List<FolderData>());
+                FoldersByType.Add(folder.FolderType, new List<FolderData>());
             }
 
-            FoldersByType[folder.folderType].Add(folder);
+            FoldersByType[folder.FolderType].Add(folder);
 
         }
 

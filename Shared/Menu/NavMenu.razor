@@ -119,14 +119,17 @@
     public ElementReference Control { get; set; }
 
     private IJSObjectReference module;
-    
+
     private string GetLogoClass() => Config.Settings.AnimateLogo.ToLower() == "true" ? "animateLogo" : "logoStatic";
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             module = await JS.InvokeAsync<IJSObjectReference>("import", "/Shared/Menu/NavMenu.razor.js");
+            
+            //MasterJS.js = module;
+
         }
     }
 

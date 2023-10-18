@@ -1,13 +1,11 @@
 ﻿var dotNetHelper;
 var dropDownPlugin = false;
 var jqToolSet;
+
 export function buildCardFolders() {
 
-
-
-    if (!dropDownPlugin) {
-        dropDownPlugin = true;
-
+    //if (!dropDownPlugin) {
+    //    dropDownPlugin = true;
 
         (function ($bs) {
             const CLASS_NAME = 'has-child-dropdown-show';
@@ -41,7 +39,6 @@ export function buildCardFolders() {
                     if (toggle != null && !toggle.classList.contains('show')) {
                         $bs.Dropdown.getOrCreateInstance(toggle).toggle();
                         dd.classList.add(CLASS_NAME);
-                        //$bs.Dropdown.clearMenus();
                     }
                 });
                 dd.addEventListener('mouseleave', function (e) {
@@ -52,23 +49,13 @@ export function buildCardFolders() {
                 });
             });
         })(bootstrap);
-    }
+    //}
 
-    $('.pokecard-tool-set .btn').off('click');
-    $('.pokecard-tool-set .btn').on('click', function () {
-        if ($(this).attr('name') == 'pts-tcg') {
-            showAlert('Opening webpage to TCGPlayer!', 'info', '{ "size": "mini" }');
-            window.open($(this).closest(".pokecard-info").data('tcg'));
-        }
-    });
-
+    
 }
-
 
 export function folderSelected() {
     $('.pokecard-tool-set .show').removeClass('show');
-    
-
 }
 
 

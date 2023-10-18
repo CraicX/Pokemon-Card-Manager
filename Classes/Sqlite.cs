@@ -18,8 +18,8 @@ using System.Linq;
 namespace PokeCardManager.Classes;
 public static class Sqlite
 {
-    static string DatabasePath;
-    static readonly string DatabaseName = "PokeCardManager.db";
+    private static string DatabasePath;
+    private static readonly string DatabaseName = "PokeCardManager.db";
 
     public static void Init()
     {
@@ -28,14 +28,14 @@ public static class Sqlite
         CreateTables();
     }
 
-    static void CreateTables(bool startFresh = false)
+    private static void CreateTables(bool startFresh = false)
     {
         SQLiteConnection con = new(DatabasePath);
 
         con.Open();
 
-        SQLiteTransaction transaction = con.BeginTransaction();
-        StringBuilder sb = new StringBuilder();
+        var transaction = con.BeginTransaction();
+        var sb = new StringBuilder();
 
         SQLiteCommand cmd;
 
@@ -78,11 +78,11 @@ public static class Sqlite
     //  Function ImportSets
     public static bool ImportSets(List<Set> SetsData)
     {
-        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+        using var con = new SQLiteConnection(DatabasePath);
 
         con.Open();
 
-        SQLiteTransaction transaction = con.BeginTransaction();
+        var transaction = con.BeginTransaction();
 
         SQLiteCommand cmd;
 
@@ -118,25 +118,25 @@ public static class Sqlite
     {
         List<FolderData> folders = new();
 
-        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+        using var con = new SQLiteConnection(DatabasePath);
 
         con.Open();
 
         using var cmd = new SQLiteCommand("SELECT id, parentId, sortIndex, name, folderType, icon, color FROM Folders ORDER BY folderType, sortIndex, name", con);
 
-        SQLiteDataReader r = cmd.ExecuteReader();
+        var r = cmd.ExecuteReader();
 
         while (r.Read())
         {
             folders.Add(new FolderData()
             {
-                id         = r.GetInt32(0),
-                parentId   = r.GetInt32(1),
-                sortIndex  = r.GetInt32(2),
-                name       = r.GetString(3),
-                folderType = r.GetString(4),
-                icon       = r.GetString(5),
-                color      = r.GetString(6)
+                Id         = r.GetInt32(0),
+                ParentId   = r.GetInt32(1),
+                SortIndex  = r.GetInt32(2),
+                Name       = r.GetString(3),
+                FolderType = r.GetString(4),
+                Icon       = r.GetString(5),
+                Color      = r.GetString(6)
             });
         }
 
@@ -144,19 +144,19 @@ public static class Sqlite
         {
             folder.CardMaps = new();
 
-            using var cmd2 = new SQLiteCommand($"SELECT cardId, cost, date, quantity, options FROM FolderMap WHERE folderId = {folder.id}", con);
+            using var cmd2 = new SQLiteCommand($"SELECT cardId, cost, date, quantity, options FROM FolderMap WHERE folderId = {folder.Id}", con);
 
-            SQLiteDataReader r2 = cmd2.ExecuteReader();
+            var r2 = cmd2.ExecuteReader();
 
             while (r2.Read())
             {
                 folder.CardMaps.Add(new FolderCardMap()
                 {
-                    cardId   = r2.GetInt32(0),
-                    cost     = r2.GetDecimal(1),
-                    date     = r2.GetDateTime(2),
-                    quantity = r2.GetInt32(3),
-                    options  = r2.GetString(4)
+                    CardId   = r2.GetInt32(0),
+                    Cost     = r2.GetDecimal(1),
+                    Date     = r2.GetDateTime(2),
+                    Quantity = r2.GetInt32(3),
+                    Options  = r2.GetString(4)
                 });
             }
         }
@@ -164,7 +164,7 @@ public static class Sqlite
         foreach (var folder in folders)
         {
             // count children
-            folder.childCount = folders.Count(f => f.parentId == folder.id);
+            folder.ChildCount = folders.Count(f => f.ParentId == folder.Id);
 
         }
 
@@ -178,31 +178,31 @@ public static class Sqlite
     {
         List<CardData> cards = new();
 
-        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+        using var con = new SQLiteConnection(DatabasePath);
 
         con.Open();
 
         using (var cmd = new SQLiteCommand("SELECT * FROM Cards", con))
         {
-            SQLiteDataReader r = cmd.ExecuteReader();
+            var r = cmd.ExecuteReader();
 
             while (r.Read())
             {
                 cards.Add(new CardData()
                 {
-                    rowId      = r.GetInt32(0),
-                    id         = r.GetString(1),
-                    name       = r.GetString(2),
-                    supertype  = r.GetString(3),
-                    setId      = r.GetInt32(4),
-                    number     = r.GetInt32(5),
-                    rarity     = r.GetString(6),
-                    imgSmall   = r.GetString(7),
-                    imgLarge   = r.GetString(8),
-                    tcgUrl     = r.GetString(9),
-                    tcgUrlReal = r.GetString(10),
-                    cmUrl      = r.GetString(11),
-                    apiJson    = r.GetString(12),
+                    CardId     = r.GetInt32(0),
+                    Id         = r.GetString(1),
+                    Name       = r.GetString(2),
+                    Supertype  = r.GetString(3),
+                    SetId      = r.GetInt32(4),
+                    Number     = r.GetString(5),
+                    Rarity     = r.GetString(6),
+                    ImgSmall   = r.GetString(7),
+                    ImgLarge   = r.GetString(8),
+                    TcgUrl     = r.GetString(9),
+                    TcgUrlReal = r.GetString(10),
+                    CmUrl      = r.GetString(11),
+                    ApiJson    = r.GetString(12),
                 });
             }
         }
@@ -210,11 +210,11 @@ public static class Sqlite
         foreach (var card in cards)
         {
             //  Get Subtypes
-            card.subTypes.AddRange(GetColumn<string>(@$"
+            card.SubTypes.AddRange(GetColumn<string>(@$"
                 SELECT subtype 
                 FROM Subtypes s, SubtypeMap sm 
                 WHERE s.id = sm.subtypeId 
-                    AND cardId = {card.rowId}"));
+                    AND cardId = {card.CardId}"));
         }
 
         return cards;
@@ -227,13 +227,13 @@ public static class Sqlite
     {
         List<SetData> sets = new();
 
-        using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
+        using (var con = new SQLiteConnection(DatabasePath))
         {
             con.Open();
 
-            using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Sets ORDER BY name", con))
+            using (var cmd = new SQLiteCommand("SELECT * FROM Sets ORDER BY name", con))
             {
-                SQLiteDataReader r = cmd.ExecuteReader();
+                var r = cmd.ExecuteReader();
 
                 while (r.Read())
                 {
@@ -262,18 +262,17 @@ public static class Sqlite
 
     public static string GetString(string query)
     {
-        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+        using var con = new SQLiteConnection(DatabasePath);
 
         con.Open();
 
-        using SQLiteCommand cmd = new SQLiteCommand(query, con);
+        using var cmd = new SQLiteCommand(query, con);
 
         var result = (string)cmd.ExecuteScalar()?.ToString();
 
         con.Close();
 
-        if (result == null) return string.Empty;
-        else return result.ToString();
+        return result == null ? string.Empty : result.ToString();
     }
 
     public static int GetInt(string query) => (!int.TryParse(GetString(query), out var res)) ? 0 : res;
@@ -283,13 +282,13 @@ public static class Sqlite
     {
         List<T> column = new();
 
-        using (SQLiteConnection con = new SQLiteConnection(DatabasePath))
+        using (var con = new SQLiteConnection(DatabasePath))
         {
             con.Open();
 
-            using (SQLiteCommand cmd = new SQLiteCommand(query, con))
+            using (var cmd = new SQLiteCommand(query, con))
             {
-                SQLiteDataReader r = cmd.ExecuteReader();
+                var r = cmd.ExecuteReader();
 
                 while (r.Read())
                 {
@@ -307,7 +306,7 @@ public static class Sqlite
 
     public static bool Query(SQLiteCommand query)
     {
-        using SQLiteConnection con = new SQLiteConnection(DatabasePath);
+        using var con = new SQLiteConnection(DatabasePath);
 
         con.Open();
 
@@ -323,7 +322,7 @@ public static class Sqlite
 
     public static bool Query(string query)
     {
-        SQLiteCommand cmd = new SQLiteCommand()
+        var cmd = new SQLiteCommand()
         {
             CommandText = query,
         };
@@ -334,12 +333,15 @@ public static class Sqlite
 
     public static bool Query(string query, params SQLiteParameter[] parameters)
     {
-        SQLiteCommand cmd = new SQLiteCommand()
+        var cmd = new SQLiteCommand()
         {
             CommandText = query,
         };
 
-        foreach (SQLiteParameter parameter in parameters) cmd.Parameters.Add(parameter);
+        foreach (var parameter in parameters)
+        {
+            cmd.Parameters.Add(parameter);
+        }
 
         return Query(cmd);
     }
@@ -354,13 +356,17 @@ public static class Sqlite
             var val = string.Empty;
 
             if (parms.DbType.Equals(DbType.String) || parms.DbType.Equals(DbType.DateTime))
+                {
                 val = "'" + Convert.ToString(parms.Value).Replace(@"\", @"\\").Replace("'", @"\'") + "'";
+            }
 
             if (parms.DbType.Equals(DbType.Int16)
                 || parms.DbType.Equals(DbType.Int32)
                 || parms.DbType.Equals(DbType.Int64)
                 || parms.DbType.Equals(DbType.Decimal)
-                || parms.DbType.Equals(DbType.Double)) val = Convert.ToString(parms.Value);
+                || parms.DbType.Equals(DbType.Double)) {
+                val = Convert.ToString(parms.Value);
+            }
 
             var paramname = "@" + parms.ParameterName;
 

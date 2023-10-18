@@ -16,17 +16,19 @@ public static class Utils
 
     public static string Path(params string[] Args)
     {
-
         var rPath = "";
 
-        if (Args.Length <= 0) return rPath;
+        if (Args.Length <= 0)
+        {
+            return rPath;
+        }
 
         foreach (var pathSect in Args)
         {
             rPath += "\\" + pathSect;
         }
 
-        return rPath.Replace("\\\\", "\\").Substring(1);
+        return rPath.Replace("\\\\", "\\")[1..];
 
     }
 
@@ -71,7 +73,7 @@ public static class Utils
 
     public static T Pop<T>(this List<T> ts)
     {
-        T result = ts[0];
+        var result = ts[0];
 
         ts.RemoveAt(0);
 
@@ -83,16 +85,16 @@ public static class Utils
     public static string ReadResource(string name)
     {
         // Determine path
-        Assembly assembly = Assembly.GetExecutingAssembly();
+        var assembly = Assembly.GetExecutingAssembly();
         var resourcePath = name;
         // Format: "{Namespace}.{Folder}.{filename}.{Extension}"
 
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
 
-        using Stream stream = assembly.GetManifestResourceStream(resourcePath);
+        using var stream = assembly.GetManifestResourceStream(resourcePath);
         if (stream != null)
         {
-            using StreamReader reader = new StreamReader(stream);
+            using var reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
         else
@@ -104,7 +106,7 @@ public static class Utils
     public static byte[] ReadResourceBytes(string name)
     {
         // Determine path
-        Assembly assembly = Assembly.GetExecutingAssembly();
+        var assembly = Assembly.GetExecutingAssembly();
         var resourcePath = name;
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
         using var stream = assembly.GetManifestResourceStream(resourcePath);
@@ -121,7 +123,10 @@ public static class Utils
                 var n = stream.Read(bytes, numBytesRead, numBytesToRead);
 
                 // Break when the end of the file is reached.
-                if (n == 0) break;
+                if (n == 0)
+                {
+                    break;
+                }
 
                 numBytesRead += n;
                 numBytesToRead -= n;
@@ -141,7 +146,7 @@ public static class Utils
     public static Stream StreamResource(string name)
     {
         // Determine path
-        Assembly assembly = Assembly.GetExecutingAssembly();
+        var assembly = Assembly.GetExecutingAssembly();
         var resourcePath = name;
 
         // Format: "{Namespace}.{Folder}.{filename}.{Extension}"
@@ -149,13 +154,17 @@ public static class Utils
         resourcePath = assembly.GetManifestResourceNames().Single(str => str.EndsWith(name));
         var stream = assembly.GetManifestResourceStream(resourcePath);
 
-        return stream == null ? Stream.Null : stream;
+        return stream ?? Stream.Null;
 
     }
 
     public static int GetListHashCode<TItem>(this IEnumerable<TItem> list)
     {
-        if (list == null) return 0;
+        if (list == null)
+        {
+            return 0;
+        }
+
         const int seedValue = 0x2D2816FE;
         const int primeNumber = 397;
         return list.Aggregate(seedValue, (current, item) => (current * primeNumber) + (Equals(item, default(TItem)) ? 0 : item.GetHashCode()));

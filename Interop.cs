@@ -12,27 +12,11 @@ using Microsoft.JSInterop;
 
 namespace PokeCardManager;
 
-public partial class JsInterop : IDisposable
+
+public static class MasterJS
 {
-    private readonly IJSRuntime js;
+    public static IJSRuntime JS;
 
-    public JsInterop(IJSRuntime js)
-    {
-        this.js = js;
-    }
-
-    public async Task ShowAlert(string msg, string alertType="success")
-    {
-        await js.InvokeVoidAsync("showAlert", msg, alertType);
-    }
-
-    public void Dispose()
-    {
-    }
-}
-
-public static class Interop
-{
     internal static ValueTask<object> Focus(IJSRuntime jsRuntime, ElementReference element)
     {
         return jsRuntime.InvokeAsync<object>("blazoredTypeahead.setFocus", element);

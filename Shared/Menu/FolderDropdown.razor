@@ -1,19 +1,19 @@
-@if (folder.childCount > 0)
+@if (folder.ChildCount > 0)
 {
     <div class="dropdown dropend">
         <a href="#" class="dropdown-item dropdown-toggle menu-folder" @onclick="SelectFolder"
            data-bs-toggle="dropdown"
-           data-child-count="@folder.childCount"
-           data-folder-type="@folder.folderType"
-           data-sort-index="@folder.sortIndex"
-           data-parent-id="@folder.parentId"
-           data-folder-id="@folder.id">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.color">
+           data-child-count="@folder.ChildCount"
+           data-folder-type="@folder.FolderType"
+           data-sort-index="@folder.SortIndex"
+           data-parent-id="@folder.ParentId"
+           data-folder-id="@folder.Id">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.Color">
                 <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA" />
-            </svg> @folder.name
+            </svg> @folder.Name
         </a>
         <div class="dropdown-menu">
-            @foreach (var child in folder.children)
+            @foreach (var child in folder.Children)
             {
                 <FolderDropdown folder="@child" OnFolderSelected="FolderSelected" />
             }
@@ -23,14 +23,14 @@
 else
 {
     <a href="#" class="dropdown-item menu-folder" @onclick="SelectFolder"
-       data-child-count="@folder.childCount"
-       data-folder-type="@folder.folderType"
-       data-sort-index="@folder.sortIndex"
-       data-parent-id="@folder.parentId"
-       data-folder-id="@folder.id">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.color">
+       data-child-count="@folder.ChildCount"
+       data-folder-type="@folder.FolderType"
+       data-sort-index="@folder.SortIndex"
+       data-parent-id="@folder.ParentId"
+       data-folder-id="@folder.Id">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@folder.Color">
             <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA" />
-        </svg> @folder.name
+        </svg> @folder.Name
     </a>
 }
 
@@ -44,7 +44,7 @@ else
 
     private async Task SelectFolder()
     {
-        await OnFolderSelected.InvokeAsync(folder.id);
+        await OnFolderSelected.InvokeAsync(folder.Id);
     }
 
     protected void FolderSelected(int folderId)

@@ -161,14 +161,14 @@
     {
         FolderData folder = new FolderData()
         {
-            name       = folderName, 
-            folderType = folderType,
-            color      = folderColor,
+            Name       = folderName, 
+            FolderType = folderType,
+            Color      = folderColor,
         };
 
         if (AddFolderEvent.AddFolder(folder))
         {
-            JS.InvokeVoidAsync("showAlert", $" \"<b>{folder.name}</b>\" added to folders.", "info", @"{""size"":""mini""}");
+            JS.InvokeVoidAsync("showAlert", $" \"<b>{folder.Name}</b>\" added to folders.", "info", @"{""size"":""mini""}");
             folderName = "";
             module.InvokeVoidAsync("closeFolderModal");
         }

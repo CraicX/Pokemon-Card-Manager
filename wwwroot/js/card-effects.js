@@ -5,7 +5,7 @@ var CurrentDeg = 0;
 var parentOffset = null;
 var ZoomCard = null;
 var jqToolSet;
-var toolTipdone = false;
+// var toolTipdone = false;
 
 function OrientCard(Xdeg, Ydeg) {
     if (!MvAuto) {
@@ -42,8 +42,6 @@ function OrientCard(Xdeg, Ydeg) {
 
         let pointerX = ((e.pageX - LastCard.offset().left) / LastCard.width()) * 100;
         let pointerY = ((e.pageY - LastCard.offset().top) / LastCard.height()) * 100;
-        //let offsetY = pointerY;
-        //let offsetX = pointerX;
 
         var acard = LastCard[0];
         acard.style.setProperty('--rx', offsetX + 'deg');
@@ -113,33 +111,9 @@ function setCardClick() {
     });
 }
 
-function setCardTools() {
-    //$(function () {
-    //    showAlert('hovered', 'info', '{ "size": "mini" }');
-    //    //$('.pokecard-info').off('mouseenter');
-    //    $('.pokecard-div').on('click', function () {
-    //        showAlert('hovered', 'info', '{ "size": "mini" }');
-    //        //$('.pokecard-tool-set').appendTo($(this).find('.pokecard-tools'));
-    //        //$('.pokecard-tool-set').show();
-    //    });
-    //});
-}
+
 function startCardEffects() {
     $(function () {
-
-        $('.pokecard-div').off('mouseenter');
-        $('.pokecard-div').on('mouseenter', function () {
-            $('.pokecard-tool-set').appendTo($(this).find('.pokecard-tools'));
-            $('.pokecard-tool-set').show();
-        });
-
-        if (!toolTipdone) {
-            toolTipdone = true;
-            $('.pokecard-div .sel-folder').off('click');
-            $('.pokecard-div .sel-folder').on('click', function () { showAlert('clicky'); });
-            //$('.pokecard-div').find('[data-bs-toggle="tooltip"]').tooltip();
-        }
-
 
         // on hover
         $('.cardeffect').off('mouseenter').off('mouseleave').off('click');
@@ -175,15 +149,6 @@ function startCardEffects() {
                 }
             });
             LastCard.on("mousemove", function (e) { ShineCard(e); });
-            //LastCard.on("mousemove", function (e) {
-
-            //    const force = 10;
-            //    const offsetY = -((e.pageY - $(this).offset().top) - $(this).height() / 2) / force;
-            //    const offsetX = ((e.pageX - $(this).offset().left) - $(this).width() / 2) / force;
-
-            //    OrientCard(offsetX, offsetY);
-            //    OrientCard(offsetX, offsetY);
-            //});
         });
 
         $('.cardeffect').on("mouseleave", function () {

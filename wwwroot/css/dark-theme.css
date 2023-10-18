@@ -11,6 +11,49 @@ html.dark-theme .blazored-typeahead__input-icon:focus {
     outline: none;
     box-shadow: none;
 }
+html.dark-theme .btn-toolset {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #12181A;
+    --bs-btn-border-color: #12181A;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #424649;
+    --bs-btn-hover-border-color: #373b3e;
+    --bs-btn-focus-shadow-rgb: 66,70,73;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #4d5154;
+    --bs-btn-active-border-color: #373b3e;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+html.light-theme .btn-toolset {
+    --bs-btn-color: #008cff;
+    --bs-btn-bg: rgba(0, 140, 255, 0.18);
+    --bs-btn-border-color: rgb(209, 234, 255);
+    --bs-btn-hover-color: #008cff;
+    --bs-btn-hover-bg: rgba(0, 140, 255, 0.28);
+    --bs-btn-hover-border-color: rgba(0, 140, 255, 0.18);
+    --bs-btn-active-color: #008cff;
+    --bs-btn-active-bg: rgba(0, 140, 255, 0.18);
+    --bs-btn-active-border-color: rgba(0, 140, 255, 0.18);
+    --bs-btn-active-shadow: 0 0 0 .25rem rgba(49, 132, 253, .3)
+}
+
+html.light-theme .btn-toolset:hover {
+    border-width: 1px;
+}
+
+html.light2-theme .btn-toolset {
+    --bs-btn-color: #198754;
+    --bs-btn-border-color: #198754;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #198754;
+    --bs-btn-hover-border-color: #198754;
+    --bs-btn-focus-shadow-rgb: 25,135,84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #198754;
+    --bs-btn-active-border-color: #198754;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)
+}
 
 html.dark-theme .blazored-typeahead__input-icon:hover {
     background-color: #212529;

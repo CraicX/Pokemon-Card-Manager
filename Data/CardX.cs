@@ -19,15 +19,17 @@ public class CardX : Card
     public string RarityEffect  => Rarity?.ToLower();
     public string SubtypeEffect => (Subtypes != null && Subtypes.Count > 0) ? string.Join(' ', Subtypes).ToLower() : "";
     public string ImageHtml { get; set; }
+    public int CardId { get; set; } = 0;
+
 
     public string TcgUrl => (Tcgplayer != null && Tcgplayer.Url != null) ? Tcgplayer.Url.ToString() : "";
 
 
     public string Safe(string propName)
     {
-        if (this.GetType().GetProperty(propName) != null )
+        if (GetType().GetProperty(propName) != null )
         {
-            return this.GetType().GetProperty(propName).GetValue(this, null)?.ToString() ?? "";
+            return GetType().GetProperty(propName).GetValue(this, null)?.ToString() ?? "";
         }
         return "";
     }
@@ -65,8 +67,10 @@ public class CardX : Card
                 return string.Format("{0:C2}", resPrice);
             }
 
-            else return "";
-
+            else
+            {
+                return "";
+            }
         }
 
     }

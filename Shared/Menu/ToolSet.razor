@@ -4,35 +4,38 @@
 @using Serilog
 @using Microsoft.JSInterop
 
+@inherits ComponentBase
+
 @implements IDisposable
 
 @inject IJSRuntime JS
+@inject NavigationManager Navigation
 
 <div class="pokecard-tool-set">
     <div class="btn-group btn-group-sm dropdown" role="group" name="pts-det">
-        <button type="button" class="btn btn-dark">
+        <button type="button" class="btn btn-toolset">
             <i class="bx bx-detail me-0"></i>
         </button>
 
-        <button type="button" class="btn btn-dark" name="pts-tcg">
+        <button type="button" class="btn btn-toolset" name="pts-tcg" @onclick="ViewOnTCGPlayer">
             <i class="bx bx-dollar me-0" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View on TCGPlayer"></i>
         </button>
 
 
-        <button type="button" class="btn btn-dark sel-folder" name="pts-fld" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="@ToolTip(@selectedFolder)"
-                data-child-count="@selectedFolder.childCount"
-                data-folder-type="@selectedFolder.folderType"
-                data-sort-index="@selectedFolder.sortIndex"
-                data-parent-id="@selectedFolder.parentId"
-                data-folder-id="@selectedFolder.id">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@selectedFolder.color">
+        <button type="button" class="btn btn-toolset sel-folder" name="pts-fld" @onclick="AddToFolder" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="@ToolTip(@selectedFolder)"
+                data-child-count="@selectedFolder.ChildCount"
+                data-folder-type="@selectedFolder.FolderType"
+                data-sort-index="@selectedFolder.SortIndex"
+                data-parent-id="@selectedFolder.ParentId"
+                data-folder-id="@selectedFolder.Id">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="pf" fill="@selectedFolder.Color">
                 <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Z" stroke="#FAFAFA" />
             </svg> 
 
-            @selectedFolder.name
+            @selectedFolder.Name
         </button>
 
-        <button type="button" class="btn btn-dark split-bg-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" />
+        <button type="button" class="btn btn-toolset split-bg-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" />
 
         <div class="dropdown-hover-all">
             <div class="dropdown">
@@ -53,20 +56,20 @@
                             </div>
                         }
                     }
-
                     
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
 
 
 @code {
-    private static DotNetObjectReference<Search> objRef;
+    [Parameter]
+    public static string CardId { get; set; } = "";
 
+    private static ToolSet objRef;
 
     public static FolderData selectedFolder { get; set; } = new();
 
@@ -77,16 +80,16 @@
         if (_FolderTree == null) _FolderTree = PC.GetFolderTree();
 
         return _FolderTree;
-
     }
-
-    
 
     public static Dictionary<string, List<FolderData>> FoldersByType { get; set; } = new();
 
     private IJSObjectReference module;
 
-
+    protected override void OnInitialized()
+    {
+        objRef = this;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -96,15 +99,14 @@
 
             FoldersByType.Clear();
 
-
             foreach (var folder in PC.Folders)
             {
-                if (!FoldersByType.ContainsKey(folder.folderType))
+                if (!FoldersByType.ContainsKey(folder.FolderType))
                 {
-                    FoldersByType.Add(folder.folderType, new List<FolderData>());
+                    FoldersByType.Add(folder.FolderType, new List<FolderData>());
                 }
 
-                FoldersByType[folder.folderType].Add(folder);
+                FoldersByType[folder.FolderType].Add(folder);
             }
         }
 
@@ -114,37 +116,74 @@
 
     public string ToolTip(FolderData folder)
     {
-        if (selectedFolder.id != 0)
+        if (selectedFolder.Id != 0)
         {
-            return $"Add to {folder.name}";
+            return $"Add to {folder.Name}";
         }
         else
         {
-            return "First, select a folder";
+            return "Select a Folder";
         }
     }
 
     [JSInvokable]
-    public static Task<string> FolderSelectedx(string folderId)
+    public static Task<string> AssignToCard(string cardId)
     {
-        //  convert sortInfo json to FolderSort object
-        int fId = 0;
-        if (int.TryParse(folderId, out fId))
-        {
-            selectedFolder = PC.Folders.Find(x => x.id == fId);
-        }
-
+        CardId = cardId;
+        objRef.StateHasChanged();
         return Task.FromResult("");
     }
 
+
+
     protected async void FolderSelected(int folderId)
     {
-        selectedFolder = PC.Folders.Find(x => x.id == folderId);
+        selectedFolder = PC.Folders.Find(x => x.Id == folderId);
         await module.InvokeVoidAsync("folderSelected");
+
+        AddToFolder();
     }
 
-    public override void Dispose()
+
+    public async void AddToFolder()
+    {
+        if (selectedFolder == null || selectedFolder.Id == 0)
+        {
+            await JS.InvokeVoidAsync("showAlert", "Please use the dropdown to first select a folder.", "warning", @"{""title"":""No folder selected""}");
+            return;
+        }
+
+        var selectedCard = PC.CardResults.Find(x => x.Id == CardId);
+
+        if (selectedCard == null || selectedCard.Id == "") 
+        {
+            return;
+        }
+
+        PC.AddCardToFolder(selectedFolder, selectedCard);
+
+        await JS.InvokeVoidAsync("showAlert", $"{selectedCard.Name} was added to the folder: <b>{selectedFolder.Name}</b>!", "success", $"{{\"title\":\"{selectedCard.Name} Added!\"}}");
+
+    }
+
+    public async void ViewOnTCGPlayer()
+    {
+        // Use CardId to get the card
+        var selectedCard = PC.CardResults.Find(x => x.Id == CardId);
+
+        if (selectedCard == null || selectedCard.TcgUrl == "")
+        {
+            await JS.InvokeVoidAsync("showAlert", "Could not locate TCGPlayer URL!", "warning", @"{""size"":""mini""}");
+
+            return;
+        }
+
+        Navigation.NavigateTo(selectedCard.TcgUrl);
+    }
+
+    public void Dispose()
     {
         
     }
+
 }
