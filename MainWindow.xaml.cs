@@ -7,6 +7,7 @@
 //
 using System;
 using System.Windows;
+using Microsoft.AspNetCore.Components.WebView.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using PokeCardManager.Classes;
 using PokeCardManager.Classes.Events;
@@ -17,8 +18,6 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        Config.Init();
-
         InitializeComponent();
 
         Width  = Config.Settings.WindowWidth;
@@ -30,7 +29,9 @@ public partial class MainWindow : Window
         serviceCollection.AddSingleton<AddFolderEvent>();
         serviceCollection.AddSingleton<UpdateFiltersEvent>();
         serviceCollection.AddBlazorWebViewDeveloperTools();
+        serviceCollection.AddSingleton<MainWindow>();
 
+        //  enable routing
         Resources.Add("services", serviceCollection.BuildServiceProvider());
     }
 

@@ -96,10 +96,18 @@
             }
         }
 
-        if (Config.Settings.AddCardEffects.ToLower() == "true") { await module.InvokeVoidAsync("initCardEffects"); }
-        else { await module.InvokeVoidAsync("addCardClick"); }
+        if (module != null) {
 
-        await module.InvokeVoidAsync("setToolEvents");
+            if (Config.Settings.AddCardEffects.ToLower() == "true") { 
+                await module.InvokeVoidAsync("initCardEffects"); 
+            }
+            else 
+            { 
+                await module.InvokeVoidAsync("addCardClick"); 
+            }
+
+            await module.InvokeVoidAsync("setToolEvents");
+        }
     }
 
 

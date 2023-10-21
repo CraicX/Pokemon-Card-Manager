@@ -7,10 +7,10 @@
 //
 using System;
 using System.Data.SQLite;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Linq;
 using Serilog;
 
 using PokeCardManager.Data;
@@ -18,8 +18,6 @@ using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Rarities;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SubTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.SuperTypes;
 using PokemonTcgSdk.Standard.Infrastructure.HttpClients.Types;
-using System.Windows.Media;
-using System.Linq;
 
 namespace PokeCardManager.Classes;
 public static class Config
@@ -28,18 +26,15 @@ public static class Config
     //
     //  Define Paths
     //
-    public static string RootPath = "";
+    public static string RootPath    = "";
     public static string WWWRootPath = "";
-    public static string AppPath = "";
-    public static string DataPath = "";
-    public static string AppName = "PokeCard";
-    public static Settings Settings = new();
+    public static string AppPath     = "";
+    public static string DataPath    = "";
+    public static string AppName     = "PokeCard";
+    public static Settings Settings  = new();
 
-    [Obsolete]
     public static async void Init()
     {
-
-
         //  Add console logging using Microsoft Extensions Logging
 
         Log.Logger = new LoggerConfiguration().WriteTo.Debug().CreateLogger();
@@ -166,7 +161,6 @@ public static class Config
 
             Settings.Save();
         }
-
     }
 
 
@@ -181,8 +175,8 @@ public static class Config
         PC.SuperTypes.AddRange(Settings.Get("SuperTypes", "Pokémon,Trainer,Energy").Split(','));
         PC.ElementTypes.AddRange(Settings.Get("ElementTypes", "Colorless,Darkness,Dragon,Fairy,Fighting,Fire,Grass,Lightning,Metal,Psychic,Water").Split(','));
 
-        PC.Sets = Sqlite.GetSets();
-        PC.Cards = Sqlite.GetCards();
+        PC.Sets    = Sqlite.GetSets();
+        PC.Cards   = Sqlite.GetCards();
         PC.Folders = Sqlite.GetFolders();
 
         await PC.GetSetImages();
@@ -238,9 +232,9 @@ public static class Config
     {
         //  Set the App Paths & Create need directories
 
-        RootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.AppName);
-        AppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
-        DataPath = Path.Combine(RootPath, "Data");
+        RootPath    = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Config.AppName);
+        AppPath     = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "";
+        DataPath    = Path.Combine(RootPath, "Data");
         WWWRootPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
         foreach (var path in new string[] { DataPath })

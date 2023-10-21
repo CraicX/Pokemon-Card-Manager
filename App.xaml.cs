@@ -6,28 +6,13 @@
 //  App
 //
 using System.Windows;
-using System.Windows.Controls;
 using static PokeCardManager.Startup;
 
 namespace PokeCardManager;
 public partial class App : Application
 {
-
-
-
-
-    //public EnvDTE.DTE DTE
-    //{
-    //    [System.Runtime.InteropServices.DispId(2)]
-    //    get;
-    //}
-
     public App()
     {
-
         Init();
-
-        //  If in debug environment, clear the immediate windows
-
     }
 }
