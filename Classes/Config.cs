@@ -30,7 +30,7 @@ public static class Config
     public static string WWWRootPath = "";
     public static string AppPath     = "";
     public static string DataPath    = "";
-    public static string AppName     = "PokeCard";
+    public static string AppName     = "PokemonCardManager";
     public static Settings Settings  = new();
 
     public static async void Init()
@@ -49,13 +49,13 @@ public static class Config
 
         PokeAPI.Init();
 
-        AddRecords();
+        await AddRecords();
 
         await GetRecords();
 
     }
 
-    private static async void AddRecords(bool forceRefresh = false)
+    private static async Task<bool> AddRecords(bool forceRefresh = false)
     {
         //
         //  Check last time Subtypes was updated
@@ -161,6 +161,8 @@ public static class Config
 
             Settings.Save();
         }
+
+        return true;
     }
 
 

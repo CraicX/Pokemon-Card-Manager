@@ -41,6 +41,7 @@
     <ItemGroup>
       <None Remove="Resources\DBSchema.sql" />
       <None Remove="Resources\PokemonList.txt" />
+      <None Remove="Resources\splash.png" />
       <None Remove="Shared\NavMenuListFolders.razor.js" />
     </ItemGroup>
 
@@ -67,6 +68,12 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
         <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
         <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <SplashScreen Include="Resources\splash.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </SplashScreen>
     </ItemGroup>
 
     <ItemGroup>

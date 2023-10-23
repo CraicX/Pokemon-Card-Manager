@@ -18,6 +18,8 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        Config.Init();
+
         InitializeComponent();
 
         Width  = Config.Settings.WindowWidth;
